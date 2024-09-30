@@ -1,0 +1,146 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us!</title>
+    <script src="{% static 'js/contact.js' %}" defer></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/contact.css' %}" />
+    <script
+      src="https://kit.fontawesome.com/c8e4d183c2.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"
+    ></script>
+    <script type="text/javascript">
+      (function () {
+        emailjs.init("IoiwiKiSBN_lWY9MM");
+      })();
+    </script>
+  </head>
+  <body>
+    <section id="contact-us">
+      <nav>
+        <div class="nav__container">
+          <a href="/" class="logo__wrapper">
+            <h1 class="gciConnect__logo ubuntu">gciConnect!</h1>
+            <img
+              src="{% static 'assets/logo/GCISL_logo_fullcolor.png' %}"
+              alt=""
+              class="header_logo"
+            />
+          </a>
+          <ul class="nav__links">
+            {% if user.is_superuser or user.is_staff %}
+            <li><a href="/admin" class="nav__link">Admin</a></li>
+            <li>
+              <a href="/survey/editor/" class="nav__link"
+                >Survey Manager</a
+              >
+            </li>
+            <li>
+              <a href="/get_involved/" class="nav__link">Get Involved!</a>
+            </li>
+            <li><a href="/about" class="nav__link">About</a></li>
+            <li><a href="/logout" class="nav__link logout">Logout</a></li>
+          </ul>
+            {% else %}
+              <li><a href="/get_involved/" class="nav__link">Get Involved!</a></li>
+              <li><a href="/contact" class="nav__link active">Contact Us</a></li>
+              <li><a href="/about" class="nav__link">About</a></li>
+              <li><a href="/logout" class="nav__link logout">Logout</a></li>
+            {% endif %}
+        </div>
+      </nav>
+    </section>
+
+    <section id="contact">
+      <div class="section__container">
+        <div class="section__row">
+          <div class="contact__wrapper">
+            <div class="contact__half contact__left">
+              <h3 class="contact__title">Contact us!</h3>
+              <p class="contact__para">
+                Have questions or suggestions?
+                <br />
+                Please fill in this form to let our team know.
+                <br />
+                <br />
+                We highly value your input.
+              </p>
+            </div>
+
+            <div class="contact__half contact__right">
+              <form onsubmit="contact(event)" id="contact__form">
+                <div class="form__item">
+                  <label class="form__item--label">Name*</label>
+                  <input type="text" class="input" name="user_name" required />
+                </div>
+                <div class="form__item">
+                  <label class="form__item--label">Email Address*</label>
+                  <input
+                    type="email"
+                    class="input"
+                    name="user_email"
+                    required
+                  />
+                </div>
+                <div class="form__item">
+                  <label class="form__item--label">Phone Number*</label>
+                  <input type="text" class="input" name="user_phone" required />
+                </div>
+                <div class="form__item">
+                  <label class="form__item--label">Message*</label>
+                  <textarea
+                    type="text"
+                    class="input"
+                    name="message"
+                    required
+                  ></textarea>
+                </div>
+                <button id="contact__submit" class="form__submit">
+                  Submit
+                </button>
+              </form>
+              <div class="contact__overlay contact__overlay--loading">
+                <i class="fas fa-spinner"></i>
+              </div>
+              <div class="contact__overlay contact__overlay--success">
+                <h1 class="overlay__message">Thanks for the input! I hope you have a great day!</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer__container">
+        <div class="footer__row">
+          <div class="footer__wrapper">
+              <a href="/" class="footer__logo">
+                <h1 class="gciConnect__logo ubuntu">gciConnect!</h1>
+                <img src="{% static 'assets/logo/GCISL_logo_white.png' %}" alt="" class="gcisl__logo"/>
+              </a>
+              <div class="footer__list">
+                {% if user.is_superuser or user.is_staff %}
+                  <a href="/survey/editor" class="footer__link link__hover-effect link__hover-effect--white">Survey Manager</a>
+                  <a href="/get_involved" class="footer__link link__hover-effect link__hover-effect--white">Get Involved!</a>
+                  <a href="/about" class="footer__link link__hover-effect link__hover-effect--white">About</a>
+                {% else %}
+                  <a href="/get_involved" class="footer__link link__hover-effect link__hover-effect--white">Get Involved!</a>
+                  <a href="/contact" class="footer__link link__hover-effect link__hover-effect--white">Contact Us</a>
+                  <a href="/about" class="footer__link link__hover-effect link__hover-effect--white">About</a>
+                {% endif %}
+              </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

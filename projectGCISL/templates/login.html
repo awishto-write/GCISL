@@ -1,0 +1,46 @@
+{% load static %}
+
+<!DOCTYPE html>
+<!-- Created By CodingNepal -->
+<html lang="en" dir="ltr">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Login</title>
+      <link rel="stylesheet" href="{% static 'css/login.css' %}">
+   </head>
+   <body>
+      <div class="wrapper">
+         <div class="title">
+            Login Form
+         </div>
+         <form action="/login/" method="post">
+          {% csrf_token %}
+          
+          <div class="field__wrapper">
+          <label for="email" class="details">Email</label>
+            <div class="field">
+               {{lform.email}}
+            </div>
+         </div>
+         <div class="field__wrapper">
+            <label for="password" class="details">Password</label>
+            <div class="field">
+               {{lform.password}}  
+            </div>
+         </div>
+         <div class="messages">
+         {% for message in messages %}
+            {{message}}
+         {% endfor %}
+         </div>
+            <div class="field">
+              <input type="submit" value="Login">
+           </div>
+            <div class="signup-link">
+               Not a member? <a href="/registration/">Signup now</a>
+            </div>
+         </form>
+      </div>
+   </body>
+</html>
