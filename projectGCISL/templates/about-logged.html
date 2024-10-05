@@ -1,4 +1,4 @@
-{% load static %}
+<!-- {% load static %} -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>About</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/about.css' %}" />
+    <link rel="stylesheet" type="text/css" href="/projectGCISL/static/css/about.css" />
   </head>
   <style>
     .section__para {
@@ -33,7 +33,7 @@
           <a href="/" class="logo__wrapper">
             <h1 class="gciConnect__logo ubuntu">gciConnect!</h1>
             <img
-              src="{% static 'assets/logo/GCISL_logo_fullcolor.png' %}"
+              src="/projectGCISL/static/assets/logo/GCISL_logo_fullcolor.png" 
               alt=""
               class="header_logo"
             />
@@ -41,22 +41,25 @@
           <ul class="nav__links">
             {% if user.is_superuser or user.is_staff %}
             <li><a href="/admin" class="nav__link">Admin</a></li>
+            <!-- <li><a href="/projectGCISL/templates/admin" class="nav__link">Admin</a></li> -->
             <li>
               <a href="/survey/editor/" class="nav__link"
                 >Survey Manager</a
               >
             </li>
             <li>
-              <a href="/get_involved/" class="nav__link">Get Involved!</a>
+              <a href="/projectGCISL/templates/getinvolved.html" class="nav__link">Get Involved!</a>
             </li>
-            <li><a href="/about" class="nav__link active">About</a></li>
+            <li><a href="/projectGCISL/templates/about.html" class="nav__link active">About</a></li>
             <li><a href="/logout" class="nav__link logout">Logout</a></li>
+            <!-- <li><a href="/projectGCISL/templates/logout" class="nav__link logout">Logout</a></li> -->
           </ul>
             {% else %}
-              <li><a href="/get_involved/" class="nav__link">Get Involved!</a></li>
-              <li><a href="/contact" class="nav__link">Contact Us</a></li>
-              <li><a href="/about" class="nav__link active">About</a></li>
+              <li><a href="/projectGCISL/templates/get_involved.html" class="nav__link">Get Involved!</a></li>
+              <li><a href="/projectGCISL/templates/contact.html" class="nav__link">Contact Us</a></li>
+              <li><a href="/projectGCISL/templates/about.tml" class="nav__link active">About</a></li>
               <li><a href="/logout" class="nav__link logout">Logout</a></li>
+              <!-- <li><a href="/projectGCISL/templates/logout" class="nav__link logout">Logout</a></li> -->
             {% endif %}
         </div>
       </nav>
@@ -80,7 +83,7 @@
             <div class="section__right">
               <figure class="logo__wrapper">
                 <img
-                  src="{% static 'assets/logo/GCISL_logo_fullcolor.png' %}"
+                  src="/projectGCISL/static/assets/logo/GCISL_logo_fullcolor.png" 
                   alt=""
                   class="about__logo"
                 />
@@ -127,7 +130,7 @@
           <div class="gallery__wrapper">
             <div class="gallery__image--wrapper">
               <img
-                src="{% static 'assets/relative pictures/16.JPG' %}"
+                src="/projectGCISL/static/assets/relative pictures/16.JPG"
                 alt=""
                 class="gallery__image"
               />
@@ -137,7 +140,7 @@
           <div class="gallery__wrapper">
             <div class="gallery__image--wrapper">
               <img
-                src="{% static 'assets/relative pictures/2.png' %}"
+                src="/projectGCISL/static/assets/relative pictures/2.png"
                 alt=""
                 class="gallery__image"
               />
@@ -147,7 +150,7 @@
           <div class="gallery__wrapper">
             <div class="gallery__image--wrapper">
               <img
-                src="{% static 'assets/relative pictures/4.png' %}"
+                src="/projectGCISL/static/assets/relative pictures/4.png"
                 alt=""
                 class="gallery__image"
               />
@@ -157,7 +160,7 @@
           <div class="gallery__wrapper">
             <div class="gallery__image--wrapper">
               <img
-                src="{% static 'assets/relative pictures/5.png' %}"
+                src="/projectGCISL/static/assets/relative pictures/5.png"
                 alt=""
                 class="gallery__image"
               />
@@ -167,7 +170,7 @@
           <div class="gallery__wrapper">
             <div class="gallery__image--wrapper">
               <img
-                src="{% static 'assets/relative pictures/6.png' %}"
+                src="/projectGCISL/static/assets/relative pictures/6.png"
                 alt=""
                 class="gallery__image"
               />
@@ -177,7 +180,7 @@
           <div class="gallery__wrapper">
             <div class="gallery__image--wrapper">
               <img
-                src="{% static 'assets/relative pictures/7.png' %}"
+                src="/projectGCISL/static/assets/relative pictures/7.png"
                 alt=""
                 class="gallery__image"
               />
@@ -187,7 +190,7 @@
           <div class="gallery__wrapper">
             <div class="gallery__image--wrapper">
               <img
-                src="{% static 'assets/relative pictures/10.png' %}"
+                src="/projectGCISL/static/assets/relative pictures/10.png"
                 alt=""
                 class="gallery__image"
               />
@@ -204,17 +207,17 @@
           <div class="footer__wrapper">
               <a href="/" class="footer__logo">
                 <h1 class="gciConnect__logo ubuntu">gciConnect!</h1>
-                <img src="{% static 'assets/logo/GCISL_logo_white.png' %}" alt="" class="gcisl__logo"/>
+                <img src="/projectGCISL/static/assets/logo/GCISL_logo_white.png" alt="" class="gcisl__logo"/>
               </a>
               <div class="footer__list">
                 {% if user.is_superuser or user.is_staff %}
                   <a href="/survey/editor" class="footer__link link__hover-effect link__hover-effect--white">Survey Manager</a>
-                  <a href="/get_involved" class="footer__link link__hover-effect link__hover-effect--white">Get Involved!</a>
-                  <a href="/about" class="footer__link link__hover-effect link__hover-effect--white">About</a>
+                  <a href="/projectGCISL/templates/getinvolved.html" class="footer__link link__hover-effect link__hover-effect--white">Get Involved!</a>
+                  <a href="/projectGCISL/templates/about.html" class="footer__link link__hover-effect link__hover-effect--white">About</a>
                 {% else %}
-                  <a href="/get_involved" class="footer__link link__hover-effect link__hover-effect--white">Get Involved!</a>
-                  <a href="/contact" class="footer__link link__hover-effect link__hover-effect--white">Contact Us</a>
-                  <a href="/about" class="footer__link link__hover-effect link__hover-effect--white">About</a>
+                  <a href="/projectGCISL/templates/getinvolved.html" class="footer__link link__hover-effect link__hover-effect--white">Get Involved!</a>
+                  <a href="/projectGCISL/templates/contact.html" class="footer__link link__hover-effect link__hover-effect--white">Contact Us</a>
+                  <a href="/projectGCISL/templates/about.html" class="footer__link link__hover-effect link__hover-effect--white">About</a>
                 {% endif %}
               </div>
           </div>

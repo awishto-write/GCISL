@@ -1,4 +1,4 @@
-{% load static %}
+<!-- {% load static %} -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,7 +10,7 @@
     <link
       rel="stylesheet"
       type="text/css"
-      href="{% static 'css/getinvolved.css' %}"
+      href="/projectGCISL/static/css/getinvolved.css"
     />
     <style>
       .popup {
@@ -101,18 +101,18 @@
           <a href="/" class="logo__wrapper">
             <h1 class="gciConnect__logo ubuntu">gciConnect!</h1>
             <img
-              src="{% static 'assets/logo/GCISL_logo_fullcolor.png' %}"
+              src="/projectGCISL/static/assets/logo/GCISL_logo_fullcolor.png"
               alt=""
               class="header_logo"
             />
           </a>
           <ul class="nav__links">
             <li>
-              <a href="/get_involved" class="nav__link active">Get Involved!</a>
+              <a href="/projectGCISL/templates/getinvolved.html" class="nav__link active">Get Involved!</a>
             </li>
-            <li><a href="/contact" class="nav__link">Contact Us</a></li>
-            <li><a href="/about" class="nav__link">About</a></li>
-            <li><a href="/login" class="nav__link">Log in</a></li>
+            <li><a href="/projectGCISL/templates/contact.html" class="nav__link">Contact Us</a></li>
+            <li><a href="/projectGCISL/templates/about.html" class="nav__link">About</a></li>
+            <li><a href="/projectGCISL/templates/login.html" class="nav__link">Log in</a></li>
           </ul>
         </div>
       </nav>
@@ -237,12 +237,12 @@
             <h1 class="get-started__title">
               Click the button below to get matched to an opportunity!
             </h1>
-          </br>
+          <!-- </br>
             {% comment %} <h1 class="crimson get-started__title">
               Click the button below to get matched to an opportunity!
             </h1> {% endcomment %}
             </h1>
-          </br>
+          </br> -->
             <button id="myButton" class = "get-started__button">
                 Take Survey!
             </button>
@@ -251,7 +251,7 @@
                 <p>Sorry! You must login or register to take the survey!</p>
                 <div class="padding">
                   <button id="closePopup">
-                    <li><a href="/login" style="color: #fff">Login</a></li>
+                    <li><a href="/projectGCISL/templates/login.html" style="color: #fff">Login</a></li>
                   </button>
                 </div>
               </div>
@@ -268,24 +268,24 @@
             <a href="/" class="footer__logo">
               <h1 class="gciConnect__logo ubuntu">gciConnect!</h1>
               <img
-                src="{% static 'assets/logo/GCISL_logo_white.png' %}"
+                src="/projectGCISL/static/assets/logo/GCISL_logo_white.png"
                 alt=""
                 class="gcisl__logo"
               />
             </a>
             <div class="footer__list">
               <a
-                href="/get_involved"
+                href="/projectGCISL/templates/getinvolved.html"
                 class="footer__link link__hover-effect link__hover-effect--white"
                 >Get Involved!</a
               >
               <a
-                href="/contact"
+                href="/projectGCISL/templates/contact.html"
                 class="footer__link link__hover-effect link__hover-effect--white"
                 >Contact Us</a
               >
               <a
-                href="/about"
+                href="/projectGCISL/templates/about.html"
                 class="footer__link link__hover-effect link__hover-effect--white"
                 >About</a
               >

@@ -1,45 +1,54 @@
-{% load static %}
+
+   <!-- stop -->
 
 <!DOCTYPE html>
-<!-- Created By CodingNepal -->
 <html lang="en" dir="ltr">
    <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Login</title>
-      <link rel="stylesheet" href="{% static 'css/login.css' %}">
+      <link rel="stylesheet" href="/projectGCISL/static/css/login.css">
    </head>
    <body>
+      <!-- top header -->
+   
+
       <div class="wrapper">
          <div class="title">
             Login Form
          </div>
-         <form action="/login/" method="post">
-          {% csrf_token %}
-          
+         <form action="/projectGCISL/templates/login.html" method="post">
+          <!-- CSRF token and Django form removed since they are not needed in plain HTML -->
+
           <div class="field__wrapper">
-          <label for="email" class="details">Email</label>
+            <label for="email" class="details">Email</label>
             <div class="field">
-               {{lform.email}}
+               <input type="email" id="email" placeholder="Email Address" name="email" required>
             </div>
          </div>
+         
          <div class="field__wrapper">
             <label for="password" class="details">Password</label>
             <div class="field">
-               {{lform.password}}  
+               <input type="password" id="password" placeholder="Password" name="password" required>
             </div>
          </div>
+
+         <!-- Messages section -->
          <div class="messages">
-         {% for message in messages %}
-            {{message}}
-         {% endfor %}
+            <ul class="message-list">
+               <!-- You can manually add messages or dynamically handle them using JavaScript if needed -->
+               <!-- <li class="error-message">Invalid email or password</li> Example error -->
+            </ul>
          </div>
-            <div class="field">
+
+         <div class="field">
               <input type="submit" value="Login">
-           </div>
-            <div class="signup-link">
-               Not a member? <a href="/registration/">Signup now</a>
-            </div>
+         </div>
+
+         <div class="signup-link">
+            Not a member? <a href="/projectGCISL/templates/registration.html">Signup now</a>
+         </div>
          </form>
       </div>
    </body>

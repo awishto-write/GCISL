@@ -1,0 +1,13 @@
+{
+    "liveServer.settings.port": 5501,
+    "path-autocomplete.pathMappings": {
+    "$root": {
+      "conditions": [
+        {
+          "when": "**/packages/ui/**",
+          "value": "${folder}/packages/ui"
+        }
+      ]
+    }
+  },
+}

@@ -1,4 +1,4 @@
-{% load static %}
+<!-- {% load static %} -->
 
 <!-- base.html file -->
 <!DOCTYPE html>
@@ -15,23 +15,23 @@
       integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/landing.css' %}" />
+    <link rel="stylesheet" type="text/css" href="./projectGCISL/static/css/landing.css" />
   </head>
   <body>
     <section id="landing">
       <nav>
         <div class="nav__container">
           <div class="logo__wrapper">
-            <img src="{% static 'assets/logo/GCISL_logo_fullcolor.png' %}" alt="" class="header_logo"/>
+            <img src="./projectGCISL/static/assets/logo/GCISL_logo_fullcolor.png" alt="" class="header_logo"/>
           </div>
           <ul class="nav__links">
             <li>
-              <a href="get_involved/" class="nav__link">Get Involved!</a>
+              <a href="./projectGCISL/templates/getinvolved.html" class="nav__link">Get Involved!</a>
             </li>
-            <li><a href="contact/" class="nav__link">Contact Us</a></li>
-            <li><a href="about/" class="nav__link">About</a></li>
+            <li><a href="./projectGCISL/templates/contact.html" class="nav__link">Contact Us</a></li>
+            <li><a href="./projectGCISL/templates/about.html" class="nav__link">About</a></li>
             <li>
-              <a href="login/" class="nav__link">Log in</a>
+              <a href="./projectGCISL/templates/login.html" class="nav__link">Log in</a>
             </li>
           </ul>
         </div>
@@ -75,7 +75,7 @@
                   <div class="image__wrapper">
                     <figure class="image__container--wrapper">
                       <img
-                        src="{% static 'assets/relative pictures/1.jpg' %}"
+                        src="./projectGCISL/static/assets/relative pictures/1.jpg"
                         alt=""
                         class="image"
                       />
@@ -86,7 +86,7 @@
                   <div class="image__wrapper">
                     <figure class="image__container--wrapper">
                       <img
-                        src="{% static 'assets/relative pictures/13.JPG' %}"
+                        src="./projectGCISL/static/assets/relative pictures/13.JPG"
                         alt=""
                         class="image"
                       />
@@ -97,7 +97,7 @@
                   <div class="image__wrapper">
                     <figure class="image__container--wrapper">
                       <img
-                        src="{% static 'assets/relative pictures/15.JPG' %}"
+                        src="./projectGCISL/static/assets/relative pictures/15.JPG"
                         alt=""
                         class="image"
                       />
@@ -129,7 +129,8 @@
             <div class="gallery__wrapper">
               <div class="gallery__left">
                 <h1 class="gallery__title">Gallery</h1>
-                <form method="GET" action="/about/">
+                <form method="GET" action="./projectGCISL/templates/about.html">
+                <!-- <form method="GET" action="/about/"></form> -->
                   <button type="submit" class="gallery__button">
                     View more
                   </button>
@@ -138,7 +139,7 @@
               <div class="gallery__right">
                 <div class="gallery__image--wrapper">
                   <img
-                    src="{% static 'assets/relative pictures/10.png' %}"
+                    src="./projectGCISL/static/assets/relative pictures/10.png"
                     alt=""
                     class="gallery__image"
                   />
@@ -157,7 +158,8 @@
               <h1 class="get-involved__title">
                 Interested in getting involved?
               </h1>
-              <form method="GET" action="/get_involved/">
+              <form method="GET" action="./projectGCISL/templates/getinvolved.html">
+              <!-- <form method="GET" action="get_involved/"> -->
                 <button type="submit" class="gallery__button">
                   Get Started
                 </button>
@@ -174,12 +176,12 @@
           <div class="footer__wrapper">
               <a href="/" class="footer__logo">
                 <h1 class="gciConnect__logo ubuntu">gciConnect!</h1>
-                <img src="{% static 'assets/logo/GCISL_logo_white.png' %}" alt="" class="logo"/>
+                <img src="./projectGCISL/static/assets/logo/GCISL_logo_white.png" alt="" class="logo"/>
               </a>
               <div class="footer__list">
-                <a href="/get_involved" class="footer__link link__hover-effect link__hover-effect--white">Get Involved!</a>
-                <a href="/contact" class="footer__link link__hover-effect link__hover-effect--white">Contact Us</a>
-                <a href="/about" class="footer__link link__hover-effect link__hover-effect--white">About</a>
+                <a href="./projectGCISL/templates/getinvolved.html" class="footer__link link__hover-effect link__hover-effect--white">Get Involved!</a>
+                <a href="./projectGCISL/templates/contact.html" class="footer__link link__hover-effect link__hover-effect--white">Contact Us</a>
+                <a href="./projectGCISL/templates/about.html" class="footer__link link__hover-effect link__hover-effect--white">About</a>
               </div>
           </div>
         </div>
