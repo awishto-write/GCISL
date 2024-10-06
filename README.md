@@ -1,5 +1,3 @@
-
-# Project Name
 ACME-8-GCISL-FullStackApp
 
 ## Project summary
