@@ -1,68 +1,58 @@
 # Sprint x Report (8/26/21 - 9/24/2021)
 
 ## What's New (User Facing)
- * Feature 1 or Bug Fix 1
- * Feature 2 or Bug Fix 2
- * Feature n or Bug Fix n
+
+ * Successful deployment on Vercel
+ * Refactoring of Pages
 
 ## Work Summary (Developer Facing)
-Provide a one paragraph synposis of what your team accomplished this sprint. Don't repeat the "What's New" list of features. Instead, help the instructor understand how you went about the work described there, any barriers you overcame, and any significant learnings for your team.
+
+In this sprint, we worked on the projection description, requirement and specifications section of the project. We met with clients and the professor in order to understand our tasks and how we should approach the slack of directions.Each member was assigned a task to complete during and after our meetings. Our work was a little delayed because the main admin client was absent for some time. However, we recently were able to meet with her and better understand the current state of the application and their needs. After further communications with the clients, we realized that the application has never been used by them and at this moment is not even working, beside displaying static information such as the organization vision and mission. We are still discussing possible features ideas for the system and working on getting familiar with the back end tools we will be using for the dynamic portion of the site. Also, we shared with the clients the current site and asked them for feedback to improve the front end as well.
 
 ## Unfinished Work
-If applicable, explain the work you did not finish in this sprint. For issues/user stories in the current sprint that have not been closed, (a) any progress toward completion of the issues has been clearly tracked (by checking the checkboxes of  acceptance criteria), (b) a comment has been added to the issue to explain why the issue could not be completed (e.g., "we ran out of time" or "we did not anticipate it would be so much work"), and (c) the issue is added to a subsequent sprint, so that it can be addressed later.
+
+Currently, we do not have any unfinished work in this sprint because we did not start implementing any features.
 
 ## Completed Issues/User Stories
- * [Sprint 1](https://github.com/name/RepoName/issues/10)
-  The top thing is a potential example  [ I added myself]
 
-Here are links to the issues that we completed in this sprint:
+  * [Sprint 1](https://github.com/name/RepoName/issues/10)
+  * [Project Description Section](https://github.com/awishto-write/GCISL/issues/15)
+  * [Requirement and Specifications Section](https://github.com/awishto-write/GCISL/issues/16)
+  * [Refactoring Pages](https://github.com/awishto-write/GCISL/issues/1)
+  * [Environment Setup and Running Application](https://github.com/awishto-write/GCISL/issues/14)
+  * [Set Up Hosting Environment](https://github.com/awishto-write/GCISL/issues/13)
 
- * URL of issue 1
- * URL of issue 2
- * URL of issue n
 
- Reminders (Remove this section when you save the file):
-  * Each issue should be assigned to a milestone
-  * Each completed issue should be assigned to a pull request
-  * Each completed pull request should include a link to a "Before and After" video
-  * All team members who contributed to the issue should be assigned to it on GitHub
-  * Each issue should be assigned story points using a label
-  * Story points contribution of each team member should be indicated in a comment
- 
 ## Incomplete Issues/User Stories
- * [Create a new User Account](https://github.com/name/RepoName/issues/10) - We have not started the project at all, so we have not added any functionality. 
-    The top thing is a potential example [ I added myself]
 
- Here are links to issues we worked on but did not complete in this sprint:
- 
- * URL of issue 1 <<One sentence explanation of why issue was not completed>>
- * URL of issue 2 <<One sentence explanation of why issue was not completed>>
- * URL of issue n <<One sentence explanation of why issue was not completed>>
- 
- Examples of explanations (Remove this section when you save the file):
-  * "We ran into a complication we did not anticipate (explain briefly)." 
-  * "We decided that the feature did not add sufficient value for us to work on it in this sprint (explain briefly)."
-  * "We could not reproduce the bug" (explain briefly).
-  * "We did not get to this issue because..." (explain briefly)
+  * [User Registration and Login](https://github.com/awishto-write/GCISL/issues/2) - We have been reviewing and changing the previous team's code, so we have not added any functionality.
+  * [Logout](https://github.com/awishto-write/GCISL/issues/3) - We have been reviewing and changing the previous team's code, so we have not added any functionality.
+  * [Task Assignment](https://github.com/awishto-write/GCISL/issues/4) - We have been reviewing and changing the previous team's code, so we have not added any functionality.
+  * [Task Notifications](https://github.com/awishto-write/GCISL/issues/5) - We have been reviewing and changing the previous team's code, so we have not added any functionality.
+  * [Log completion of tasks](https://github.com/awishto-write/GCISL/issues/6) - We have been reviewing and changing the previous team's code, so we have not added any functionality.
+  * [Volunteer Reporting](https://github.com/awishto-write/GCISL/issues/7) - We have been reviewing and changing the previous team's code, so we have not added any functionality.
+  * [Participant View](https://github.com/awishto-write/GCISL/issues/8) - We have been reviewing and changing the previous team's code, so we have not added any functionality.
+  * [Contact Us Page](https://github.com/awishto-write/GCISL/issues/9) - We have been reviewing and changing the previous team's code, so we have not added any functionality.
+  * [System Reliability](https://github.com/awishto-write/GCISL/issues/10) - We have been reviewing and changing the previous team's code, so we have not added any functionality.
+  * [Admin View](https://github.com/awishto-write/GCISL/issues/11) - We have been reviewing and changing the previous team's code, so we have not added any functionality.
+  * [Volunteer View](https://github.com/awishto-write/GCISL/issues/12) - We have been reviewing and changing the previous team's code, so we have not added any functionality.
+
 
 ## Code Files for Review
-Please review the following code files, which were actively developed during this sprint, for quality:
- * [Name of code file 1](https://github.com/your_repo/file_extension)
- * [Name of code file 2](https://github.com/your_repo/file_extension)
- * [Name of code file 3](https://github.com/your_repo/file_extension)
+  *[registration.html](https://github.com/awishto-write/GCISL/projectGCISL/templates/registration.html)
+  *[login.html](https://github.com/awishto-write/GCISL/projectGCISL/templates/login.html)
  
 ## Retrospective Summary
 Here's what went well:
-  * Item 1
-  * Item 2
-  * Item x
+  * We have all completed our required certificates
+  * We have successfully hosted and deployed the site on Vercel
+  * We have transitioned from ElephantSQL to MongoDB
  
 Here's what we'd like to improve:
-   * Item 1
-   * Item 2
-   * Item x
+  * We should meet with other (team member) regularly during the week to discuss about the project and check each other progress
+  * We should understand more what the organization does, so we can help them better
   
 Here are changes we plan to implement in the next sprint:
-   * Item 1
-   * Item 2
-   * Item x
+  * We plan to start working on the implementation of the features/issues
+  * We plan to gather more ideas relative to more tools to use 
+  * We plan to discuss with the client as soon as we finish a feature, so that we can make potential changes as soon as possible when needed.
