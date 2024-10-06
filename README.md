@@ -1,4 +1,4 @@
-ACME-8-GCISL-FullStackApp
+# ACME-8-GCISL-FullStackApp
 
 ## Project summary
 - Improve the user-friendliness of the existing application for GCISL staff, faculty, and student
