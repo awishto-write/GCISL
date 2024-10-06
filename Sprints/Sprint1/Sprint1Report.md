@@ -39,8 +39,9 @@ Currently, we do not have any unfinished work in this sprint because we did not 
 
 
 ## Code Files for Review
-  *[registration.html](https://github.com/awishto-write/GCISL/projectGCISL/templates/registration.html)
-  *[login.html](https://github.com/awishto-write/GCISL/projectGCISL/templates/login.html)
+  *[registration.html](https://github.com/awishto-write/GCISL/blob/main/projectGCISL/templates/registration.html)
+
+  *[login.html](https://github.com/awishto-write/GCISL/blob/main/projectGCISL/templates/login.html)
  
 ## Retrospective Summary
 Here's what went well:
