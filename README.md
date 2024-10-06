@@ -48,8 +48,8 @@ None
 
 ## Additional Documentation
  * Sprint reports
-- [Sprint 1](https://github.com/awishto-write/GCISL/blob/main/Sprints/Sprint1/Sprint1Report.md)
+    - [Sprint 1](https://github.com/awishto-write/GCISL/blob/main/Sprints/Sprint1/Sprint1Report.md)
  * User links
 
 ## License
-- [License](https://github.com/awishto-write/GCISL/blob/main/LICENSE.txt)
+- [License](https://github.com/awishto-write/GCISL/blob/main/LICENSE.txt)   
