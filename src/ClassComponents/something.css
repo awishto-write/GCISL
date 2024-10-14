@@ -1,0 +1,74 @@
+/* General Navbar Styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Center vertically */
+    /* padding: 1rem 2rem; */
+    padding: 0.5rem 2rem; 
+    background-color: white;
+    border-bottom: 2px solid #a32436; /* Bolder line */
+    height: 100px; /* Set a standard height */
+  }
+  
+  /* Logo and Brand */
+  .brand-logo-container {
+    display: flex;
+    align-items: center; /* Aligns the logo and text vertically */
+  }
+  
+  .brand-logo {
+    font-size: 27px; /* Match the font size with buttons */
+    color: #a32436;
+    font-weight: bold;
+    margin: 0;
+    margin-right: 15px; /* Add space between gciConnect and the image */
+    padding-top: 5px; /* Align with the other elements */
+  }
+  
+  .logo {
+    height: 60px; /* Resized logo */
+  }
+  
+  /* Navigation Links */
+  .nav-links {
+    list-style: none;
+    display: flex;
+    align-items: center; /* Ensures the links are aligned vertically */
+    margin: 0;
+  }
+  
+  .nav-links li {
+    margin: 0 15px;
+  }
+  
+  .nav-links a {
+    text-decoration: none;
+    font-size: 27px; /* Set the same size as gciConnect */
+    color: #000;
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-links a:hover {
+    color: #a32436; /* Red color on hover */
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .navbar {
+        flex-direction: column; /* Stack the items vertically on small screens */
+        height: auto; /* Let the height adjust */
+    }
+  
+    .nav-links {
+        flex-direction: column; /* Stack the nav links */
+    }
+  
+    .logo {
+        height: 40px; /* Adjust the logo size for smaller screens */
+    }
+  
+    .nav-links a {
+        font-size: 1rem; /* Reduce font size for mobile views */
+    }
+  }
