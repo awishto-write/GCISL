@@ -30,7 +30,7 @@ const faqData = [
     id: "item-2",
     question: "When are the meetings?",
     answer:
-      "We meet once every two weeks on Wednesdays at 6:00 PM. The location of the meeting is in person at the Smith Center for Undergraduate Education (CUE) Room 218.",
+      "We meet once every two weeks on Wednesdays at 6:00 PM.",
   },
 ];
 
