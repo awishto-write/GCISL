@@ -1,70 +1,55 @@
-# Getting Started with Create React App
+# ACME-8-GCISL-FullStackApp
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Project summary
+- Improve the user-friendliness of the existing application for GCISL staff, faculty, and student
+- Improve the capability of the administrators to manage the system by improving the administrative capabilities.
+- Train GCISL staff and faculty so that they can use and manage the system.
+- Connect senior residents who are interested in taking part in community projects.
 
-## Available Scripts
+### One-sentence description of the project
+Our goal for this project is to enhance an existing senior living resident volunteer report tracking system for future research projects.
 
-In the project directory, you can run:
+### Additional information about the project
+- Report Tracking System
+- Track existing research projects
+- Add new research projects
+- Make sure there is no duplicate projects
+- Have a group of related projects and ability to search them by topic
+- Have a system administrative portal that has APM and user assistance 
+- A portal for the volunteerS to have access to the projects
+- A portal for users 
 
-### `npm start`
+## Installation
+As for now, after modifying the code, there is no installation process.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Prerequisites
+As for now, after modifying the code, there is no installation process.
+So, being able to use Visual Studio Code "Live" Feature is sufficient.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Add-ons
+List which add-ons are included in the project, and the purpose each add-on serves in your app.
+- Have APM and user assistance
+- Bigger font for the users to see better the information
+- Make the instructions simpler
+- Reduce the steps to get to final desired user result
+- Implement additional features identified by the GCISL team 
 
-### `npm test`
+### Installation Steps
+None
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Functionality
+TBD
 
-### `npm run build`
+## Known Problems
+Currently, there is no known problems.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Contributing
+None
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Additional Documentation
+ * Sprint reports
+    - [Sprint 1](https://github.com/awishto-write/GCISL/blob/main/Sprints/Sprint1/Sprint1Report.md)
+ * User links
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## License
+- [License](https://github.com/awishto-write/GCISL/blob/main/LICENSE.txt)   

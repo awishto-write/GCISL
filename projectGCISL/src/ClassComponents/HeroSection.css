@@ -1,0 +1,52 @@
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+  background-color: #f9f9f9;
+}
+
+.hero-text {
+  width: 50%;
+  text-align: left;
+}
+
+.hero h1 {
+  font-size: 48px;
+  color: #333;
+  text-align: center;
+}
+
+.hero h1 span {
+  color: #a32436;
+}
+
+.hero p {
+  font-size: 18px;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+.hero ul {
+  font-size: 18px;
+  color: #555;
+  list-style-type: none;
+  padding: 0;
+  list-style-type: disc;
+  /* Adds bullet points */
+  padding-left: 20px;
+  /* Adds indentation to the bullet points */
+}
+
+.hero ul li {
+  margin-bottom: 0.5rem;
+}
+
+.hero-image {
+  width: 45%;
+}
+
+.hero-image img {
+  width: 100%;
+  border-radius: 10px;
+}
