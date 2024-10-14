@@ -12,7 +12,7 @@ const faqData = [
     id: "item-1",
     question: "What exactly does this organization do?",
     answer:
-      "GCISL provides resources and mentorship to .",
+      "GCISL provides resources and mentorship.",
   },
   {
     id: "item-5",
