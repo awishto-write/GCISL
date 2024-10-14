@@ -17,6 +17,7 @@ const Navbar = () => {
 
       <div className="navbar-right">
         <ul className="nav-links">
+        <li><a href="#home">Home</a></li>
           <li><a href="#get-involved">Get Involved!</a></li>
           <li><a href="#contact">Contact Us</a></li>
           <li><a href="#about" className="active">About</a></li>
