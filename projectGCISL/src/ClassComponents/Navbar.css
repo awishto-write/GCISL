@@ -1,59 +1,76 @@
 /* General Navbar Styles */
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center; /* Center vertically */
-    padding: 1rem 2rem;
-    background-color: white;
-    /* border-bottom: 1px solid #e0e0e0; */
-    border-bottom: 2px solid #a32436; /* Red color for the separator bar */
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Center vertically */
+  padding: 0.5rem 2rem;
+  background-color: white;
+  border-bottom: 2px solid #a32436; /* Bolder line */
+  height: 100px; /* Set a standard height */
+  width: 100%; /* Ensure full width */
+  box-sizing: border-box; /* Include padding and border in element's total width and height */
+  position: fixed; /* Ensures it stays at the top */
+  top: 0; /* Stick to the top */
+  left: 0; /* Stick to the left */
+  z-index: 1000; /* Ensure it's above other elements */
+}
+
+/* Logo and Brand */
+.brand-logo-container {
+  display: flex;
+  align-items: center; /* Aligns the logo and text vertically */
+}
+
+.brand-logo {
+  font-size: 27px; /* Match the font size with buttons */
+  color: #a32436;
+  font-weight: bold;
+  margin: 0;
+  margin-right: 15px; /* Add space between gciConnect and the image */
+  padding-top: 5px; /* Align with the other elements */
+}
+
+.logo {
+  height: 60px; /* Resized logo */
+}
+
+/* Navigation Links */
+.nav-links {
+  list-style: none;
+  display: flex;
+  align-items: center; /* Ensures the links are aligned vertically */
+  margin: 0;
+}
+
+.nav-links li {
+  margin: 0 15px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  font-size: 27px; /* Set the same size as gciConnect */
+  color: #000;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #a32436; /* Red color on hover */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .navbar {
+      flex-direction: column; /* Stack the items vertically on small screens */
+      height: auto; /* Let the height adjust */
   }
-  
-  /* Logo and Brand */
-  .brand-logo-container {
-    display: flex;
-    align-items: center; /* Aligns the logo and text vertically */
-  }
-  
-  .logo {
-    height: 100px;
-    margin-right: 20px; /* Add space between logo and text */
-    order:2;
-  }
-  
-  .brand-logo {
-    font-size: 34px;
-    color: #a32436;
-    font-weight: bold;
-    margin: 0; /* Ensure no extra space around the text */
-    order: 1;
-  }
-  
-  /* Navigation Links */
   .nav-links {
-    list-style: none;
-    display: flex;
-    align-items: center; /* Ensures the links are aligned vertically */
-    margin: 0;
+      flex-direction: column; /* Stack the nav links */
   }
-  
-  .nav-links li {
-    margin: 0 15px;
+  .logo {
+      height: 40px; /* Adjust the logo size for smaller screens */
   }
-  
   .nav-links a {
-    text-decoration: none;
-    font-size: 27px;
-    color: #000;
-    font-weight: bold;
-    transition: color 0.3s ease;
+      font-size: 1rem; /* Reduce font size for mobile views */
   }
-  .nav-links a:hover {
-    color: #a32436; /* Red color on hover */
-  }
-  
-  /* Adjust the spacing of the nav links */
-  .nav-links a {
-    padding-top: 10px; /* Raise the links slightly */
-  }
-  
+}
