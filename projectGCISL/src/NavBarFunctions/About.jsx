@@ -12,7 +12,7 @@ const faqData = [
     id: "item-1",
     question: "What exactly does this organization do?",
     answer:
-      "NSBE provides resources and mentorship to students interested in STEM. We host workshops, engineering and networking events throughout the year to help our members learn and grow their skillset. We also attend a national conference during the Spring semester.",
+      "GCISL provides resources and mentorship to .",
   },
   {
     id: "item-5",
