@@ -6,7 +6,7 @@ const faqData = [
     id: "item-4",
     question: "What is GCISL",
     answer:
-      "The National Society of Black Engineers(NSBE) is a nationwide coalition of students, professionals, and lifelong supporters of the NSBE mission to increase the number of students of color who graduate with STEM degrees. It was founded in 1975 on the Purdue University campus by Stanley Kirtley, Brian Harris, Anthony Harris, George Smith, Edward Coleman, Arthur Bond and John Logan. It has since blossomed into an international movement to further Black achievement in science, technology, engineering, and mathematics.",
+      "GCISL is .",
   },
   {
     id: "item-1",
