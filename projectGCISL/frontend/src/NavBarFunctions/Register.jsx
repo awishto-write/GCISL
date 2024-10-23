@@ -1,30 +1,47 @@
+// Register.jsx
 import React, { useState } from 'react';
-import './Register.css'; // Importing the same CSS used by the old team's login page
+import './Register.css';
 
 const Register = () => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     email: '',
-    confirmEmail: '',
     phoneNumber: '',
-    confirmPhoneNumber: '',
     password: '',
     confirmPassword: '',
-    ageRange: ''
+    statusType: '',
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission here
+    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+
+    try {
+      const response = await fetch(`${apiUrl}/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        alert('Registration successful!');
+      } else {
+        alert(data.error);
+      }
+    } catch (error) {
+      console.error('Registration failed:', error);
+      alert('Something went wrong. Please try again.');
+    }
   };
 
   return (
@@ -63,16 +80,6 @@ const Register = () => {
         </div>
         <div className="field">
           <input
-            type="email"
-            name="confirmEmail"
-            value={formData.confirmEmail}
-            onChange={handleChange}
-            required
-          />
-          <label>Confirm Email Address</label>
-        </div>
-        <div className="field">
-          <input
             type="text"
             name="phoneNumber"
             value={formData.phoneNumber}
@@ -80,16 +87,6 @@ const Register = () => {
             required
           />
           <label>Phone Number</label>
-        </div>
-        <div className="field">
-          <input
-            type="text"
-            name="confirmPhoneNumber"
-            value={formData.confirmPhoneNumber}
-            onChange={handleChange}
-            required
-          />
-          <label>Confirm Phone Number</label>
         </div>
         <div className="field">
           <input
@@ -113,16 +110,14 @@ const Register = () => {
         </div>
         <div className="field">
           <select
-            name="ageRange"
-            value={formData.ageRange}
+            name="statusType"
+            value={formData.statusType}
             onChange={handleChange}
             required
           >
-            <option value="" disabled>Select Age Range</option>
-            <option value="<55">&lt;55</option>
-            <option value="55-65">55-65</option>
-            <option value="66-75">66-75</option>
-            <option value="75+">75+</option>
+            <option value="" disabled>Select Status</option>
+            <option value="admin">Admin</option>
+            <option value="volunteer">Volunteer</option>
           </select>
         </div>
         <div className="field">

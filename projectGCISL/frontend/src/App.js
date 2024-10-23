@@ -8,6 +8,8 @@ import About from './NavBarFunctions/About';
 import Login from './NavBarFunctions/Login';
 import Register from './NavBarFunctions/Register';
 import GetInvolved from './NavBarFunctions/GetInvolved';
+import AdminDashboard from './DashboardFunctions/AdminDashboard';
+import VolunteerDashboard from './DashboardFunctions/VolunteerDashboard';
 import './App.css';
 
 // function App() {
@@ -41,6 +43,8 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/get-involved" element={<GetInvolved />} />
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
+          <Route path="/volunteer-dashboard" element={<VolunteerDashboard />} />
         </Routes>
         <Footer />
       </div>
