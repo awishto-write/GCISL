@@ -7,14 +7,21 @@ require('dotenv').config(); // Load environment variables from .env
 
 const app = express();
 app.use(express.json()); // Parse JSON requests
-app.use(cors()); // Allow requests from the frontend
+const allowedOrigins = [
+  'http://localhost:3000', // For local testing
+  'https://gciconnect.vercel.app' // Replace with your deployed frontend URL
+];
 
-// MongoDB Connection
-// mongoose.connect(process.env.MONGODB_URI, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// }).then(() => console.log('MongoDB connected'))
-//   .catch((err) => console.error('MongoDB connection error:', err));
+app.use(cors({
+  origin: function (origin, callback) {
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true); // Allow access
+    } else {
+      callback(new Error('Not allowed by CORS')); // Block access
+    }
+  }
+}));
+//app.use(cors()); // Allow requests from the frontend
 
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('MongoDB connected'))
