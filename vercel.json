@@ -1,0 +1,17 @@
+{
+    "builds": [
+      {
+        "src": "projectGCISL/backend/package.json",
+        "use": "@vercel/node"
+      },
+      {
+        "src": "projectGCISL/frontend/package.json",
+        "use": "@vercel/static-build"
+      }
+    ],
+    "routes": [
+      { "src": "/api/(.*)", "dest": "projectGCISL/backend/index.js" },
+      { "src": "/(.*)", "dest": "projectGCISL/frontend/build/$1" }
+    ]
+}
+  

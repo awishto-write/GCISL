@@ -19,14 +19,14 @@ const Register = () => {
       ...formData,
       [name]: value,
     });
-  };
+  }; 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
 
     try {
-      const response = await fetch(`${apiUrl}/register`, {
+      const response = await fetch(`${apiUrl}/api/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
