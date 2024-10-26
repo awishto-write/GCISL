@@ -1,5 +1,6 @@
 // Register.jsx
 import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import './Register.css';
 
 const Register = () => {
@@ -12,6 +13,7 @@ const Register = () => {
     confirmPassword: '',
     statusType: '',
   });
+  const navigate = useNavigate(); // For navigation after registration
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,7 +36,9 @@ const Register = () => {
 
       const data = await response.json();
       if (response.ok) {
-        alert('Registration successful!');
+       // alert('Registration successful!');
+        alert('Registration successful! You can now login.');
+        navigate('/login'); // Redirect to login page
       } else {
         alert(data.error);
       }
@@ -113,16 +117,21 @@ const Register = () => {
             name="statusType"
             value={formData.statusType}
             onChange={handleChange}
-            required
-          >
-            <option value="" disabled>Select Status</option>
+            required>
+            {/* <option value="" disabled>Select Status</option> */}
             <option value="admin">Admin</option>
             <option value="volunteer">Volunteer</option>
           </select>
+          <label>Select Status</label> 
+          {/*  Added the label belowand commented the one taht was in "option" */}
         </div>
         <div className="field">
           <input type="submit" value="Submit" className="auth-btn" />
         </div>
+        {/* <p className="p-register">
+          Already a member? <Link to="/login">Login here</Link>
+        </p> */}
+        {/* Plan to add something related to login */}
       </form>
     </div>
   );

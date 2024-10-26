@@ -6,12 +6,16 @@
       },
       {
         "src": "projectGCISL/frontend/package.json",
-        "use": "@vercel/static-build"
+        "use": "@vercel/static-build",
+        "config": {
+          "distDir": "build"
+        }
       }
     ],
     "routes": [
       { "src": "/api/(.*)", "dest": "projectGCISL/backend/index.js" },
+      { "src": "/(.*)", "dest": "projectGCISL/frontend/build/$1" },
+      { "handle": "filesystem" },
       { "src": "/(.*)", "dest": "projectGCISL/frontend/build/$1" }
     ]
 }
-  
