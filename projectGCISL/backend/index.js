@@ -23,6 +23,15 @@ app.use(cors({
 }));
 //app.use(cors()); // Allow requests from the frontend
 
+// **Add the CSP Middleware Here**
+app.use((req, res, next) => {
+  res.setHeader(
+    'Content-Security-Policy',
+    "default-src 'self'; script-src 'self' 'unsafe-inline';"
+  );
+  next();
+});
+
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.error('MongoDB connection error:', err));
@@ -56,7 +65,9 @@ const allowedAdminNames = [
 ];
 
 // Register Route
-app.post('/register', async (req, res) => {
+//app.post('/register', async (req, res) => {
+app.post('/api/register', async (req, res) => {
+  console.log('Request received:', req.body);  // Debug log
   const { firstName, lastName, email, phoneNumber, password, statusType } = req.body;
   const fullName = `${firstName} ${lastName}`;
 
@@ -87,7 +98,8 @@ app.post('/register', async (req, res) => {
 });
 
 // Login Route
-app.post('/login', async (req, res) => {
+//app.post('/login', async (req, res) => {
+app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -112,12 +124,14 @@ app.post('/login', async (req, res) => {
 });
 
 // Protected Admin Route (Optional Example)
-app.get('/admin-dashboard', (req, res) => {
+//app.get('/admin-dashboard', (req, res) => {
+app.get('/api/admin-dashboard', (req, res) => {
   res.json({ message: 'Welcome to the Admin Dashboard!' });
 });
 
 // Protected Volunteer Route (Optional Example)
-app.get('/volunteer-dashboard', (req, res) => {
+//app.get('/volunteer-dashboard', (req, res) => {
+app.get('/api/volunteer-dashboard', (req, res) => {
   res.json({ message: 'Welcome to the Volunteer Dashboard!' });
 });
 
