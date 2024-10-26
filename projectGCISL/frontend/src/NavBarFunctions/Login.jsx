@@ -1,11 +1,14 @@
 // Login.jsx
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Login.css'; // Use the shared CSS file
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate(); // Use useNavigate for navigation
+
+  const apiUrl = process.env.REACT_APP_API_URL; // Get API URL from environment variable
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,15 +19,39 @@ const Login = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic here
+
+    try {
+      const response = await fetch(`${apiUrl}/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        localStorage.setItem('token', data.token); // Store token for authentication
+
+        // Redirect based on user status
+        if (data.status === 'admin') {
+          navigate('/admin-dashboard');
+        } else if (data.status === 'volunteer') {
+          navigate('/volunteer-dashboard');
+        }
+      } else {
+        alert(data.error);
+      }
+    } catch (error) {
+      console.error('Login failed:', error);
+      alert('Something went wrong. Please try again.');
+    }
   };
 
   return (
-    <div className="wrapper-login"> {/* Use unique class names */}
-      <form className="form-login" onSubmit={handleSubmit}> {/* Use unique class names */}
-        <div className="field-login"> {/* Use unique class names */}
+    <div className="wrapper-login">
+      <form className="form-login" onSubmit={handleSubmit}>
+        <div className="field-login">
           <input
             type="email"
             name="email"
@@ -34,7 +61,7 @@ const Login = () => {
           />
           <label>Email Address</label>
         </div>
-        <div className="field-login"> {/* Use unique class names */}
+        <div className="field-login">
           <input
             type="password"
             name="password"
@@ -44,10 +71,10 @@ const Login = () => {
           />
           <label>Password</label>
         </div>
-        <div className="field-login"> {/* Use unique class names */}
+        <div className="field-login">
           <input type="submit" value="Login" className="auth-btn-login" />
         </div>
-        <p className="p-login"> {/* Use unique class names */}
+        <p className="p-login">
           Not a member? <Link to="/register">Signup now</Link>
         </p>
       </form>
