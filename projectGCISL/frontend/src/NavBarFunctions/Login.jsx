@@ -1,5 +1,5 @@
 // Login.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Login.css'; // Use the shared CSS file
 
@@ -7,8 +7,21 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate(); // Use useNavigate for navigation
-
   const apiUrl = process.env.REACT_APP_API_URL; // Get API URL from environment variable
+
+  // // Check if the user is already logged in and redirect them automatically
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token');
+  //   const statusType = localStorage.getItem('statusType'); // Save statusType in localStorage
+
+  //   if (token) {
+  //     if (statusType === 'admin') {
+  //       navigate('/admin-dashboard');
+  //     } else if (statusType === 'volunteer') {
+  //       navigate('/volunteer-dashboard');
+  //     }
+  //   }
+  // }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,7 +36,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${apiUrl}/login`, {
+      const response = await fetch(`${apiUrl}/api/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -34,9 +47,9 @@ const Login = () => {
         localStorage.setItem('token', data.token); // Store token for authentication
 
         // Redirect based on user status
-        if (data.status === 'admin') {
+        if (data.statusType === 'admin') {
           navigate('/admin-dashboard');
-        } else if (data.status === 'volunteer') {
+        } else if (data.statusType === 'volunteer') {
           navigate('/volunteer-dashboard');
         }
       } else {
@@ -57,8 +70,7 @@ const Login = () => {
             name="email"
             value={email}
             onChange={handleChange}
-            required
-          />
+            required/>
           <label>Email Address</label>
         </div>
         <div className="field-login">
@@ -67,8 +79,7 @@ const Login = () => {
             name="password"
             value={password}
             onChange={handleChange}
-            required
-          />
+            required/>
           <label>Password</label>
         </div>
         <div className="field-login">

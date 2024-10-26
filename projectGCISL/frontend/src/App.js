@@ -10,6 +10,7 @@ import Register from './NavBarFunctions/Register';
 import GetInvolved from './NavBarFunctions/GetInvolved';
 import AdminDashboard from './DashboardFunctions/AdminDashboard';
 import VolunteerDashboard from './DashboardFunctions/VolunteerDashboard';
+import ProtectedRoute from './ProtectedRoute';  // Make sure this is implemented correctly
 import './App.css';
 
 // function App() {
@@ -43,8 +44,10 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/get-involved" element={<GetInvolved />} />
-          <Route path="/admin-dashboard" element={<AdminDashboard />} />
-          <Route path="/volunteer-dashboard" element={<VolunteerDashboard />} />
+          {/* <Route path="/admin-dashboard" element={<AdminDashboard />} /> */}
+          <Route path="/admin-dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+          {/* <Route path="/volunteer-dashboard" element={<VolunteerDashboard />} /> */}
+          <Route path="/volunteer-dashboard" element={<ProtectedRoute><VolunteerDashboard /></ProtectedRoute>} />
         </Routes>
         <Footer />
       </div>

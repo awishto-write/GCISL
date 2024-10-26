@@ -23,7 +23,7 @@ app.use(cors({
 }));
 //app.use(cors()); // Allow requests from the frontend
 
-// **Add the CSP Middleware Here**
+//Add the CSP Middleware Here
 app.use((req, res, next) => {
   res.setHeader(
     'Content-Security-Policy',
@@ -112,13 +112,14 @@ app.post('/api/login', async (req, res) => {
 
     // Generate a JWT with user info
     const token = jwt.sign(
-      { userId: user._id, status: user.statusType },
+      { userId: user._id, statuTypes: user.statusType },
       process.env.JWT_SECRET || 'yourSecretKey', // Use a secure key in production
       { expiresIn: '2h' }
     );
 
-    res.json({ message: 'Login successful', token, status: user.statusType });
-  } catch (error) {
+    res.json({ message: 'Login successful', token, statusType: user.statusType });
+  } 
+  catch (error) {
     res.status(500).json({ error: 'Login failed.' });
   }
 });
