@@ -118,12 +118,12 @@ const Register = () => {
             value={formData.statusType}
             onChange={handleChange}
             required>
-            {/* <option value="" disabled>Select Status</option> */}
+            <option value="" disabled>Select Status</option>
             <option value="admin">Admin</option>
             <option value="volunteer">Volunteer</option>
           </select>
-          <label>Select Status</label> 
-          {/*  Added the label belowand commented the one taht was in "option" */}
+          {/* <label>Select Status</label>  */}
+          {/*  Added the label above and commented the one that was in "option" */}
         </div>
         <div className="field">
           <input type="submit" value="Submit" className="auth-btn" />
