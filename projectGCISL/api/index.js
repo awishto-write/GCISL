@@ -1,5 +1,6 @@
 // @ts-ignore
 const express = require('express');
+const serverless = require('serverless-http'); // Just added
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -8,22 +9,29 @@ require('dotenv').config(); // Load environment variables from .env
 
 const app = express();
 app.use(express.json()); // Parse JSON requests
-const allowedOrigins = [
-  'http://localhost:3000', // For local testing
-  'https://gciconnect.vercel.app' // Replace with your deployed frontend URL
-];
+// const allowedOrigins = [
+//   'http://localhost:3000', // For local testing
+//   'https://gciconnect.vercel.app' // Replace with your deployed frontend URL
+// ];
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (allowedOrigins.includes(origin) || !origin) {
-      callback(null, true); // Allow access
-    } else {
-      console.error('Blocked by CORS:', origin); // Optional debug log
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-};
-app.use(cors(corsOptions));
+const cors = require('cors');
+
+app.use(cors()); // Temporarily allow all origins
+
+  // was using this befor the one up
+// const corsOptions = {
+//   origin: function (origin, callback) {
+//     if (allowedOrigins.includes(origin) || !origin) {
+//       callback(null, true); // Allow access
+//     } else {
+//       console.error('Blocked by CORS:', origin); // Optional debug log
+//       callback(new Error('Not allowed by CORS'));
+//     }
+//   },
+// };
+// app.use(cors(corsOptions));
+
+   // second option 
 // app.use(cors({
 //   origin: function (origin, callback) {
 //     if (allowedOrigins.includes(origin) || !origin) {
@@ -34,6 +42,8 @@ app.use(cors(corsOptions));
 //   }
 // }));
 //app.use(cors()); // Allow requests from the frontend
+
+   // check the cors things up later
 
 //Add the CSP Middleware Here
 app.use((req, res, next) => {
@@ -171,3 +181,9 @@ app.get('/api/volunteer-dashboard', (req, res) => {
 // Start the Server
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+
+   // Just adde
+// Export the app as a serverless function
+module.exports = app;
+module.exports.handler = serverless(app);
