@@ -1,3 +1,4 @@
+// @ts-ignore
 const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
@@ -12,15 +13,26 @@ const allowedOrigins = [
   'https://gciconnect.vercel.app' // Replace with your deployed frontend URL
 ];
 
-app.use(cors({
+const corsOptions = {
   origin: function (origin, callback) {
     if (allowedOrigins.includes(origin) || !origin) {
       callback(null, true); // Allow access
     } else {
-      callback(new Error('Not allowed by CORS')); // Block access
+      console.error('Blocked by CORS:', origin); // Optional debug log
+      callback(new Error('Not allowed by CORS'));
     }
-  }
-}));
+  },
+};
+app.use(cors(corsOptions));
+// app.use(cors({
+//   origin: function (origin, callback) {
+//     if (allowedOrigins.includes(origin) || !origin) {
+//       callback(null, true); // Allow access
+//     } else {
+//       callback(new Error('Not allowed by CORS')); // Block access
+//     }
+//   }
+// }));
 //app.use(cors()); // Allow requests from the frontend
 
 //Add the CSP Middleware Here
@@ -32,9 +44,23 @@ app.use((req, res, next) => {
   next();
 });
 
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('MongoDB connected'))
-  .catch((err) => console.error('MongoDB connection error:', err));
+// mongoose.connect(process.env.MONGODB_URI)
+//   .then(() => console.log('MongoDB connected'))
+//   .catch((err) => console.error('MongoDB connection error:', err));
+
+// I used before the code above for mongoose
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+    console.log('MongoDB connected');
+  } catch (err) {
+    console.error('MongoDB connection error:', err);
+    process.exit(1); // Exit process with failure
+  }
+};
+
+connectDB();
+
 
 // User Schema
 const userSchema = new mongoose.Schema({
@@ -105,14 +131,20 @@ app.post('/api/login', async (req, res) => {
   try {
     const user = await User.findOne({ email });
 
-    if (!user) return res.status(400).json({ error: 'Invalid email or password.' });
+    if (!user){
+      console.log('User not found:', email);
+      return res.status(400).json({ error: 'Invalid email or password.' });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ error: 'Invalid email or password.' });
+    if (!isMatch){
+      console.log('Password mismatch for user:', email);
+      return res.status(400).json({ error: 'Invalid email or password.' });
+    } 
 
     // Generate a JWT with user info
     const token = jwt.sign(
-      { userId: user._id, statuTypes: user.statusType },
+      { userId: user._id, statuType: user.statusType },
       process.env.JWT_SECRET || 'yourSecretKey', // Use a secure key in production
       { expiresIn: '2h' }
     );
