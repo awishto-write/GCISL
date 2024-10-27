@@ -13,7 +13,6 @@ const allowedOrigins = [
   'https://gciconnect.vercel.app' // Replace with your deployed frontend URL
 ];
 
-//
 const corsOptions = {
   origin: function (origin, callback) {
     if (allowedOrigins.includes(origin) || !origin) {
