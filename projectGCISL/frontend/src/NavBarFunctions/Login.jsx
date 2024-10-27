@@ -1,5 +1,5 @@
 // Login.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Login.css'; // Use the shared CSS file
 
