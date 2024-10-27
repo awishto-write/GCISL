@@ -14,22 +14,22 @@ app.use(express.json()); // Parse JSON requests
 //   'https://gciconnect.vercel.app' // Replace with your deployed frontend URL
 // ];
 
-const cors = require('cors');
+//const cors = require('cors');
 
-app.use(cors()); // Temporarily allow all origins
+//app.use(cors()); // Temporarily allow all origins
 
   // was using this befor the one up
-// const corsOptions = {
-//   origin: function (origin, callback) {
-//     if (allowedOrigins.includes(origin) || !origin) {
-//       callback(null, true); // Allow access
-//     } else {
-//       console.error('Blocked by CORS:', origin); // Optional debug log
-//       callback(new Error('Not allowed by CORS'));
-//     }
-//   },
-// };
-// app.use(cors(corsOptions));
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true); // Allow access
+    } else {
+      console.error('Blocked by CORS:', origin); // Optional debug log
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+};
+app.use(cors(corsOptions));
 
    // second option 
 // app.use(cors({
@@ -181,9 +181,3 @@ app.get('/api/volunteer-dashboard', (req, res) => {
 // Start the Server
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
-
-   // Just adde
-// Export the app as a serverless function
-module.exports = app;
-module.exports.handler = serverless(app);
