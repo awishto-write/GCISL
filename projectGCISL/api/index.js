@@ -276,13 +276,11 @@ app.post('/api/login', async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-    if (!user) {
       console.log('User not found:', email);
       return res.status(400).json({ error: 'Invalid email or password.' });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
     if (!isMatch) {
       console.log('Password mismatch for user:', email);
       return res.status(400).json({ error: 'Invalid email or password.' });
@@ -296,7 +294,6 @@ app.post('/api/login', async (req, res) => {
     );
 
     res.json({ message: 'Login successful', token, statusType: user.statusType });
-  } catch (error) {
   } catch (error) {
     res.status(500).json({ error: 'Login failed.' });
   }
@@ -315,7 +312,8 @@ app.get('/api/volunteer-dashboard', (req, res) => {
 module.exports = app;
 module.exports.handler = serverless(app); // Required for Vercel serverless
 
+// Only for local development; Vercel will ignore this in production
 if (process.env.NODE_ENV !== 'production') {
-  const PORT = process.env.PORT || 5001;
+  const PORT = process.env.PORT || 5001; // Local port for testing
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 }
