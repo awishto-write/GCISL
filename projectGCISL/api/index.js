@@ -1,6 +1,6 @@
 // @ts-ignore
 const express = require('express');
-const serverless = require('serverless-http'); // Just added
+const serverless = require('serverless-http'); // Just added for serverless deployment
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -9,16 +9,14 @@ require('dotenv').config(); // Load environment variables from .env
 
 const app = express();
 app.use(express.json()); // Parse JSON requests
-// const allowedOrigins = [
-//   'http://localhost:3000', // For local testing
-//   'https://gciconnect.vercel.app' // Replace with your deployed frontend URL
-// ];
 
-//const cors = require('cors');
+// Allowed origins for CORS
+const allowedOrigins = [
+  'http://localhost:3000', // For local testing
+  'https://gciconnect.vercel.app' // Replace with your deployed frontend URL
+];
 
-//app.use(cors()); // Temporarily allow all origins
-
-  // was using this befor the one up
+// CORS configuration
 const corsOptions = {
   origin: function (origin, callback) {
     if (allowedOrigins.includes(origin) || !origin) {
@@ -29,23 +27,9 @@ const corsOptions = {
     }
   },
 };
-app.use(cors(corsOptions));
+app.use(cors(corsOptions)); // Use CORS with the specified options
 
-   // second option 
-// app.use(cors({
-//   origin: function (origin, callback) {
-//     if (allowedOrigins.includes(origin) || !origin) {
-//       callback(null, true); // Allow access
-//     } else {
-//       callback(new Error('Not allowed by CORS')); // Block access
-//     }
-//   }
-// }));
-//app.use(cors()); // Allow requests from the frontend
-
-   // check the cors things up later
-
-//Add the CSP Middleware Here
+// Add the CSP Middleware Here
 app.use((req, res, next) => {
   res.setHeader(
     'Content-Security-Policy',
@@ -54,14 +38,10 @@ app.use((req, res, next) => {
   next();
 });
 
-// mongoose.connect(process.env.MONGODB_URI)
-//   .then(() => console.log('MongoDB connected'))
-//   .catch((err) => console.error('MongoDB connection error:', err));
-
-// I used before the code above for mongoose
+// Database connection
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+    await mongoose.connect(process.env.MONGODB_URI);
     console.log('MongoDB connected');
   } catch (err) {
     console.error('MongoDB connection error:', err);
@@ -70,7 +50,6 @@ const connectDB = async () => {
 };
 
 connectDB();
-
 
 // User Schema
 const userSchema = new mongoose.Schema({
@@ -84,14 +63,7 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', userSchema);
 
-// List of Allowed Admin Names
-// const allowedAdminNames = [
-//   'Admin One',
-//   'Admin Two',
-//   'Developer One',
-//   'Developer Two',
-//   'Developer Three',
-// ];
+// Allowed Admin Names
 const allowedAdminNames = [
   'Naomi Dion-Gokan',
   'Justin Keanini',
@@ -101,7 +73,6 @@ const allowedAdminNames = [
 ];
 
 // Register Route
-//app.post('/register', async (req, res) => {
 app.post('/api/register', async (req, res) => {
   console.log('Request received:', req.body);  // Debug log
   const { firstName, lastName, email, phoneNumber, password, statusType } = req.body;
@@ -134,50 +105,51 @@ app.post('/api/register', async (req, res) => {
 });
 
 // Login Route
-//app.post('/login', async (req, res) => {
 app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
 
   try {
     const user = await User.findOne({ email });
 
-    if (!user){
+    if (!user) {
       console.log('User not found:', email);
       return res.status(400).json({ error: 'Invalid email or password.' });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch){
+    if (!isMatch) {
       console.log('Password mismatch for user:', email);
       return res.status(400).json({ error: 'Invalid email or password.' });
     } 
 
     // Generate a JWT with user info
     const token = jwt.sign(
-      { userId: user._id, statuType: user.statusType },
+      { userId: user._id, statusType: user.statusType }, // Fixed typo "statuType" to "statusType"
       process.env.JWT_SECRET || 'yourSecretKey', // Use a secure key in production
       { expiresIn: '2h' }
     );
 
     res.json({ message: 'Login successful', token, statusType: user.statusType });
-  } 
-  catch (error) {
+  } catch (error) {
     res.status(500).json({ error: 'Login failed.' });
   }
 });
 
-// Protected Admin Route (Optional Example)
-//app.get('/admin-dashboard', (req, res) => {
+// Protected Admin Route
 app.get('/api/admin-dashboard', (req, res) => {
   res.json({ message: 'Welcome to the Admin Dashboard!' });
 });
 
-// Protected Volunteer Route (Optional Example)
-//app.get('/volunteer-dashboard', (req, res) => {
+// Protected Volunteer Route
 app.get('/api/volunteer-dashboard', (req, res) => {
   res.json({ message: 'Welcome to the Volunteer Dashboard!' });
 });
 
 // Start the Server
 const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}
+
+// Export the app for serverless deployment
+module.exports.handler = serverless(app);
