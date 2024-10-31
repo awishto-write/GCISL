@@ -276,11 +276,13 @@ app.post('/api/login', async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
+    if (!user) {
       console.log('User not found:', email);
       return res.status(400).json({ error: 'Invalid email or password.' });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
     if (!isMatch) {
       console.log('Password mismatch for user:', email);
       return res.status(400).json({ error: 'Invalid email or password.' });
@@ -294,6 +296,7 @@ app.post('/api/login', async (req, res) => {
     );
 
     res.json({ message: 'Login successful', token, statusType: user.statusType });
+  } catch (error) {
   } catch (error) {
     res.status(500).json({ error: 'Login failed.' });
   }
