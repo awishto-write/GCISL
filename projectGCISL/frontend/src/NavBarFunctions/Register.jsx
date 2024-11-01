@@ -25,8 +25,8 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-   // const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+    //const apiUrl = process.env.REACT_APP_API_URL;
 
     try {
       const response = await fetch(`${apiUrl}/api/register`, {
