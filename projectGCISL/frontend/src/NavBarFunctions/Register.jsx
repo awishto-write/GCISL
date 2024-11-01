@@ -31,11 +31,14 @@ const Register = () => {
    // const apiUrl = process.env.NODE_ENV === 'production'
  // ? 'https://gciconnect.vercel.app'
   //: 'http://localhost:5001';
-    const apiUrl = 'https://gciconnect.vercel.app';
+    
+   // const apiUrl = 'https://gciconnect.vercel.app';
+     const apiUrl = 'https://gciconnect.vercel.app/api/register';
 
 
     try {
-      const response = await fetch(`${apiUrl}/api/register`, {
+     // const response = await fetch(`${apiUrl}/api/register`, {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
