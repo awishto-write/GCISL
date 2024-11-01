@@ -28,9 +28,11 @@ const Register = () => {
     //const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
     //const apiUrl = process.env.REACT_APP_API_URL || 'https://gciconnect.vercel.app';
     //const apiUrl = process.env.REACT_APP_API_URL;
-    const apiUrl = process.env.NODE_ENV === 'production'
-  ? 'https://gciconnect.vercel.app'
-  : 'http://localhost:5001';
+   // const apiUrl = process.env.NODE_ENV === 'production'
+ // ? 'https://gciconnect.vercel.app'
+  //: 'http://localhost:5001';
+    const apiUrl = 'https://gciconnect.vercel.app';
+
 
     try {
       const response = await fetch(`${apiUrl}/api/register`, {
