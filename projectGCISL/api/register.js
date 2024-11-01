@@ -9,7 +9,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-// MongoDB connection using environment variable for the URI
+// Connect to MongoDB only once, outside the function handler
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
