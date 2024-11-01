@@ -193,6 +193,12 @@ require('dotenv').config(); // Load environment variables
 const app = express();
 app.use(express.json());
 
+console.log("Backend server is running"); // Just added
+app.get('/test', (req, res) => {
+  res.json({ message: "Test endpoint works!" });
+});
+
+
 // Configure CORS to allow requests from specific origins
 const allowedOrigins = [
   'http://localhost:3000', // Local frontend URL for testing
