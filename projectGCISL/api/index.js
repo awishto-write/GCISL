@@ -1,57 +1,44 @@
-// @ts-ignore
 const express = require('express');
-const serverless = require('serverless-http'); // Just added for serverless deployment
+const serverless = require('serverless-http'); // Required for Vercel serverless deployment
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
-require('dotenv').config(); // Load environment variables from .env
+require('dotenv').config(); // Load environment variables
 
 const app = express();
-app.use(express.json()); // Parse JSON requests
+app.use(express.json());
 
-// Allowed origins for CORS
+console.log("Backend server is running"); // For development logging
+app.get('/test', (req, res) => {
+  res.json({ message: "Test endpoint works!" });
+});
+
+// Configure CORS to allow requests from specific origins
 const allowedOrigins = [
-  'http://localhost:3000', // For local testing
-  'https://gciconnect.vercel.app' // Replace with your deployed frontend URL
+  'http://localhost:3000', // Local frontend URL for testing
+  'https://gciconnect.vercel.app' // Production frontend URL
 ];
 
-// CORS configuration
 const corsOptions = {
-  origin: function (origin, callback) {
+  origin: (origin, callback) => {
     if (allowedOrigins.includes(origin) || !origin) {
-      callback(null, true); // Allow access
+      // Allow requests with no origin, like curl or server-to-server requests
+      callback(null, true);
     } else {
-      console.error('Blocked by CORS:', origin); // Optional debug log
+      console.log(`Blocked by CORS: ${origin}`); // Log blocked origins for debugging
       callback(new Error('Not allowed by CORS'));
     }
   },
 };
-app.use(cors(corsOptions)); // Use CORS with the specified options
+app.use(cors(corsOptions));
 
-// Add the CSP Middleware Here
-app.use((req, res, next) => {
-  res.setHeader(
-    'Content-Security-Policy',
-    "default-src 'self'; script-src 'self' 'unsafe-inline';"
-  );
-  next();
-});
+// MongoDB Connection
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
-// Database connection
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGODB_URI);
-    console.log('MongoDB connected');
-  } catch (err) {
-    console.error('MongoDB connection error:', err);
-    process.exit(1); // Exit process with failure
-  }
-};
-
-connectDB();
-
-// User Schema
+// Define User Schema
 const userSchema = new mongoose.Schema({
   firstName: String,
   lastName: String,
@@ -63,7 +50,7 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', userSchema);
 
-// Allowed Admin Names
+// List of Allowed Admin Names
 const allowedAdminNames = [
   'Naomi Dion-Gokan',
   'Justin Keanini',
@@ -74,7 +61,7 @@ const allowedAdminNames = [
 
 // Register Route
 app.post('/api/register', async (req, res) => {
-  console.log('Request received:', req.body);  // Debug log
+  console.log('Request received:', req.body); // Log incoming registration request
   const { firstName, lastName, email, phoneNumber, password, statusType } = req.body;
   const fullName = `${firstName} ${lastName}`;
 
@@ -120,11 +107,11 @@ app.post('/api/login', async (req, res) => {
     if (!isMatch) {
       console.log('Password mismatch for user:', email);
       return res.status(400).json({ error: 'Invalid email or password.' });
-    } 
+    }
 
     // Generate a JWT with user info
     const token = jwt.sign(
-      { userId: user._id, statusType: user.statusType }, // Fixed typo "statuType" to "statusType"
+      { userId: user._id, statusType: user.statusType },
       process.env.JWT_SECRET || 'yourSecretKey', // Use a secure key in production
       { expiresIn: '2h' }
     );
@@ -135,21 +122,21 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
-// Protected Admin Route
+// Example Protected Routes for Admin and Volunteer Dashboards
 app.get('/api/admin-dashboard', (req, res) => {
   res.json({ message: 'Welcome to the Admin Dashboard!' });
 });
 
-// Protected Volunteer Route
 app.get('/api/volunteer-dashboard', (req, res) => {
   res.json({ message: 'Welcome to the Volunteer Dashboard!' });
 });
 
-// Start the Server
-const PORT = process.env.PORT || 5001;
+// Export the app as a serverless function
+module.exports = app;
+module.exports.handler = serverless(app); // Required for Vercel serverless
+
+// Only for local development; Vercel will ignore this in production
 if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 5001; // Local port for testing
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 }
-
-// Export the app for serverless deployment
-module.exports.handler = serverless(app);
