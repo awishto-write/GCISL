@@ -26,9 +26,7 @@ const AppContent = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const token = localStorage.getItem('token'); // Ensure token is retrieved from localStorage
-      console.log('Token:', token); // Log token to verify it is correctly retrieved
-
+      const token = localStorage.getItem('token');
       if (!token) {
         console.error('No token found');
         return;
@@ -38,18 +36,17 @@ const AppContent = () => {
         const response = await fetch('http://localhost:5001/api/user', {
           method: 'GET',
           headers: {
-            'Authorization': `Bearer ${token}`, // Use the token in the Authorization header
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
         });
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch user data');
+        if (response.ok) {
+          const data = await response.json();
+          setUser({ firstName: data.firstName, lastName: data.lastName });
+        } else {
+          console.error('Error fetching user data:', response.statusText);
         }
-
-        const data = await response.json();
-        console.log('Fetched user data:', data); // Log the fetched user data for debugging
-        setUser({ firstName: data.firstName, lastName: data.lastName });
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
@@ -69,11 +66,10 @@ const AppContent = () => {
         </>
       ) : (
         <>
-          <Navbar role="USER" firstName={user.firstName} lastInitial={user.lastName.charAt(0)} />
+          <Navbar />
           <Footer />
         </>
       )}
-
       <Routes>
         <Route path="/" element={<HeroSection />} />
         <Route path="/contact" element={<Contact />} />
@@ -81,13 +77,13 @@ const AppContent = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/get-involved" element={<GetInvolved />} />
-        <Route path="/admin-dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+        <Route path="/admin-dashboard" element={<ProtectedRoute><AdminDashboard user={user} /></ProtectedRoute>} />
         <Route path="/volunteer-dashboard" element={<ProtectedRoute><VolunteerDashboard /></ProtectedRoute>} />
-        <Route path="/dashboard/volunteers" element={<ProtectedRoute><Volunteers /></ProtectedRoute>} />
-        <Route path="/dashboard/tasks" element={<ProtectedRoute><Tasks /></ProtectedRoute>} />
-        <Route path="/dashboard/researches" element={<ProtectedRoute><Researches /></ProtectedRoute>} />
-        <Route path="/dashboard/logs" element={<ProtectedRoute><Logs /></ProtectedRoute>} />
-        <Route path="/dashboard/logout" element={<ProtectedRoute><Logout /></ProtectedRoute>} />
+        <Route path="/dashboard/volunteers" element={<ProtectedRoute><Volunteers user={user} /></ProtectedRoute>} />
+        <Route path="/dashboard/tasks" element={<ProtectedRoute><Tasks user={user} /></ProtectedRoute>} />
+        <Route path="/dashboard/researches" element={<ProtectedRoute><Researches user={user} /></ProtectedRoute>} />
+        <Route path="/dashboard/logs" element={<ProtectedRoute><Logs user={user} /></ProtectedRoute>} />
+        <Route path="/dashboard/logout" element={<ProtectedRoute><Logout user={user} /></ProtectedRoute>} />
       </Routes>
     </div>
   );
