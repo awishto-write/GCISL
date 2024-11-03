@@ -1,15 +1,17 @@
 import React from 'react';
 import Sidebar from '../ClassComponents/Sidebar';
-import TopNav from '../ClassComponents/TopNav'; // Confirm the import path
+import TopNav from '../ClassComponents/TopNav';
 import Tasks from '../ClassComponents/Tasks';
 
 function VolunteerDashboard() {
   return (
-    <div className="app">
-      <Sidebar />
-      <div className="main-content">
-        <TopNav />  {/* Ensure TopNav is included here */}
-        <Tasks />
+    <div className="dashboard">
+      <TopNav />
+      <div className="dashboard-content">
+        <Sidebar />
+        <div className="content">
+          <Tasks />
+        </div>
       </div>
     </div>
   );

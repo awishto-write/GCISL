@@ -1,3 +1,6 @@
+// That file will be used for local testing purposes, the other .js files will be used for production
+// So for every .js file we will add, we will need to modify this too t be able to test
+
 const express = require('express');
 const serverless = require('serverless-http'); // Required for Vercel serverless deployment
 const mongoose = require('mongoose');
@@ -9,7 +12,7 @@ require('dotenv').config(); // Load environment variables
 const app = express();
 app.use(express.json());
 
-console.log("Backend server is running"); // For development logging
+console.log("Backend server is running"); // Just added
 app.get('/test', (req, res) => {
   res.json({ message: "Test endpoint works!" });
 });
@@ -23,10 +26,8 @@ const allowedOrigins = [
 const corsOptions = {
   origin: (origin, callback) => {
     if (allowedOrigins.includes(origin) || !origin) {
-      // Allow requests with no origin, like curl or server-to-server requests
       callback(null, true);
     } else {
-      console.log(`Blocked by CORS: ${origin}`); // Log blocked origins for debugging
       callback(new Error('Not allowed by CORS'));
     }
   },
@@ -61,7 +62,7 @@ const allowedAdminNames = [
 
 // Register Route
 app.post('/api/register', async (req, res) => {
-  console.log('Request received:', req.body); // Log incoming registration request
+  console.log('Request received:', req.body);
   const { firstName, lastName, email, phoneNumber, password, statusType } = req.body;
   const fullName = `${firstName} ${lastName}`;
 
@@ -136,7 +137,9 @@ module.exports = app;
 module.exports.handler = serverless(app); // Required for Vercel serverless
 
 // Only for local development; Vercel will ignore this in production
-if (process.env.NODE_ENV !== 'production') {
+/*if (process.env.NODE_ENV !== 'production') {
   const PORT = process.env.PORT || 5001; // Local port for testing
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-}
+}*/
+const PORT = process.env.PORT || 5001; // Local port for testing
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

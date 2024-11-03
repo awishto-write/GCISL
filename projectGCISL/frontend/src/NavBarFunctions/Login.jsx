@@ -1,13 +1,28 @@
+// Login.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './Login.css';
+import './Login.css'; // Use the shared CSS file
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isVolunteer, setIsVolunteer] = useState(false); // New state for volunteer role
-  const navigate = useNavigate();
-  const apiUrl = 'https://gciconnect.vercel.app/api/login';
+  const navigate = useNavigate(); // Use useNavigate for navigation
+  const apiUrl = process.env.REACT_APP_API_URL; // Get API URL from environment variable
+  //const apiUrl = 'https://gciconnect.vercel.app/api/login';
+
+  // Check if the user is already logged in and redirect them automatically
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token');
+  //   const statusType = localStorage.getItem('statusType'); // Save statusType in localStorage
+
+  //   if (token) {
+  //     if (statusType === 'admin') {
+  //       navigate('/admin-dashboard');
+  //     } else if (statusType === 'volunteer') {
+  //       navigate('/volunteer-dashboard');
+  //     }
+  //   }
+  // }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,7 +37,8 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(apiUrl, {
+      const response = await fetch(`${apiUrl}/api/login`, {  // Uncomment for local testing
+      //const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -36,8 +52,7 @@ const Login = () => {
         if (data.statusType === 'admin') {
           navigate('/admin-dashboard');
         } else if (data.statusType === 'volunteer') {
-          setIsVolunteer(true); // Set volunteer role to true
-          navigate('/volunteer-dashboard'); // Automatically navigate to volunteer dashboard
+          navigate('/volunteer-dashboard');
         }
       } else {
         alert(data.error);
@@ -76,13 +91,6 @@ const Login = () => {
           Not a member? <Link to="/register">Signup now</Link>
         </p>
       </form>
-
-      {/* Conditional Link to Volunteer Dashboard */}
-      {isVolunteer && (
-        <div className="volunteer-dashboard-link">
-          <p>Go to your <Link to="/volunteer-dashboard">Volunteer Dashboard</Link></p>
-        </div>
-      )}
     </div>
   );
 };
