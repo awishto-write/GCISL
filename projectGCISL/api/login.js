@@ -1,28 +1,23 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
-// Check if a MongoDB connection exists and connect if not
+console.log("Environment Variables:", process.env.MONGODB_URI, process.env.JWT_SECRET);
+
 if (mongoose.connection.readyState === 0) {
-  mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,})
-    .then(() => {
-      console.log("Connected to MongoDB for login"); 
-    })
-    .catch((err) => {
-      console.error("MongoDB connection error:", err);
-    });
+  mongoose.connect(process.env.MONGODB_URI)
+    .then(() => console.log("Connected to MongoDB for login"))
+    .catch((err) => console.error("MongoDB connection error:", err));
 }
 
-// Define User Schema
 const userSchema = new mongoose.Schema({
   firstName: String,
   lastName: String,
   email: { type: String, unique: true },
   phoneNumber: String,
-  password: String, // Store hashed password
-  statusType: String, // 'admin' or 'volunteer'
+  password: String,
+  statusType: String,
 });
 
 const User = mongoose.models.User || mongoose.model('User', userSchema);
@@ -35,26 +30,28 @@ module.exports = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Find the user by email
+    console.log('Login attempt:', email);
+
     const user = await User.findOne({ email });
     if (!user) {
+      console.log('User not found:', email);
       return res.status(400).json({ error: 'Invalid email or password.' });
     }
 
-    // Check if the password matches
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
+      console.log('Password mismatch for user:', email);
       return res.status(400).json({ error: 'Invalid email or password.' });
     }
 
-    // Generate a JWT token with user info
     const token = jwt.sign(
       { userId: user._id, statusType: user.statusType },
-      process.env.JWT_SECRET || 'yourSecretKey', // Use a secure key in production
+      process.env.JWT_SECRET || 'yourSecretKey',
       { expiresIn: '2h' }
     );
 
-    // Send back token and statusType for frontend redirection
+    console.log('Token generated for user:', email);
+
     res.json({
       message: 'Login successful',
       token,
@@ -62,7 +59,7 @@ module.exports = async (req, res) => {
       redirectUrl: user.statusType === 'admin' ? '/admin-dashboard' : '/volunteer-dashboard'
     });
   } catch (error) {
-    console.error("Login error:", error);
+    console.error('Login error:', error);
     res.status(500).json({ error: 'Login failed.' });
   }
 };

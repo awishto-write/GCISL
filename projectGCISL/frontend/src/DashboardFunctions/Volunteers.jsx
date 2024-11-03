@@ -1,30 +1,29 @@
-// AdminDashboard.jsx
 import React, { useState, useEffect } from 'react';
 import AdminNavBar from '../ClassComponents/AdminNavBar';
 import Sidebar from '../ClassComponents/SideBar';
 
-const AdminDashboard = () => {
+const Volunteers = () => {
   const [user, setUser] = useState({ firstName: '', lastName: '' });
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const token = localStorage.getItem('token'); 
-
+      const token = localStorage.getItem('token');
       if (!token) {
         console.error('No token found');
         return;
       }
 
       try {
-        const response = await fetch('/api/user', {
+        const response = await fetch('http://localhost:5001/api/user', {
+          method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
           },
         });
 
         if (response.ok) {
           const data = await response.json();
-          console.log('Fetched user data:', data);
           setUser({ firstName: data.firstName, lastName: data.lastName });
         } else {
           console.error('Error fetching user data:', response.statusText);
@@ -37,15 +36,13 @@ const AdminDashboard = () => {
     fetchUserData();
   }, []);
 
-  const role = 'ADMIN';
-
   return (
     <div>
-      <AdminNavBar role={role} firstName={user.firstName} lastInitial={user.lastName.charAt(0)} />
+      <AdminNavBar role="ADMIN" firstName={user.firstName} lastInitial={user.lastName.charAt(0)} />
       <div style={dashboardStyle}>
         <Sidebar />
         <div style={contentStyle}>
-          <h1>Welcome to the Admin Dashboard</h1>
+          <h2>Volunteers Page</h2>
         </div>
       </div>
     </div>
@@ -53,12 +50,12 @@ const AdminDashboard = () => {
 };
 
 const dashboardStyle = {
-  display: 'flex'
+  display: 'flex',
 };
 
 const contentStyle = {
   marginLeft: '200px',
-  padding: '1rem'
+  padding: '1rem',
 };
 
-export default AdminDashboard;
+export default Volunteers;
