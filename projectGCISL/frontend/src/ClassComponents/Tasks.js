@@ -3,28 +3,7 @@ import TaskCard from './TaskCard';
 
 function Tasks() {
   const taskList = [
-    {
-      id: 1,
-      title: 'Assist For Research',
-      duration: 'October 22, 2024 - October 30, 2024',
-      linkText: 'Download File: Registration Form.pdf',
-      linkUrl: '#',
-      color: 'teal'
-    },
-    {
-      id: 2,
-      title: 'Conduct Survey for Health Data',
-      duration: 'October 15, 2024 - November 15, 2024',
-      linkText: 'Survey Link',
-      linkUrl: '#',
-      color: 'red'
-    },
-    {
-      id: 3,
-      title: 'Orientation and Training',
-      duration: 'November 22, 2022 - November 25, 2022',
-      color: 'red'
-    }
+    
   ];
 
   return (

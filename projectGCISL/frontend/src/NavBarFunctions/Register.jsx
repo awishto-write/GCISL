@@ -38,6 +38,8 @@ const Register = () => {
 
       const data = await response.json();
       if (response.ok) {
+      localStorage.setItem('firstName', formData.firstName);
+      localStorage.setItem('lastName', formData.lastName);
        // alert('Registration successful!');
         alert('Registration successful! You can now login.');
         navigate('/login'); // Redirect to login page
