@@ -16,7 +16,7 @@ function Sidebar() {
       <nav>
         <ul>
           <li><Link to="/volunteer-dashboard">Tasks</Link></li> {/* Link to Volunteer Dashboard */}
-          <li><Link to="/researches">Researches</Link></li>
+          <li><Link to="/volunteerlist">Volunteers</Link></li>
           <li><Link to="/reports">Reports</Link></li>
           <li><Link to="/logs">Logs</Link></li>
           <li>

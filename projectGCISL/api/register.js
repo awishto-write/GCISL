@@ -73,3 +73,17 @@ module.exports = async (req, res) => {
     res.status(400).json({ error: 'User already exists or registration failed.' });
   }
 };
+
+const getVolunteers = async (req, res) => {
+  try {
+    // Find all users with statusType 'volunteer'
+    const volunteers = await User.find({ statusType: 'volunteer' }, 'firstName lastName email');
+    
+    res.status(200).json(volunteers);
+  } catch (error) {
+    console.error("Error fetching volunteers:", error);
+    res.status(500).json({ error: 'Failed to retrieve volunteers.' });
+  }
+};
+
+module.exports = { registerUser, getVolunteers };
