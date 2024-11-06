@@ -25,11 +25,11 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //const apiUrl = process.env.REACT_APP_API_URL;
+    // const apiUrl = process.env.REACT_APP_API_URL;
     const apiUrl = 'https://gciconnect.vercel.app/api/register';
 
     try {
-     // const response = await fetch(`${apiUrl}/api/register`, {  // Uncomment for local testing
+      // const response = await fetch(`${apiUrl}/api/register`, {  // Uncomment for local testing
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
