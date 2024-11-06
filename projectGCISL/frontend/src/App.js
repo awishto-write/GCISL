@@ -33,7 +33,8 @@ const AppContent = () => {
       }
 
       try {
-        const response = await fetch('http://localhost:5001/api/user', {
+        const apiUrl = process.env.REACT_APP_API_URL || 'https://gciconnect.vercel.app/api/user';
+        const response = await fetch(apiUrl, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,

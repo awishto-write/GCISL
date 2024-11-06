@@ -3,8 +3,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-console.log("Environment Variables:", process.env.MONGODB_URI, process.env.JWT_SECRET);
-
 if (mongoose.connection.readyState === 0) {
   mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log("Connected to MongoDB for login"))
