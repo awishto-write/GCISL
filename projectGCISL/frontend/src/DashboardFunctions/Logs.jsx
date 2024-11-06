@@ -14,7 +14,8 @@ const Logs = () => {
       }
 
       try {
-        const apiUrl = process.env.REACT_APP_API_URL || 'https://gciconnect.vercel.app/api/user';
+        //const apiUrl = process.env.REACT_APP_API_URL           //uncomment for local testing
+        const apiUrl = 'https://gciconnect.vercel.app/api/user';
         const response = await fetch(apiUrl, {
           method: 'GET',
           headers: {
