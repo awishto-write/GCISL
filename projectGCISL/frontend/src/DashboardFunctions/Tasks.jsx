@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // Loading state added
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [editTask, setEditTask] = useState({ title: '', duration: '', document: '' });
 
@@ -10,11 +11,13 @@ const Tasks = () => {
       const token = localStorage.getItem('token');
       if (!token) {
         console.error('No token found');
+        setIsLoading(false);
         return;
       }
 
       try {
-        const response = await fetch('http://localhost:5001/api/tasks', {
+        const apiUrl = process.env.REACT_APP_API_URL || 'https://gciconnect.vercel.app/api/user';
+        const response = await fetch(apiUrl, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -30,6 +33,8 @@ const Tasks = () => {
         setTasks(data);
       } catch (error) {
         console.error('Error fetching tasks:', error);
+      } finally {
+        setIsLoading(false); // Stop loading after fetch completes
       }
     };
 
@@ -129,6 +134,11 @@ const Tasks = () => {
     }
   };
 
+  // Show "Loading..." if data is still being fetched
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <div style={styles.tasksPage}>
       <div style={styles.tasksHeader}>
@@ -136,18 +146,22 @@ const Tasks = () => {
         <button style={styles.addTaskButton} onClick={handleAddTestTask}>+ Create Task</button>
       </div>
       <div style={styles.tasksList}>
-        {tasks.map((task) => (
-          <TaskCard
-            key={task._id}
-            task={task}
-            isEditing={editingTaskId === task._id}
-            editTask={editTask}
-            setEditTask={setEditTask}
-            onEdit={() => handleEditTask(task)}
-            onSave={handleSaveEdit}
-            onDelete={() => handleDeleteTask(task._id)}
-          />
-        ))}
+        {tasks.length > 0 ? (
+          tasks.map((task) => (
+            <TaskCard
+              key={task._id}
+              task={task}
+              isEditing={editingTaskId === task._id}
+              editTask={editTask}
+              setEditTask={setEditTask}
+              onEdit={() => handleEditTask(task)}
+              onSave={handleSaveEdit}
+              onDelete={() => handleDeleteTask(task._id)}
+            />
+          ))
+        ) : (
+          <p>No tasks available</p>
+        )}
       </div>
     </div>
   );
@@ -156,7 +170,6 @@ const Tasks = () => {
 const TaskCard = ({ task, isEditing, editTask, setEditTask, onEdit, onSave, onDelete }) => (
   <div style={styles.taskCard}>
     <div style={styles.icon}>
-      {/* Removed exclamation mark */}
     </div>
     <div style={styles.info}>
       {isEditing ? (
@@ -295,8 +308,6 @@ const styles = {
     padding: '0.5rem 1rem',
     fontSize: '1rem',
     color: 'black',
-    borderRadius: '4px',
-    transition: 'background-color 0.3s',
   },
 };
 
