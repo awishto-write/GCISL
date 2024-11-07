@@ -2,7 +2,7 @@
 
 
 ## YouTube link of Sprint 2 Video (Make this video unlisted)
-
+[Sprint 2 Demo](https://youtu.be/fWyVFEDtFps)
 
 ## What's New (User Facing) 
 * Successful deployment and integration of the React app on Vercel
