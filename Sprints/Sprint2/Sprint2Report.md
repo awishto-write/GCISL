@@ -44,10 +44,12 @@ Here's what went well:
  * Implemented an admin and volunteer view
  * Connected registered users successfully to MongoDB
  * Added more detail to issues and pull requests
+
 Here's what we'd like to improve: 
   * We should get better at having 2+ lines with in depth descriptions for our commits
   * We should get better at creating a pull request for our all our commits and associate them with our issues
   * We should, as individual team member, get better at making comments on our teammates pull request and mention potential areas to improve each other code quality and functionality
+
 Here are changes we plan to implement in the next sprint: 
   * Connecting the admin page to the volunteer page more thoroughly
   * Connecting assigned tasks to the database and logging activity to the website
