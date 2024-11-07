@@ -1,3 +1,6 @@
+// That file will be used for local testing purposes, the other .js files will be used for production
+// So for every .js file we will add, we will need to modify this too t be able to test
+
 const express = require('express');
 const serverless = require('serverless-http'); // Required for Vercel serverless deployment
 const mongoose = require('mongoose');
@@ -32,7 +35,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
@@ -120,98 +123,6 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
-// Middleware to authenticate and fetch user from JWT token
-const authenticateJWT = (req, res, next) => {
-  const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
-
-  if (!token) {
-    return res.status(401).json({ message: 'Access token is missing or invalid.' });
-  }
-
-  jwt.verify(token, process.env.JWT_SECRET || 'yourSecretKey', (err, decoded) => {
-    if (err) {
-      return res.status(403).json({ message: 'Invalid token.' });
-    }
-
-    req.userId = decoded.userId;
-    next();
-  });
-};
-
-// Route to fetch current user data
-app.get('/api/user', authenticateJWT, async (req, res) => {
-  try {
-    const user = await User.findById(req.userId).select('firstName lastName');
-    if (!user) {
-      return res.status(404).json({ message: 'User not found.' });
-    }
-
-    res.json(user);
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching user data.' });
-  }
-});
-
-// Define Task Schema
-const taskSchema = new mongoose.Schema({
-  title: String,
-  duration: String,
-  document: String,
-  color: String
-});
-
-const Task = mongoose.model('Task', taskSchema);
-
-// Task Routes
-app.get('/api/tasks', authenticateJWT, async (req, res) => {
-  try {
-    const tasks = await Task.find({});
-    res.json(tasks);
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching tasks.' });
-  }
-});
-
-app.post('/api/tasks', authenticateJWT, async (req, res) => {
-  const { title, duration, document, color } = req.body;
-
-  try {
-    const newTask = new Task({ title, duration, document, color });
-    await newTask.save();
-    res.status(201).json(newTask);
-  } catch (error) {
-    res.status(400).json({ message: 'Error creating task.' });
-  }
-});
-
-app.put('/api/tasks/:id', authenticateJWT, async (req, res) => {
-  const { title, duration, document, color } = req.body;
-
-  try {
-    const task = await Task.findByIdAndUpdate(req.params.id, { title, duration, document, color }, { new: true });
-    if (!task) {
-      return res.status(404).json({ message: 'Task not found.' });
-    }
-
-    res.json(task);
-  } catch (error) {
-    res.status(400).json({ message: 'Error updating task.' });
-  }
-});
-
-app.delete('/api/tasks/:id', authenticateJWT, async (req, res) => {
-  try {
-    const task = await Task.findByIdAndDelete(req.params.id);
-    if (!task) {
-      return res.status(404).json({ message: 'Task not found.' });
-    }
-
-    res.sendStatus(204);
-  } catch (error) {
-    res.status(500).json({ message: 'Error deleting task.' });
-  }
-});
-
 // Example Protected Routes for Admin and Volunteer Dashboards
 app.get('/api/admin-dashboard', (req, res) => {
   res.json({ message: 'Welcome to the Admin Dashboard!' });
@@ -226,7 +137,9 @@ module.exports = app;
 module.exports.handler = serverless(app); // Required for Vercel serverless
 
 // Only for local development; Vercel will ignore this in production
-if (process.env.NODE_ENV !== 'production') {
+/*if (process.env.NODE_ENV !== 'production') {
   const PORT = process.env.PORT || 5001; // Local port for testing
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-}
+}*/
+const PORT = process.env.PORT || 5001; // Local port for testing
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

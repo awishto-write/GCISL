@@ -1,12 +1,20 @@
-// VolunteerDashboard.jsx
 import React from 'react';
+import Sidebar from '../ClassComponents/Sidebar';
+import TopNav from '../ClassComponents/TopNav';
+import Tasks from '../ClassComponents/Tasks';
 
-const VolunteerDashboard = () => {
+function VolunteerDashboard() {
   return (
-    <div>
-      <h1>Welcome to the Volunteer Dashboard</h1>
+    <div className="dashboard">
+      <TopNav />
+      <div className="dashboard-content">
+        <Sidebar />
+        <div className="content">
+          <Tasks />
+        </div>
+      </div>
     </div>
   );
-};
+}
 
 export default VolunteerDashboard;
