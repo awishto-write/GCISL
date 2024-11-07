@@ -137,7 +137,7 @@ Currently, there are no known problems.
 * [Documentations](https://github.com/awishto-write/GCISL/blob/main/ProjectDocumentations)
 * [Meetings Minutes](https://github.com/awishto-write/GCISL/blob/main/MeetingsMinutes)
 * [Skill Trainings](https://github.com/awishto-write/GCISL/blob/main/SkillTraining)
-* User link: [Site Link](gciconnect.vercel.app)
+* User link: [Site Link](https://gciconnect.vercel.app/)
 
 ## License
 - [License](https://github.com/awishto-write/GCISL/blob/main/LICENSE.txt)  
