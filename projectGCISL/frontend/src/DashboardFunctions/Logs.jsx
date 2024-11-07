@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AdminNavBar from '../ClassComponents/AdminNavBar';
 import Sidebar from '../ClassComponents/SideBar';
 
-const AdminDashboard = () => {
+const Logs = () => {
   const [user, setUser] = useState({ firstName: '', lastName: '' });
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const AdminDashboard = () => {
       <div style={dashboardStyle}>
         <Sidebar />
         <div style={contentStyle}>
-          <h1>Welcome to the Admin Dashboard</h1>
+          <h2>Logs Page</h2>
         </div>
       </div>
     </div>
@@ -60,4 +60,4 @@ const contentStyle = {
   padding: '1rem',
 };
 
-export default AdminDashboard;
+export default Logs;
