@@ -11,14 +11,15 @@ import GetInvolved from './NavBarFunctions/GetInvolved';
 import AdminDashboard from './DashboardFunctions/AdminDashboard';
 import VolunteerDashboard from './DashboardFunctions/VolunteerDashboard';
 import ProtectedRoute from './ProtectedRoute';
-import ResearchPage from './ClassComponents/ResearchPage';
+import VolunteerList from './ClassComponents/VolunteerList';
 import Logs from './ClassComponents/Logs';
 import Reports from './ClassComponents/Reports';
 import './App.css';
 
+
 function AppContent() {
   const location = useLocation();
-  const hideNavbarRoutes = ['/admin-dashboard', '/volunteer-dashboard','/reports','/researches','/logs'];
+  const hideNavbarRoutes = ['/admin-dashboard', '/volunteer-dashboard','/reports','/researches','/logs','/volunteerlist'];
 
   return (
     <div className="App">
@@ -34,7 +35,7 @@ function AppContent() {
         <Route path="/get-involved" element={<GetInvolved />} />
         <Route path="/admin-dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
          <Route path="/volunteer-dashboard" element={<ProtectedRoute><VolunteerDashboard /></ProtectedRoute>} />
-            <Route path="/researches" element={<ResearchPage />} />
+            <Route path="/volunteerlist" element={<VolunteerList />} />
             <Route path="/reports" element={<Reports />} />
             <Route path="/logs" element={<Logs/>} />
       </Routes>
