@@ -136,10 +136,6 @@ app.get('/api/volunteer-dashboard', (req, res) => {
 module.exports = app;
 module.exports.handler = serverless(app); // Required for Vercel serverless
 
-// Only for local development; Vercel will ignore this in production
-/*if (process.env.NODE_ENV !== 'production') {
-  const PORT = process.env.PORT || 5001; // Local port for testing
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-}*/
-const PORT = process.env.PORT || 5001; // Local port for testing
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Only when it is local development, you can uncomment
+//const PORT = process.env.PORT || 5001; // Local port for testing
+//  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
