@@ -130,7 +130,7 @@ Currently, there are no known problems.
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request :D
 
-## Additional Documentation - Yes
+## Additional Documentation
 * Sprint reports
    - [Sprint 1](https://github.com/awishto-write/GCISL/blob/main/Sprints/Sprint1)
    - [Sprint 2](https://github.com/awishto-write/GCISL/blob/main/Sprints/Sprint2)
