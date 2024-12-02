@@ -19,7 +19,42 @@ import './App.css';
 
 function AppContent() {
   const location = useLocation();
-  const hideNavbarRoutes = ['/admin-dashboard', '/volunteer-dashboard','/reports','/researches','/logs','/volunteerlist'];
+  const [user, setUser] = useState({ firstName: '', lastName: '' });
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('No token found');
+        return;
+      }
+
+      try {
+        //const apiUrl = 'http://localhost:5001/api/user'; //uncomment for local testing
+        const apiUrl = 'https://gciconnect.vercel.app/api/user';
+        const response = await fetch(apiUrl, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setUser({ firstName: data.firstName, lastName: data.lastName });
+        } else {
+          console.error('Error fetching user data:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  const isAdminPage = location.pathname === '/admin-dashboard' || location.pathname.startsWith('/dashboard');
 
   return (
     <div className="App">

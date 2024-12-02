@@ -67,15 +67,11 @@ app.post('/api/register', async (req, res) => {
   const fullName = `${firstName} ${lastName}`;
 
   try {
-    // Check if the full name is authorized to register as an admin
     if (statusType === 'admin' && !allowedAdminNames.includes(fullName)) {
       return res.status(403).json({ error: 'You are not authorized to register as an admin.' });
     }
 
-    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Create the new user
     const newUser = new User({
       firstName,
       lastName,
@@ -110,10 +106,9 @@ app.post('/api/login', async (req, res) => {
       return res.status(400).json({ error: 'Invalid email or password.' });
     }
 
-    // Generate a JWT with user info
     const token = jwt.sign(
       { userId: user._id, statusType: user.statusType },
-      process.env.JWT_SECRET || 'yourSecretKey', // Use a secure key in production
+      process.env.JWT_SECRET || 'yourSecretKey',
       { expiresIn: '2h' }
     );
 
@@ -123,13 +118,169 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
-// Example Protected Routes for Admin and Volunteer Dashboards
-app.get('/api/admin-dashboard', (req, res) => {
-  res.json({ message: 'Welcome to the Admin Dashboard!' });
+// Middleware to authenticate and fetch user from JWT token
+const authenticateJWT = (req, res, next) => {
+  const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ message: 'Access token is missing or invalid.' });
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET || 'yourSecretKey', (err, decoded) => {
+    if (err) {
+      return res.status(403).json({ message: 'Invalid token.' });
+    }
+
+    req.userId = decoded.userId;
+    next();
+  });
+};
+
+// Route to fetch current user data
+app.get('/api/user', authenticateJWT, async (req, res) => {
+  try {
+    const user = await User.findById(req.userId).select('firstName lastName');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching user data.' });
+  }
 });
 
-app.get('/api/volunteer-dashboard', (req, res) => {
-  res.json({ message: 'Welcome to the Volunteer Dashboard!' });
+//Route to fetch users by role
+app.get('/api/users', authenticateJWT, async (req, res) => {
+  const role = req.query.role;
+
+  try {
+    const users = await User.find({ statusType: role });
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching users.' });
+  }
+});
+
+// Define Task Schema
+const taskSchema = new mongoose.Schema({
+  title: String,
+  duration: String,
+  document: String,
+  color: String,
+  assignedVolunteers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] // Updated to store multiple volunteers
+});
+
+const Task = mongoose.model('Task', taskSchema);
+
+// Task Routes
+app.get('/api/tasks', authenticateJWT, async (req, res) => {
+  try {
+    const tasks = await Task.find({}).populate('assignedVolunteers', 'firstName lastName');
+    res.json(tasks);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching tasks.' });
+  }
+});
+
+app.post('/api/tasks', authenticateJWT, async (req, res) => {
+  const { title, duration, document, color } = req.body;
+
+  try {
+    const newTask = new Task({ title, duration, document, color });
+    await newTask.save();
+    res.status(201).json(newTask);
+  } catch (error) {
+    res.status(400).json({ message: 'Error creating task.' });
+  }
+});
+
+// Route to assign multiple volunteers to a task
+app.post('/api/tasks/assign', authenticateJWT, async (req, res) => {
+  const { volunteerId, taskId } = req.body;
+
+  try {
+    const task = await Task.findById(taskId);
+    const volunteer = await User.findById(volunteerId);
+
+    if (!task || !volunteer) {
+      return res.status(404).json({ message: 'Task or Volunteer not found.' });
+    }
+
+    if (!task.assignedVolunteers.includes(volunteerId)) {
+      task.assignedVolunteers.push(volunteerId);
+      await task.save();
+    }
+
+    res.json({ message: 'Task assigned to volunteer successfully.' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error assigning task.' });
+  }
+});
+
+// Route to remove a volunteer from a task
+app.post('/api/tasks/remove', authenticateJWT, async (req, res) => {
+  const { volunteerId, taskId } = req.body;
+
+  try {
+    const task = await Task.findById(taskId);
+    if (!task) {
+      return res.status(404).json({ message: 'Task not found.' });
+    }
+
+    task.assignedVolunteers = task.assignedVolunteers.filter(id => id.toString() !== volunteerId);
+    await task.save();
+
+    res.json({ message: 'Volunteer removed from task successfully.' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error removing volunteer from task.' });
+  }
+});
+
+// Update, Delete, and Protected Routes
+app.put('/api/tasks/:id', authenticateJWT, async (req, res) => {
+  const { title, duration, document, color } = req.body;
+
+  try {
+    const task = await Task.findByIdAndUpdate(req.params.id, { title, duration, document, color }, { new: true });
+    if (!task) {
+      return res.status(404).json({ message: 'Task not found.' });
+    }
+
+    res.json(task);
+  } catch (error) {
+    res.status(400).json({ message: 'Error updating task.' });
+  }
+});
+
+app.delete('/api/tasks/:id', authenticateJWT, async (req, res) => {
+  try {
+    const task = await Task.findByIdAndDelete(req.params.id);
+    if (!task) {
+      return res.status(404).json({ message: 'Task not found.' });
+    }
+
+    res.sendStatus(204);
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting task.' });
+  }
+});
+
+// Route to clear all assignees from a task
+app.post('/api/tasks/:taskId/clear', authenticateJWT, async (req, res) => {
+  try {
+    const task = await Task.findById(req.params.taskId);
+    if (!task) {
+      return res.status(404).json({ message: 'Task not found.' });
+    }
+
+    task.assignedVolunteers = [];
+    await task.save();
+
+    res.json({ message: 'All assignees cleared successfully.' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error clearing assignees.' });
+  }
 });
 
 // Export the app as a serverless function

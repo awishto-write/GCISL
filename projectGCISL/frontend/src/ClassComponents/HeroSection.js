@@ -6,7 +6,7 @@ const HeroSection = () => {
     <section className="hero">
       <div className="hero-text">
         <h1>Welcome to <span>gciConnect!</span></h1>
-        <p>gciConnect! is part of Washington State University's (WSU) Granger Cobb Institute for Senior Living (GCI) and serves as an innovative resource to keep the community informed and connected to WSU.</p>
+        <p>gciConnect! is part of Washington State University's (WSU) Granger Cobb Institute for Senior Living (gci) and serves as an innovative resource to keep the community informed and connected to WSU.</p>
 
         <p>
         WSU is one of the few universities in the country offering programs designed to:

@@ -5,6 +5,7 @@ const Tasks = () => {
   const [isLoading, setIsLoading] = useState(true); // Loading state added
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [editTask, setEditTask] = useState({ title: '', duration: '', document: '' });
+  const [isClearing, setIsClearing] = useState(false);
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -16,8 +17,8 @@ const Tasks = () => {
       }
 
       try {
-        //const apiUrl = process.env.REACT_APP_API_URL           //uncomment for local testing
-        const apiUrl = 'https://gciconnect.vercel.app/api/user';
+        //const apiUrl = 'http://localhost:5001/api/tasks'; //uncomment for local testing
+        const apiUrl = 'https://gciconnect.vercel.app/api/tasks';
         const response = await fetch(apiUrl, {
           method: 'GET',
           headers: {
@@ -56,7 +57,8 @@ const Tasks = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5001/api/tasks', {
+      //const response = await fetch('http://localhost:5001/api/tasks', { //uncomment for local testing
+      const response = await fetch('https://gciconnect.vercel.app/api/tasks', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -87,9 +89,10 @@ const Tasks = () => {
       console.error('No token found');
       return;
     }
-
+  
     try {
-      const response = await fetch(`http://localhost:5001/api/tasks/${editingTaskId}`, {
+      //const response = await fetch(`http://localhost:5001/api/tasks/${editingTaskId}`, { //uncomment for local testing
+      const response = await fetch(`http://gciconnect.vercel.app/api/tasks/${editingTaskId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -97,11 +100,11 @@ const Tasks = () => {
         },
         body: JSON.stringify(editTask),
       });
-
+  
       if (!response.ok) {
         throw new Error('Failed to update task');
       }
-
+  
       const updatedTask = await response.json();
       setTasks(tasks.map(task => (task._id === editingTaskId ? updatedTask : task)));
       setEditingTaskId(null);
@@ -109,6 +112,7 @@ const Tasks = () => {
       console.error('Error updating task:', error);
     }
   };
+  
 
   const handleDeleteTask = async (id) => {
     const token = localStorage.getItem('token');
@@ -118,7 +122,8 @@ const Tasks = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:5001/api/tasks/${id}`, {
+      //const response = await fetch(`http://localhost:5001/api/tasks/${id}`, {     //uncomment for local testing
+      const response = await fetch(`http://gciconnect.vercel.app/api/tasks/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -134,6 +139,56 @@ const Tasks = () => {
       console.error('Error deleting task:', error);
     }
   };
+
+  const handleClearAssignees = async (taskId) => {
+    setIsClearing(true); // Indicate that the clearing process has started
+  
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found');
+      setIsClearing(false); // Reset the state if there's an error
+      return;
+    }
+  
+    try {
+      //const response = await fetch(`http://localhost:5001/api/tasks/${taskId}/clear`, { //uncommenc for local testing
+      const response = await fetch(`http://gciconnect.vercel.app/api/tasks/${taskId}/clear`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to clear assignees');
+      }
+  
+      const result = await response.json();
+      console.log(result.message);
+  
+      // Refresh the tasks list to reflect changes
+      //const tasksResponse = await fetch('http://localhost:5001/api/tasks', {  //uncomment for local testing
+      const tasksResponse = await fetch('http://gciconnect.vercel.app/api/tasks', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (tasksResponse.ok) {
+        const tasksData = await tasksResponse.json();
+        setTasks(tasksData);
+      } else {
+        console.error('Error fetching tasks data:', tasksResponse.statusText);
+      }
+    } catch (error) {
+      console.error('Error clearing assignees:', error);
+    } finally {
+      setIsClearing(false); // Reset the state after the process is complete
+    }
+  };  
 
   // Show "Loading..." if data is still being fetched
   if (isLoading) {
@@ -158,6 +213,8 @@ const Tasks = () => {
               onEdit={() => handleEditTask(task)}
               onSave={handleSaveEdit}
               onDelete={() => handleDeleteTask(task._id)}
+              onClearAssignees={handleClearAssignees}
+              isClearing={isClearing}
             />
           ))
         ) : (
@@ -168,63 +225,70 @@ const Tasks = () => {
   );
 };
 
-const TaskCard = ({ task, isEditing, editTask, setEditTask, onEdit, onSave, onDelete }) => (
-  <div style={styles.taskCard}>
-    <div style={styles.icon}>
-    </div>
-    <div style={styles.info}>
-      {isEditing ? (
-        <>
-          <input
-            type="text"
-            value={editTask.title}
-            onChange={(e) => setEditTask({ ...editTask, title: e.target.value })}
-            placeholder="Task Title"
-            style={styles.input}
-          />
-          <input
-            type="text"
-            value={editTask.duration}
-            onChange={(e) => setEditTask({ ...editTask, duration: e.target.value })}
-            placeholder="Task Duration"
-            style={styles.input}
-          />
-          <input
-            type="text"
-            value={editTask.document}
-            onChange={(e) => setEditTask({ ...editTask, document: e.target.value })}
-            placeholder="Task Document"
-            style={styles.input}
-          />
-        </>
-      ) : (
-        <>
-          <h3 style={styles.taskTitle}>{task.title}</h3>
-          <p style={styles.duration}>Duration: {task.duration}</p>
-          {task.document && (
-            <a href={`path/to/documents/${task.document}`} download style={styles.documentLink}>
-              {task.document}
-            </a>
-          )}
-        </>
-      )}
-    </div>
-    <div style={styles.actions}>
-      {isEditing ? (
-        <button style={styles.defaultButton} onClick={onSave}>
-          Save
+const TaskCard = ({ task, isEditing, editTask, setEditTask, onEdit, onSave, onDelete, onClearAssignees, isClearing }) => (
+    <div style={styles.taskCard}>
+      <div style={styles.icon}></div>
+      <div style={styles.info}>
+        {isEditing ? (
+          <>
+            <input
+              type="text"
+              value={editTask.title}
+              onChange={(e) => setEditTask({ ...editTask, title: e.target.value })}
+              placeholder="Task Title"
+              style={styles.input}
+            />
+            <input
+              type="text"
+              value={editTask.duration}
+              onChange={(e) => setEditTask({ ...editTask, duration: e.target.value })}
+              placeholder="Task Duration"
+              style={styles.input}
+            />
+            <input
+              type="text"
+              value={editTask.document}
+              onChange={(e) => setEditTask({ ...editTask, document: e.target.value })}
+              placeholder="Task Document"
+              style={styles.input}
+            />
+            <button style={styles.clearButton} onClick={() => onClearAssignees(task._id)} disabled={isClearing}>
+              {isClearing ? 'Clearing...' : 'Clear Assignees'}
+            </button>
+          </>
+        ) : (
+          <>
+            <h3 style={styles.taskTitle}>{task.title}</h3>
+            <p style={styles.duration}>Duration: {task.duration}</p>
+            {task.document && (
+              <a href={`path/to/documents/${task.document}`} download style={styles.documentLink}>
+                {task.document}
+              </a>
+            )}
+            {task.assignedVolunteers && task.assignedVolunteers.length > 0 && (
+              <p style={styles.assignedVolunteer}>
+                Assigned to: {task.assignedVolunteers.map(volunteer => `${volunteer.firstName} ${volunteer.lastName}`).join(', ')}
+              </p>
+            )}
+          </>
+        )}
+      </div>
+      <div style={styles.actions}>
+        {isEditing ? (
+          <button style={styles.defaultButton} onClick={onSave}>
+            Save
+          </button>
+        ) : (
+          <button style={styles.defaultButton} onClick={onEdit}>
+            Edit
+          </button>
+        )}
+        <button style={styles.defaultButton} onClick={onDelete}>
+          Delete
         </button>
-      ) : (
-        <button style={styles.defaultButton} onClick={onEdit}>
-          Edit
-        </button>
-      )}
-      <button style={styles.defaultButton} onClick={onDelete}>
-        Delete
-      </button>
+      </div>
     </div>
-  </div>
-);
+  );    
 
 const styles = {
   tasksPage: {
@@ -309,6 +373,16 @@ const styles = {
     padding: '0.5rem 1rem',
     fontSize: '1rem',
     color: 'black',
+  },
+  clearButton: {
+    backgroundColor: '#dc3545',
+    color: 'white',
+    border: 'none',
+    padding: '0.5rem 1rem',
+    fontSize: '1rem',
+    cursor: 'pointer',
+    borderRadius: '5px',
+    marginTop: '0.5rem',
   },
 };
 

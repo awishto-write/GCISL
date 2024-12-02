@@ -58,19 +58,30 @@
   color: #a32436; /* Red color on hover */
 }
 
+.nav-links a.active {
+  background-color: #a32436; /* Red background color */
+  color: white;
+  border-radius: 15px; /* Increased border-radius for more rounded corners */
+}
+
+.nav-links a.active:hover {
+  background-color: #a32436; /* Keep the background red on hover */
+  color: black; /* Change text color to black on hover */
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .navbar {
-      flex-direction: column; /* Stack the items vertically on small screens */
-      height: auto; /* Let the height adjust */
+    flex-direction: column; /* Stack the items vertically on small screens */
+    height: auto; /* Let the height adjust */
   }
   .nav-links {
-      flex-direction: column; /* Stack the nav links */
+    flex-direction: column; /* Stack the nav links */
   }
   .logo {
-      height: 40px; /* Adjust the logo size for smaller screens */
+    height: 40px; /* Adjust the logo size for smaller screens */
   }
   .nav-links a {
-      font-size: 1rem; /* Reduce font size for mobile views */
+    font-size: 1rem; /* Reduce font size for mobile views */
   }
 }

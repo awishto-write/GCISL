@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import { NavLink } from 'react-router-dom'; // Use NavLink instead of Link
 import './Navbar.css'; // Import the CSS file for styling
 
 const Navbar = () => {
@@ -18,12 +18,11 @@ const Navbar = () => {
 
       <div className="navbar-right">
         <ul className="nav-links">
-          {/* <li><a href="/">Home</a></li> */}
-          <li><Link to="/">Home</Link></li> 
-          <li><Link to="/get-involved">Get Involved</Link></li> 
-          <li><Link to="/contact">Contact Us</Link></li> {/* Updated to Link */}
-          <li><Link to="/about" className="active">About</Link></li> {/* Updated to Link */}
-          <li><Link to="/login" className="login-button">Log in</Link></li> {/* Updated to Link */}
+          <li><NavLink to="/" className="navbar-item" activeClassName="active">Home</NavLink></li> 
+          <li><NavLink to="/get-involved" className="navbar-item" activeClassName="active">Get Involved</NavLink></li> 
+          <li><NavLink to="/contact" className="navbar-item" activeClassName="active">Contact Us</NavLink></li>
+          <li><NavLink to="/about" className="navbar-item" activeClassName="active">About</NavLink></li>
+          <li><NavLink to="/login" className="navbar-item login-button" activeClassName="active">Log in</NavLink></li>
         </ul>
       </div>
     </nav>

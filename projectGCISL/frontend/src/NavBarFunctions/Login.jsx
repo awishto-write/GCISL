@@ -7,8 +7,8 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate(); // Use useNavigate for navigation
- // const apiUrl = process.env.REACT_APP_API_URL; // Get API URL from environment variable
-    const apiUrl = 'https://gciconnect.vercel.app/api/login';
+  //const apiUrl = process.env.REACT_APP_API_URL; // Get API URL from environment variable
+  const apiUrl = 'https://gciconnect.vercel.app/api/login';
 
   // Check if the user is already logged in and redirect them automatically
   // useEffect(() => {
