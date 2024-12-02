@@ -17,8 +17,8 @@ const Tasks = () => {
       }
 
       try {
-        //const apiUrl = 'http://localhost:5001/api/tasks'; //uncomment for local testing
-        const apiUrl = 'https://gciconnect.vercel.app/api/tasks';
+        const apiUrl = 'http://localhost:5001/api/tasks'; //uncomment for local testing
+        //const apiUrl = 'https://gciconnect.vercel.app/api/tasks';
         const response = await fetch(apiUrl, {
           method: 'GET',
           headers: {
@@ -57,8 +57,7 @@ const Tasks = () => {
     }
 
     try {
-      //const response = await fetch('http://localhost:5001/api/tasks', { //uncomment for local testing
-      const response = await fetch('https://gciconnect.vercel.app/api/tasks', {
+      const response = await fetch('http://localhost:5001/api/tasks', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -91,8 +90,7 @@ const Tasks = () => {
     }
   
     try {
-      //const response = await fetch(`http://localhost:5001/api/tasks/${editingTaskId}`, { //uncomment for local testing
-      const response = await fetch(`http://gciconnect.vercel.app/api/tasks/${editingTaskId}`, {
+      const response = await fetch(`http://localhost:5001/api/tasks/${editingTaskId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -122,8 +120,7 @@ const Tasks = () => {
     }
 
     try {
-      //const response = await fetch(`http://localhost:5001/api/tasks/${id}`, {     //uncomment for local testing
-      const response = await fetch(`http://gciconnect.vercel.app/api/tasks/${id}`, {
+      const response = await fetch(`http://localhost:5001/api/tasks/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -151,8 +148,7 @@ const Tasks = () => {
     }
   
     try {
-      //const response = await fetch(`http://localhost:5001/api/tasks/${taskId}/clear`, { //uncommenc for local testing
-      const response = await fetch(`http://gciconnect.vercel.app/api/tasks/${taskId}/clear`, {
+      const response = await fetch(`http://localhost:5001/api/tasks/${taskId}/clear`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -168,8 +164,7 @@ const Tasks = () => {
       console.log(result.message);
   
       // Refresh the tasks list to reflect changes
-      //const tasksResponse = await fetch('http://localhost:5001/api/tasks', {  //uncomment for local testing
-      const tasksResponse = await fetch('http://gciconnect.vercel.app/api/tasks', {
+      const tasksResponse = await fetch('http://localhost:5001/api/tasks', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
