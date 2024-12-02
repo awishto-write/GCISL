@@ -9,6 +9,19 @@
   pointer-events: none;
 }
 
+.navbar-item {
+  padding: 10px;
+  border-radius: 5px;
+  color: #000; /* Default text color */
+  text-decoration: none;
+}
+
+.navbar-item.active {
+  background-color: #a32436; /* Red background color */
+  color: white;
+  border-radius: 5px;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
