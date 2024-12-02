@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect}  from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './ClassComponents/Navbar';
 import HeroSection from './ClassComponents/HeroSection';
@@ -59,7 +59,7 @@ function AppContent() {
   return (
     <div className="App">
       {/* Conditionally render the Navbar based on the current path */}
-      {!hideNavbarRoutes.includes(location.pathname) && <Navbar />}
+      {/* {!hideNavbarRoutes.includes(location.pathname) && <Navbar />} */}
 
       <Routes>
         <Route path="/" element={<HeroSection />} />
