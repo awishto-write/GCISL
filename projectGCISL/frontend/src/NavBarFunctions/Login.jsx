@@ -37,7 +37,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-     // const response = await fetch(`${apiUrl}/api/login`, {  // Uncomment for local testing
+      //const response = await fetch(`${apiUrl}/api/login`, {  // Uncomment for local testing
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
