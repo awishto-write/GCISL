@@ -14,6 +14,8 @@ import ProtectedRoute from './ProtectedRoute';
 import VolunteerList from './ClassComponents/VolunteerList';
 import Logs from './ClassComponents/Logs';
 import Reports from './ClassComponents/Reports';
+import AdminNavBar from './ClassComponents/AdminNavBar';
+import SideBar from './ClassComponents/SideBar';
 import './App.css';
 
 
@@ -58,9 +60,17 @@ function AppContent() {
 
   return (
     <div className="App">
-      {/* Conditionally render the Navbar based on the current path */}
-      {/* {!hideNavbarRoutes.includes(location.pathname) && <Navbar />} */}
-
+      {isAdminPage ? (
+        <>
+          <AdminNavBar role="ADMIN" firstName={user.firstName} lastInitial={user.lastName.charAt(0)} />
+          <SideBar />
+        </>
+      ) : (
+        <>
+          <Navbar />
+          <Footer />
+        </>
+      )}
       <Routes>
         <Route path="/" element={<HeroSection />} />
         <Route path="/contact" element={<Contact />} />
