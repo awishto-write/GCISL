@@ -18,9 +18,12 @@ const Volunteers = () => {
       }
 
       try {
-        const apiUrl = 'http://localhost:5001/api/user';
-        const volunteersApiUrl = 'http://localhost:5001/api/users?role=volunteer';
-        const tasksApiUrl = 'http://localhost:5001/api/tasks';
+        // const apiUrl = 'http://localhost:5001/api/user';
+        // const volunteersApiUrl = 'http://localhost:5001/api/users?role=volunteer';
+        // const tasksApiUrl = 'http://localhost:5001/api/tasks';
+        const apiUrl = 'http://gciconnect.vercel.app/api/user';
+        const volunteersApiUrl = 'http://gciconnect.vercel.app/api/users?role=volunteer';
+        const tasksApiUrl = 'http://gciconnect.vercel.app/api/tasks';
 
         const userResponse = await fetch(apiUrl, {
           method: 'GET',
@@ -92,7 +95,8 @@ const Volunteers = () => {
     const isAssigned = task.assignedVolunteers.includes(volunteerId);
 
     try {
-      const response = await fetch(`http://localhost:5001/api/tasks/${isAssigned ? 'remove' : 'assign'}`, {
+      //const response = await fetch(`http://localhost:5001/api/tasks/${isAssigned ? 'remove' : 'assign'}`, {
+      const response = await fetch(`http://gciconnect.vercel.app/api/tasks/${isAssigned ? 'remove' : 'assign'}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
