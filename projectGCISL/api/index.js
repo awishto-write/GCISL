@@ -1,6 +1,3 @@
-// That file will be used for local testing purposes, the other .js files will be used for production
-// So for every .js file we will add, we will need to modify this too t be able to test
-
 const express = require('express');
 const serverless = require('serverless-http'); // Required for Vercel serverless deployment
 const mongoose = require('mongoose');
@@ -35,7 +32,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
@@ -287,6 +284,8 @@ app.post('/api/tasks/:taskId/clear', authenticateJWT, async (req, res) => {
 module.exports = app;
 module.exports.handler = serverless(app); // Required for Vercel serverless
 
-// Only when it is local development, you can uncomment
-//const PORT = process.env.PORT || 5001; // Local port for testing
-//  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Only for local development; Vercel will ignore this in production
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 5001; // Local port for testing
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}

@@ -33,8 +33,8 @@ const AppContent = () => {
       }
 
       try {
-        const apiUrl = 'http://localhost:5001/api/user'; //uncomment for local testing
-        // const apiUrl = 'https://gciconnect.vercel.app/api/user';
+        //const apiUrl = 'http://localhost:5001/api/user'; //uncomment for local testing
+        const apiUrl = 'https://gciconnect.vercel.app/api/user';
         const response = await fetch(apiUrl, {
           method: 'GET',
           headers: {

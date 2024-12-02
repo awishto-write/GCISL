@@ -8,7 +8,6 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate(); // Use useNavigate for navigation
   const apiUrl = process.env.REACT_APP_API_URL; // Get API URL from environment variable
-  //const apiUrl = 'https://gciconnect.vercel.app/api/login';
 
   // Check if the user is already logged in and redirect them automatically
   // useEffect(() => {
@@ -37,8 +36,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${apiUrl}/api/login`, {  // Uncomment for local testing
-      //const response = await fetch(apiUrl, {
+      const response = await fetch(`${apiUrl}/api/login`, {  
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),

@@ -1,30 +1,24 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+require('dotenv').config();
 
-// Connect to MongoDB only once, outside the function handler
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,})
-  .then(() => {
-    console.log("Connected to MongoDB");
-  })
-  .catch((err) => {
-    console.error("MongoDB connection error:", err);
-});
+console.log("Environment Variables:", process.env.MONGODB_URI);
 
-// Define User Schema
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.error("MongoDB connection error:", err));
+
 const userSchema = new mongoose.Schema({
   firstName: String,
   lastName: String,
   email: { type: String, unique: true },
   phoneNumber: String,
-  password: String, // Store hashed password
-  statusType: String, // 'admin' or 'volunteer'
+  password: String,
+  statusType: String,
 });
 
 const User = mongoose.model('User', userSchema);
 
-// List of Allowed Admin Names
 const allowedAdminNames = [
   'Naomi Dion-Gokan',
   'Justin Keanini',
@@ -42,48 +36,35 @@ module.exports = async (req, res) => {
   const fullName = `${firstName} ${lastName}`;
 
   try {
-    // Check if the user already exists by email
+    console.log('Received registration:', req.body);
+
     const existingUser = await User.findOne({ email });
     if (existingUser) {
+      console.log('User already exists:', email);
       return res.status(400).json({ error: 'An account with this email already exists.' });
     }
 
-    // Check if the full name is authorized to register as an admin
     if (statusType === 'admin' && !allowedAdminNames.includes(fullName)) {
+      console.log('Unauthorized admin registration attempt:', fullName);
       return res.status(403).json({ error: 'You are not authorized to register as an admin.' });
     }
 
-    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create the new user
     const newUser = new User({
       firstName,
       lastName,
       email,
       phoneNumber,
-      password: hashedPassword, // Store hashed password
+      password: hashedPassword,
       statusType,
     });
 
     await newUser.save();
+    console.log('User registered successfully:', email);
     res.status(201).json({ message: 'User registered successfully!' });
   } catch (error) {
     console.error("Error saving user:", error);
-    res.status(400).json({ error: 'User already exists or registration failed.' });
+    res.status(400).json({ error: 'User registration failed.' });
   }
 };
-
-// const getVolunteers = async (req, res) => {
-//   try {
-//     // Find all users with statusType 'volunteer'
-//     const volunteers = await User.find({ statusType: 'volunteer' }, 'firstName lastName email');
-    
-//     res.status(200).json(volunteers);
-//   } catch (error) {
-//     console.error("Error fetching volunteers:", error);
-//     res.status(500).json({ error: 'Failed to retrieve volunteers.' });
-//   }
-// };
-
-// module.exports = { registerUser, getVolunteers };

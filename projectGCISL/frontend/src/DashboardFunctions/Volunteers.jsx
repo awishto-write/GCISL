@@ -18,9 +18,11 @@ const Volunteers = () => {
       }
 
       try {
-        const apiUrl = 'http://localhost:5001/api/user';
-        const volunteersApiUrl = 'http://localhost:5001/api/users?role=volunteer';
-        const tasksApiUrl = 'http://localhost:5001/api/tasks';
+        const env = process.env.REACT_APP_API_URL;
+        // Construct the full API endpoints
+        const apiUrl = `${env}/api/user`;
+        const volunteersApiUrl = `${env}/api/users?role=volunteer`;
+        const tasksApiUrl = `${env}/api/tasks`;
 
         const userResponse = await fetch(apiUrl, {
           method: 'GET',
@@ -92,7 +94,8 @@ const Volunteers = () => {
     const isAssigned = task.assignedVolunteers.includes(volunteerId);
 
     try {
-      const response = await fetch(`http://localhost:5001/api/tasks/${isAssigned ? 'remove' : 'assign'}`, {
+      const apiUrl = process.env.REACT_APP_API_URL;
+      const response = await fetch(`${apiUrl}/api/tasks/${isAssigned ? 'remove' : 'assign'}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

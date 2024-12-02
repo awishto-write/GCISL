@@ -17,9 +17,8 @@ const Tasks = () => {
       }
 
       try {
-        const apiUrl = 'http://localhost:5001/api/tasks'; //uncomment for local testing
-        //const apiUrl = 'https://gciconnect.vercel.app/api/tasks';
-        const response = await fetch(apiUrl, {
+        const apiUrl = process.env.REACT_APP_API_URL;
+        const response = await fetch(`${apiUrl}/api/tasks`, { 
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -57,7 +56,8 @@ const Tasks = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5001/api/tasks', {
+      const apiUrl = process.env.REACT_APP_API_URL;
+      const response = await fetch(`${apiUrl}/api/tasks`, { 
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -90,7 +90,8 @@ const Tasks = () => {
     }
   
     try {
-      const response = await fetch(`http://localhost:5001/api/tasks/${editingTaskId}`, {
+      const apiUrl = process.env.REACT_APP_API_URL;
+      const response = await fetch(`${apiUrl}/api/tasks/${editingTaskId}`, { 
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -120,7 +121,8 @@ const Tasks = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:5001/api/tasks/${id}`, {
+      const apiUrl = process.env.REACT_APP_API_URL;
+      const response = await fetch(`${apiUrl}/api/tasks/${id}`, { 
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -148,7 +150,8 @@ const Tasks = () => {
     }
   
     try {
-      const response = await fetch(`http://localhost:5001/api/tasks/${taskId}/clear`, {
+      const apiUrl = process.env.REACT_APP_API_URL;
+      const response = await fetch(`${apiUrl}/api/tasks/${taskId}/clear`, { 
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -164,7 +167,8 @@ const Tasks = () => {
       console.log(result.message);
   
       // Refresh the tasks list to reflect changes
-      const tasksResponse = await fetch('http://localhost:5001/api/tasks', {
+      const apiUrlTask = process.env.REACT_APP_API_URL;
+      const tasksResponse = await fetch(`${apiUrlTask}/api/tasks`, { 
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
