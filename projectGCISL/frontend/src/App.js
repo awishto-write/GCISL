@@ -18,11 +18,20 @@ import Logout from './DashboardFunctions/Logout';
 import VolunteerDashboard from './DashboardFunctions/VolunteerDashboard';
 import ProtectedRoute from './ProtectedRoute';
 import HeroSection from './ClassComponents/HeroSection';
+import VolunteerSidebar from './ClassComponents/VolunteerSidebar';
+import VolunteerLogs from './DashboardFunctions/VolunteerLogs'; 
+import VolunteerResearches from './DashboardFunctions/VolunteerResearches'; 
+import VolunteerList from './DashboardFunctions/VolunteerList';
+import VolunteerTasks from './DashboardFunctions/VolunteerTasks';
 import './App.css';
 
 const AppContent = () => {
   const location = useLocation();
   const [user, setUser] = useState({ firstName: '', lastName: '' });
+  const [taskCount, setTaskCount] = useState(() => {
+    const savedCount = localStorage.getItem('taskCount');
+    return savedCount ? parseInt(savedCount, 10) : 0;
+  });
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -33,9 +42,8 @@ const AppContent = () => {
       }
 
       try {
-        //const apiUrl = 'http://localhost:5001/api/user'; //uncomment for local testing
-        const apiUrl = 'https://gciconnect.vercel.app/api/user';
-        const response = await fetch(apiUrl, {
+        const apiUrl = process.env.REACT_APP_API_URL;
+        const response = await fetch(`${apiUrl}/api/user`, { 
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -57,7 +65,41 @@ const AppContent = () => {
     fetchUserData();
   }, []);
 
+  useEffect(() => {
+    const fetchTaskCount = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('No token found');
+        return;
+      }
+
+      try {
+        const apiUrl = process.env.REACT_APP_API_URL;
+        const response = await fetch(`${apiUrl}/api/volunteer-task-count`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setTaskCount(data.count);
+          localStorage.setItem('taskCount', data.count);
+        } else {
+          console.error('Error fetching task count:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching task count:', error);
+      }
+    };
+
+    fetchTaskCount();
+  }, []);
+
   const isAdminPage = location.pathname === '/admin-dashboard' || location.pathname.startsWith('/dashboard');
+  const isVolunteerPage = location.pathname === '/volunteer-dashboard' || location.pathname.startsWith('/vdashboard');
 
   return (
     <div className="App">
@@ -66,25 +108,39 @@ const AppContent = () => {
           <AdminNavBar role="ADMIN" firstName={user.firstName} lastInitial={user.lastName.charAt(0)} />
           <SideBar />
         </>
+      ) : isVolunteerPage ? (
+        <>
+          <AdminNavBar role="VOLUNTEER" firstName={user.firstName} lastInitial={user.lastName.charAt(0)} />
+          <VolunteerSidebar taskCount={taskCount}/>
+        </>
       ) : (
         <>
           <Navbar />
           <Footer />
         </>
-      )}
+      )}   
+
       <Routes>
+        {/* Public Routes */}
         <Route path="/" element={<HeroSection />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/get-involved" element={<GetInvolved />} />
+        {/* Admin Routes */}
         <Route path="/admin-dashboard" element={<ProtectedRoute><AdminDashboard user={user} /></ProtectedRoute>} />
-        <Route path="/volunteer-dashboard" element={<ProtectedRoute><VolunteerDashboard /></ProtectedRoute>} />
         <Route path="/dashboard/volunteers" element={<ProtectedRoute><Volunteers user={user} /></ProtectedRoute>} />
         <Route path="/dashboard/tasks" element={<ProtectedRoute><Tasks user={user} /></ProtectedRoute>} />
         <Route path="/dashboard/researches" element={<ProtectedRoute><Researches user={user} /></ProtectedRoute>} />
         <Route path="/dashboard/logs" element={<ProtectedRoute><Logs user={user} /></ProtectedRoute>} />
+        {/* Volunteer Routes */}
+        {/* Don't put user in VolunteerDashboard because it affects the task user anme for the admin */}
+        <Route path="/volunteer-dashboard" element={<ProtectedRoute><VolunteerDashboard /></ProtectedRoute>} />
+        <Route path="/vdashboard/volunteers" element={<ProtectedRoute><VolunteerList user={user} /></ProtectedRoute>} />
+        <Route path="/vdashboard/tasks" element={<ProtectedRoute><VolunteerTasks user={user} /></ProtectedRoute>} />
+        <Route path="/vdashboard/researches" element={<ProtectedRoute><VolunteerResearches user={user} /></ProtectedRoute>} />
+        <Route path="/vdashboard/logs" element={<ProtectedRoute><VolunteerLogs user={user} /></ProtectedRoute>} />
         <Route path="/dashboard/logout" element={<ProtectedRoute><Logout user={user} /></ProtectedRoute>} />
       </Routes>
     </div>
