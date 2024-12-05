@@ -1,4 +1,4 @@
- # Sprint 2 Report (10/05/2024 - 11/05/2024)
+# Sprint 2 Report (10/05/2024 - 11/05/2024)
 
 
 ## YouTube link of Sprint 2 Video (Make this video unlisted)
