@@ -14,9 +14,8 @@ const AdminDashboard = () => {
       }
 
       try {
-        //const apiUrl = 'http://localhost:5001/api/user'; //uncomment for local testing
-        const apiUrl = 'https://gciconnect.vercel.app/api/user';
-        const response = await fetch(apiUrl, {
+        const apiUrl = process.env.REACT_APP_API_URL;
+        const response = await fetch(`${apiUrl}/api/user`, { 
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,

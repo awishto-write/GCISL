@@ -1,25 +1,26 @@
-import React, {useState, useEffect}  from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './ClassComponents/Navbar';
-import HeroSection from './ClassComponents/HeroSection';
 import Footer from './ClassComponents/Footer';
+import AdminNavBar from './ClassComponents/AdminNavBar';
+import SideBar from './ClassComponents/SideBar';
 import Contact from './NavBarFunctions/Contact';
 import About from './NavBarFunctions/About';
 import Login from './NavBarFunctions/Login';
 import Register from './NavBarFunctions/Register';
 import GetInvolved from './NavBarFunctions/GetInvolved';
 import AdminDashboard from './DashboardFunctions/AdminDashboard';
+import Volunteers from './DashboardFunctions/Volunteers';
+import Tasks from './DashboardFunctions/Tasks';
+import Researches from './DashboardFunctions/Researches';
+import Logs from './DashboardFunctions/Logs';
+import Logout from './DashboardFunctions/Logout';
 import VolunteerDashboard from './DashboardFunctions/VolunteerDashboard';
 import ProtectedRoute from './ProtectedRoute';
-import VolunteerList from './ClassComponents/VolunteerList';
-import Logs from './ClassComponents/Logs';
-import Reports from './ClassComponents/Reports';
-import AdminNavBar from './ClassComponents/AdminNavBar';
-import SideBar from './ClassComponents/SideBar';
+import HeroSection from './ClassComponents/HeroSection';
 import './App.css';
 
-
-function AppContent() {
+const AppContent = () => {
   const location = useLocation();
   const [user, setUser] = useState({ firstName: '', lastName: '' });
 
@@ -78,17 +79,17 @@ function AppContent() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/get-involved" element={<GetInvolved />} />
-        <Route path="/admin-dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
-         <Route path="/volunteer-dashboard" element={<ProtectedRoute><VolunteerDashboard /></ProtectedRoute>} />
-            <Route path="/volunteerlist" element={<VolunteerList />} />
-            <Route path="/reports" element={<Reports />} />
-            <Route path="/logs" element={<Logs/>} />
+        <Route path="/admin-dashboard" element={<ProtectedRoute><AdminDashboard user={user} /></ProtectedRoute>} />
+        <Route path="/volunteer-dashboard" element={<ProtectedRoute><VolunteerDashboard /></ProtectedRoute>} />
+        <Route path="/dashboard/volunteers" element={<ProtectedRoute><Volunteers user={user} /></ProtectedRoute>} />
+        <Route path="/dashboard/tasks" element={<ProtectedRoute><Tasks user={user} /></ProtectedRoute>} />
+        <Route path="/dashboard/researches" element={<ProtectedRoute><Researches user={user} /></ProtectedRoute>} />
+        <Route path="/dashboard/logs" element={<ProtectedRoute><Logs user={user} /></ProtectedRoute>} />
+        <Route path="/dashboard/logout" element={<ProtectedRoute><Logout user={user} /></ProtectedRoute>} />
       </Routes>
-
-      <Footer />
     </div>
   );
-}
+};
 
 export default function App() {
   return (
