@@ -165,6 +165,7 @@ const taskSchema = new mongoose.Schema({
   duration: String,
   document: String,
   color: String,
+  status: { type: String, enum: ['None', 'In progress', 'Completed', 'To Redo'], default: 'None' }, // Just added
   assignedVolunteers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] // Updated to store multiple volunteers
 });
 
@@ -180,11 +181,39 @@ app.get('/api/tasks', authenticateJWT, async (req, res) => {
   }
 });
 
+// Route to see tasks of a specific volunteer
+app.get('/api/volunteer-tasks', authenticateJWT, async (req, res) => {
+  try {
+    // Find tasks where the authenticated user is in the assignedVolunteers array
+    const tasks = await Task.find({ assignedVolunteers: req.userId }).populate('assignedVolunteers', 'firstName lastName');
+
+    if (tasks.length === 0) {
+      return res.status(404).json({ message: 'No tasks assigned to you.' });
+    }
+
+    res.json(tasks);
+  } catch (error) {
+    console.error('Error fetching volunteer tasks:', error);
+    res.status(500).json({ message: 'Error fetching volunteer tasks.' });
+  }
+});
+
+app.get('/api/volunteer-task-count', authenticateJWT, async (req, res) => {
+  try {
+    const taskCount = await Task.countDocuments({ assignedVolunteers: req.userId });
+    res.json({ count: taskCount });
+  } catch (error) {
+    console.error('Error fetching task count:', error);
+    res.status(500).json({ message: 'Error fetching task count.' });
+  }
+});
+
+
 app.post('/api/tasks', authenticateJWT, async (req, res) => {
-  const { title, duration, document, color } = req.body;
+  const { title, duration, document, color, status } = req.body;
 
   try {
-    const newTask = new Task({ title, duration, document, color });
+    const newTask = new Task({ title, duration, document, color, status });
     await newTask.save();
     res.status(201).json(newTask);
   } catch (error) {
@@ -235,15 +264,14 @@ app.post('/api/tasks/remove', authenticateJWT, async (req, res) => {
 });
 
 // Update, Delete, and Protected Routes
+// The status has been added
 app.put('/api/tasks/:id', authenticateJWT, async (req, res) => {
-  const { title, duration, document, color } = req.body;
-
+  const { title, duration, document, color, status } = req.body;
   try {
-    const task = await Task.findByIdAndUpdate(req.params.id, { title, duration, document, color }, { new: true });
-    if (!task) {
+    const task = await Task.findByIdAndUpdate(req.params.id, { title, duration, document, color, status }, { new: true });
+    if (!task){
       return res.status(404).json({ message: 'Task not found.' });
     }
-
     res.json(task);
   } catch (error) {
     res.status(400).json({ message: 'Error updating task.' });

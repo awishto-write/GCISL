@@ -4,7 +4,7 @@ const Tasks = () => {
   const [tasks, setTasks] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // Loading state added
   const [editingTaskId, setEditingTaskId] = useState(null);
-  const [editTask, setEditTask] = useState({ title: '', duration: '', document: '' });
+  const [editTask, setEditTask] = useState({ title: '', duration: '', document: '', status: '' });
   const [isClearing, setIsClearing] = useState(false);
 
   useEffect(() => {
@@ -47,6 +47,7 @@ const Tasks = () => {
       title: 'TASK',
       duration: '(mm/dd/yyyy) - (mm/dd/yyyy)',
       document: '',
+      status: 'None', // Line added: Default status
     };
 
     const token = localStorage.getItem('token');
@@ -224,70 +225,113 @@ const Tasks = () => {
   );
 };
 
-const TaskCard = ({ task, isEditing, editTask, setEditTask, onEdit, onSave, onDelete, onClearAssignees, isClearing }) => (
-    <div style={styles.taskCard}>
-      <div style={styles.icon}></div>
-      <div style={styles.info}>
-        {isEditing ? (
-          <>
-            <input
-              type="text"
-              value={editTask.title}
-              onChange={(e) => setEditTask({ ...editTask, title: e.target.value })}
-              placeholder="Task Title"
-              style={styles.input}
-            />
-            <input
-              type="text"
-              value={editTask.duration}
-              onChange={(e) => setEditTask({ ...editTask, duration: e.target.value })}
-              placeholder="Task Duration"
-              style={styles.input}
-            />
-            <input
-              type="text"
-              value={editTask.document}
-              onChange={(e) => setEditTask({ ...editTask, document: e.target.value })}
-              placeholder="Task Document"
-              style={styles.input}
-            />
-            <button style={styles.clearButton} onClick={() => onClearAssignees(task._id)} disabled={isClearing}>
-              {isClearing ? 'Clearing...' : 'Clear Assignees'}
-            </button>
-          </>
-        ) : (
-          <>
-            <h3 style={styles.taskTitle}>{task.title}</h3>
-            <p style={styles.duration}>Duration: {task.duration}</p>
-            {task.document && (
-              <a href={`path/to/documents/${task.document}`} download style={styles.documentLink}>
-                {task.document}
-              </a>
-            )}
-            {task.assignedVolunteers && task.assignedVolunteers.length > 0 && (
-              <p style={styles.assignedVolunteer}>
-                Assigned to: {task.assignedVolunteers.map(volunteer => `${volunteer.firstName} ${volunteer.lastName}`).join(', ')}
-              </p>
-            )}
-          </>
-        )}
-      </div>
-      <div style={styles.actions}>
-        {isEditing ? (
-          <button style={styles.defaultButton} onClick={onSave}>
-            Save
+const TaskCard = ({
+  task,
+  isEditing,
+  editTask,
+  setEditTask,
+  onEdit,
+  onSave,
+  onDelete,
+  onClearAssignees,
+  isClearing,
+}) => (
+  <div style={styles.taskCard}>
+    <div style={styles.icon}></div>
+    <div style={styles.info}>
+      {isEditing ? (
+        <>
+          <input
+            type="text"
+            value={editTask.title}
+            onChange={(e) =>
+              setEditTask({ ...editTask, title: e.target.value })
+            }
+            placeholder="Task Title"
+            style={styles.input}
+          />
+          <input
+            type="text"
+            value={editTask.duration}
+            onChange={(e) =>
+              setEditTask({ ...editTask, duration: e.target.value })
+            }
+            placeholder="Task Duration"
+            style={styles.input}
+          />
+          <input
+            type="text"
+            value={editTask.document}
+            onChange={(e) =>
+              setEditTask({ ...editTask, document: e.target.value })
+            }
+            placeholder="Task Document"
+            style={styles.input}
+          />
+          <select
+            value={editTask.status}
+            onChange={(e) =>
+              setEditTask({ ...editTask, status: e.target.value })
+            }
+            style={styles.input}
+           >
+            <option value="None">None</option>
+            <option value="In progress">In progress</option>
+            <option value="Completed">Completed</option>
+            <option value="To Redo">To Redo</option>
+          </select>
+          <button
+            style={styles.clearButton}
+            onClick={() => onClearAssignees(task._id)}
+            disabled={isClearing}
+          >
+            {isClearing ? "Clearing..." : "Clear Assignees"}
           </button>
-        ) : (
-          <button style={styles.defaultButton} onClick={onEdit}>
-            Edit
-          </button>
-        )}
-        <button style={styles.defaultButton} onClick={onDelete}>
-          Delete
-        </button>
-      </div>
+        </>
+      ) : (
+        <>
+          <h3 style={styles.taskTitle}>{task.title}</h3>
+          <p style={styles.duration}>Duration: {task.duration}</p>
+          <p>Status: {task.status || "None"}</p>{" "}
+          {/* Line added: Display `status` */}
+          {task.document && (
+            <a
+              href={`path/to/documents/${task.document}`}
+              download
+              style={styles.documentLink}
+            >
+              {task.document}
+            </a>
+          )}
+          {task.assignedVolunteers && task.assignedVolunteers.length > 0 && (
+            <p style={styles.assignedVolunteer}>
+              Assigned to:{" "}
+              {task.assignedVolunteers
+                .map(
+                  (volunteer) => `${volunteer.firstName} ${volunteer.lastName}`
+                )
+                .join(", ")}
+            </p>
+          )}
+        </>
+      )}
     </div>
-  );    
+    <div style={styles.actions}>
+      {isEditing ? (
+        <button style={styles.defaultButton} onClick={onSave}>
+          Save
+        </button>
+      ) : (
+        <button style={styles.defaultButton} onClick={onEdit}>
+          Edit
+        </button>
+      )}
+      <button style={styles.defaultButton} onClick={onDelete}>
+        Delete
+      </button>
+    </div>
+  </div>
+);    
 
 const styles = {
   tasksPage: {

@@ -128,7 +128,7 @@ const Volunteers = () => {
       <div style={dashboardStyle}>
         <Sidebar />
         <div style={contentStyle}>
-          <h2>Volunteers Page</h2>
+          <h2>Volunteers List</h2>
           <div style={styles.volunteersList}>
             {volunteers.length > 0 ? (
               volunteers.map((volunteer) => (
