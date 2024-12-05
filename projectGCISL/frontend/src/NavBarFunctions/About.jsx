@@ -4,34 +4,29 @@ import './About.css';
 const faqData = [
   {
     id: "item-4",
-    question: "What is GCISL",
-    answer:
-      "GCISL is .",
+    question: "How does the Granger Cobb Institute advance senior living?",
+    answer: "Through education, research, and collaboration."
   },
   {
     id: "item-1",
-    question: "What exactly does this organization do?",
-    answer:
-      "GCISL provides resources and mentorship.",
+    question: "Are events organized to connect students and industry leaders?",
+    answer: "Yes, forums are planned to foster discussions and connections."
   },
   {
     id: "item-5",
-    question: "Do I need to be a certain age to join?",
-    answer:
-      "No, you don't need to be in an engineering major to join our club. We welcome students from all majors. While we target students in STEM fields, every member is an important part of our community.",
+    question: "What does the institute do to improve life for older adults?",
+    answer: "It runs initiatives to enhance wellness and care."
   },
   {
     id: "item-3",
-    question: "How do I join GCISL",
-    answer:
-      "All you need to do is come to our meetings! We welcome all students to join us at our meetings, and we encourage you to bring a friend.",
+    question: "How are hospitality principles used in senior living education?",
+    answer: "By blending hospitality with senior care management."
   },
   {
     id: "item-2",
-    question: "When are the meetings?",
-    answer:
-      "We meet once every two weeks on Wednesdays at 6:00 PM.",
-  },
+    question: "What are the institute’s goals for the senior living industry?",
+    answer: "To drive innovation and improve industry standards."
+  }
 ];
 
 // Accordion Component
@@ -62,11 +57,11 @@ const Accordion = () => {
 
 // Image Carousel Component
 const images = [
-    // '/path/to/image1.jpg',
-  `${process.env.PUBLIC_URL}/aboutUs1.jpeg`,
   `${process.env.PUBLIC_URL}/aboutUs2.jpeg`,
-  // `${process.env.PUBLIC_URL}/darcie_Image.png`,
-  // `${process.env.PUBLIC_URL}/cory_Image.png`,
+  `${process.env.PUBLIC_URL}/aboutUs3.jpg`,
+  `${process.env.PUBLIC_URL}/aboutUs4.webp`,
+  `${process.env.PUBLIC_URL}/aboutUs5.jpg`,
+  `${process.env.PUBLIC_URL}/aboutUs6.jpg`,
 ];
 
 const ImageCarousel = () => {
