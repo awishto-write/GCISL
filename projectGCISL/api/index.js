@@ -31,10 +31,21 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.error('MongoDB connection error:', err));
+// Just Added
+const databaseUri = process.env.NODE_ENV === 'test' ? 
+  process.env.TEST_MONGODB_URI:
+  process.env.MONGODB_URI;
+
+// For local and development
+if (process.env.NODE_ENV !== 'test') {
+  // MongoDB Connection
+  mongoose.connect(databaseUri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+    .then(() => console.log('MongoDB connected'))
+    .catch(err => console.error('MongoDB connection error:', err));
+}
 
 // Define User Schema
 const userSchema = new mongoose.Schema({
@@ -312,7 +323,7 @@ app.post('/api/tasks/:taskId/clear', authenticateJWT, async (req, res) => {
 module.exports = app;
 module.exports.handler = serverless(app); // Required for Vercel serverless
 
-// Only for local development; Vercel will ignore this in production
+// For local and test, Vercel will ignore this in production
 if (process.env.NODE_ENV !== 'production') {
   const PORT = process.env.PORT || 5001; // Local port for testing
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
