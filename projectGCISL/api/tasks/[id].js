@@ -15,7 +15,7 @@ const Task = mongoose.models.Task || mongoose.model('Task', new mongoose.Schema(
   duration: String,
   document: String,
   color: String,
-  status: { type: String, enum: ['None', 'In progress', 'Completed', 'To Redo'], default: 'None' },
+  status: { type: String, enum: ['None', 'In Progress', 'Completed', 'To Redo'], default: 'None' },
   assignedVolunteers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 }));
 

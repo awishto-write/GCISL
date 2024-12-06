@@ -76,9 +76,78 @@ const Volunteers = () => {
     fetchData();
   }, []);
 
-  const handleAssignTask = async (volunteerId, taskId) => {
-    console.log(`Toggling task ${taskId} for volunteer ${volunteerId}`);
+  // const handleAssignTask = async (volunteerId, taskId) => {
+  //   console.log(`Toggling task ${taskId} for volunteer ${volunteerId}`);
     
+  //   const token = localStorage.getItem('token');
+  //   if (!token) {
+  //     console.error('No token found');
+  //     return;
+  //   }
+
+  //   const task = tasks.find(t => t._id === taskId);
+  //   if (!task) {
+  //     console.error(`Task with ID ${taskId} not found`);
+  //     return;
+  //   }
+
+  //   const isAssigned = task.assignedVolunteers.includes(volunteerId);
+
+  //   try {
+  //     const apiUrl = process.env.REACT_APP_API_URL;
+  //     const response = await fetch(`${apiUrl}/api/tasks/${isAssigned ? 'remove' : 'assign'}`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Authorization': `Bearer ${token}`,
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ volunteerId, taskId }),
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error(`Failed to ${isAssigned ? 'remove' : 'assign'} task`);
+  //     }
+
+  //     const result = await response.json();
+  //     console.log(result.message);
+
+  //     // Force state update to trigger rerender
+  //     setTasks(prevTasks =>
+  //       prevTasks.map(t => t._id === taskId ? { ...t, assignedVolunteers: isAssigned ? t.assignedVolunteers.filter(id => id !== volunteerId) : [...t.assignedVolunteers, volunteerId] } : t)
+  //     );
+
+  //     console.log("Updated task assignments:", tasks);
+  //   } catch (error) {
+  //     console.error(`Error ${isAssigned ? 'removing' : 'assigning'} task:`, error);
+  //   }
+  // };
+
+  const refreshTasks = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found');
+      return;
+    }
+
+    try {
+      const apiUrl = process.env.REACT_APP_API_URL;
+      const response = await fetch(`${apiUrl}/api/tasks`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        setTasks(await response.json());
+      }
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+    }
+  };
+
+  const handleAssignTask = async (volunteerId, taskId) => {
     const token = localStorage.getItem('token');
     if (!token) {
       console.error('No token found');
@@ -91,36 +160,30 @@ const Volunteers = () => {
       return;
     }
 
-    const isAssigned = task.assignedVolunteers.includes(volunteerId);
+    const isAssigned = task.assignedVolunteers.some(vol => vol._id === volunteerId);
 
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
-      const response = await fetch(`${apiUrl}/api/tasks/${isAssigned ? 'remove' : 'assign'}`, {
+      const endpoint = `${apiUrl}/api/tasks/${isAssigned ? 'remove' : 'assign'}`;
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ volunteerId, taskId }),
       });
 
-      if (!response.ok) {
-        throw new Error(`Failed to ${isAssigned ? 'remove' : 'assign'} task`);
+      if (response.ok) {
+        await refreshTasks();
+        setSelectedVolunteer(null);
+        setHoveredTaskId(null);
       }
-
-      const result = await response.json();
-      console.log(result.message);
-
-      // Force state update to trigger rerender
-      setTasks(prevTasks =>
-        prevTasks.map(t => t._id === taskId ? { ...t, assignedVolunteers: isAssigned ? t.assignedVolunteers.filter(id => id !== volunteerId) : [...t.assignedVolunteers, volunteerId] } : t)
-      );
-
-      console.log("Updated task assignments:", tasks);
     } catch (error) {
-      console.error(`Error ${isAssigned ? 'removing' : 'assigning'} task:`, error);
+      console.error('Error assigning/removing task:', error);
     }
   };
+
 
   return (
     <div>
