@@ -321,7 +321,7 @@ const TaskCard = ({
             style={styles.input}
            >
             <option value="None">None</option>
-            <option value="In progress">In progress</option>
+            <option value="In Progress">In Progress</option>
             <option value="Completed">Completed</option>
             <option value="To Redo">To Redo</option>
           </select>

@@ -176,7 +176,7 @@ const taskSchema = new mongoose.Schema({
   duration: String,
   document: String,
   color: String,
-  status: { type: String, enum: ['None', 'In progress', 'Completed', 'To Redo'], default: 'None' }, // Just added
+  status: { type: String, enum: ['None', 'In Progress', 'Completed', 'To Redo'], default: 'None' }, // Just added
   assignedVolunteers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] // Updated to store multiple volunteers
 });
 
@@ -232,38 +232,94 @@ app.post('/api/tasks', authenticateJWT, async (req, res) => {
   }
 });
 
-// Route to assign multiple volunteers to a task
+// // Route to assign multiple volunteers to a task
+// app.post('/api/tasks/assign', authenticateJWT, async (req, res) => {
+//   const { volunteerId, taskId } = req.body;
+
+//   try {
+//     const task = await Task.findById(taskId);
+//     const volunteer = await User.findById(volunteerId);
+
+//     if (!task || !volunteer) {
+//       return res.status(404).json({ message: 'Task or Volunteer not found.' });
+//     }
+
+//     if (!task.assignedVolunteers.includes(volunteerId)) {
+//       task.assignedVolunteers.push(volunteerId);
+//       await task.save();
+//     }
+
+//     res.json({ message: 'Task assigned to volunteer successfully.' });
+//   } catch (error) {
+//     res.status(500).json({ message: 'Error assigning task.' });
+//   }
+// });
+
+// // Route to remove a volunteer from a task
+// app.post('/api/tasks/remove', authenticateJWT, async (req, res) => {
+//   const { volunteerId, taskId } = req.body;
+
+//   try {
+//     const task = await Task.findById(taskId);
+//     if (!task) {
+//       return res.status(404).json({ message: 'Task not found.' });
+//     }
+
+//     task.assignedVolunteers = task.assignedVolunteers.filter(id => id.toString() !== volunteerId);
+//     await task.save();
+
+//     res.json({ message: 'Volunteer removed from task successfully.' });
+//   } catch (error) {
+//     res.status(500).json({ message: 'Error removing volunteer from task.' });
+//   }
+// });
+
 app.post('/api/tasks/assign', authenticateJWT, async (req, res) => {
   const { volunteerId, taskId } = req.body;
+
+  console.log('Request body:', req.body); // Debug incoming data
 
   try {
     const task = await Task.findById(taskId);
     const volunteer = await User.findById(volunteerId);
 
-    if (!task || !volunteer) {
-      return res.status(404).json({ message: 'Task or Volunteer not found.' });
-    }
+    console.log('Task found:', task);
+    console.log('Volunteer found:', volunteer);
 
-    if (!task.assignedVolunteers.includes(volunteerId)) {
+    if (!task) return res.status(404).json({ message: 'Task not found.' });
+
+    // if (!task.assignedVolunteers.includes(volunteerId)) {
+    //   task.assignedVolunteers.push(volunteerId);
+    //   await task.save();
+    // }
+
+    if (!task.assignedVolunteers.some(id => id.toString() === volunteerId)) {
       task.assignedVolunteers.push(volunteerId);
       await task.save();
+      console.log('Volunteer assigned successfully.');
+    } else {
+      console.log('Volunteer is already assigned to this task.');
     }
 
     res.json({ message: 'Task assigned to volunteer successfully.' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error assigning task.' });
+  } 
+  // catch (error) {
+  //   res.status(500).json({ message: 'Error assigning task.' });
+  // }
+   catch (error) {
+  console.error('Error assigning task:', error.message);
+  console.error('Stack trace:', error.stack);
+  res.status(500).json({ message: 'Error assigning task.' });
   }
+
 });
 
-// Route to remove a volunteer from a task
 app.post('/api/tasks/remove', authenticateJWT, async (req, res) => {
   const { volunteerId, taskId } = req.body;
 
   try {
     const task = await Task.findById(taskId);
-    if (!task) {
-      return res.status(404).json({ message: 'Task not found.' });
-    }
+    if (!task) return res.status(404).json({ message: 'Task not found.' });
 
     task.assignedVolunteers = task.assignedVolunteers.filter(id => id.toString() !== volunteerId);
     await task.save();

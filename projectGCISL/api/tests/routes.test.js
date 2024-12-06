@@ -234,10 +234,10 @@ describe('API Routes', () => {
     const response = await request(app)
       .put(`/api/tasks/${createdTaskId}`)
       .set('Authorization', `Bearer ${token}`)
-      .send({ status: 'In progress' });
+      .send({ status: 'In Progress' });
 
     expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty('status', 'In progress');
+    expect(response.body).toHaveProperty('status', 'In Progress');
   });
 
   // Test for deleting a task
