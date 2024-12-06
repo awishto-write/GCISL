@@ -37,10 +37,12 @@ Here's what went well:
  * Updated admin and volunteer view (task assignment, task notifications, volunteer list)
  * Connected tasks and volunteers successfully to MongoDB
  * Corrected Deployment Issues to match our local code
+   
 Here's what we'd like to improve: 
   * We should get better at having 2+ lines with in depth descriptions for our commits
   * We should get better at creating a pull request for our all our commits and associate them with our issues
   * We should, as individual team member, get better at making comments on our teammates pull request and mention potential areas to improve each other code quality and functionality
+    
 Here are changes we plan to implement in the next sprint: 
   * Fix windows sizing so that mobile, web and everything between makes sense
   * Completing/Creating the Logs/Report pages
