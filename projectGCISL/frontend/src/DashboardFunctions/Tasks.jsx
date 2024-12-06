@@ -1,13 +1,48 @@
 import React, { useState, useEffect } from 'react';
+import AdminNavBar from '../ClassComponents/AdminNavBar';
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);
+  const [user, setUser] = useState({ firstName: '', lastName: '', email: '' });
   const [isLoading, setIsLoading] = useState(true); // Loading state added
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [editTask, setEditTask] = useState({ title: '', duration: '', document: '', status: '' });
   const [isClearing, setIsClearing] = useState(false);
 
   useEffect(() => {
+    // Fetch the current user data
+    const fetchUserData = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('No token found');
+        return;
+      }
+
+      try {
+        const apiUrl = process.env.REACT_APP_API_URL;
+        const response = await fetch(`${apiUrl}/api/user`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setUser({
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email,
+          });
+        } else {
+          console.error('Error fetching user data:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
     const fetchTasks = async () => {
       const token = localStorage.getItem('token');
       if (!token) {
@@ -38,7 +73,7 @@ const Tasks = () => {
         setIsLoading(false); // Stop loading after fetch completes
       }
     };
-
+    fetchUserData();
     fetchTasks();
   }, []);
 
@@ -196,33 +231,43 @@ const Tasks = () => {
   }
 
   return (
-    <div style={styles.tasksPage}>
-      <div style={styles.tasksHeader}>
-        <h2>Tasks</h2>
-        <button style={styles.addTaskButton} onClick={handleAddTestTask}>+ Create Task</button>
-      </div>
-      <div style={styles.tasksList}>
-        {tasks.length > 0 ? (
-          tasks.map((task) => (
-            <TaskCard
-              key={task._id}
-              task={task}
-              isEditing={editingTaskId === task._id}
-              editTask={editTask}
-              setEditTask={setEditTask}
-              onEdit={() => handleEditTask(task)}
-              onSave={handleSaveEdit}
-              onDelete={() => handleDeleteTask(task._id)}
-              onClearAssignees={handleClearAssignees}
-              isClearing={isClearing}
-            />
-          ))
-        ) : (
-          <p>No tasks available</p>
-        )}
+    <div>
+      <AdminNavBar
+        role="ADMIN"
+        firstName={user.firstName}
+        lastInitial={user.lastName.charAt(0)}
+      />
+      <div style={styles.tasksPage}>
+        <div style={styles.tasksHeader}>
+          <h2>Tasks</h2>
+          <button style={styles.addTaskButton} onClick={handleAddTestTask}>
+            + Create Task
+          </button>
+        </div>
+        <div style={styles.tasksList}>
+          {tasks.length > 0 ? (
+            tasks.map((task) => (
+              <TaskCard
+                key={task._id}
+                task={task}
+                isEditing={editingTaskId === task._id}
+                editTask={editTask}
+                setEditTask={setEditTask}
+                onEdit={() => handleEditTask(task)}
+                onSave={handleSaveEdit}
+                onDelete={() => handleDeleteTask(task._id)}
+                onClearAssignees={handleClearAssignees}
+                isClearing={isClearing}
+              />
+            ))
+          ) : (
+            <p>No tasks available</p>
+          )}
+        </div>
       </div>
     </div>
   );
+
 };
 
 const TaskCard = ({
