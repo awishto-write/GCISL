@@ -134,9 +134,11 @@ Currently, there are no known problems.
 * Sprint reports
    - [Sprint 1](https://github.com/awishto-write/GCISL/blob/main/Sprints/Sprint1)
    - [Sprint 2](https://github.com/awishto-write/GCISL/blob/main/Sprints/Sprint2)
+   - [Sprint 3](https://github.com/awishto-write/GCISL/blob/main/Sprints/Sprint3)
 * [Documentations](https://github.com/awishto-write/GCISL/blob/main/ProjectDocumentations)
 * [Meetings Minutes](https://github.com/awishto-write/GCISL/blob/main/MeetingsMinutes)
 * [Skill Trainings](https://github.com/awishto-write/GCISL/blob/main/SkillTraining)
+* [Presentations](https://github.com/awishto-write/GCISL/blob/main/Presentations)
 * User link: [Site Link](https://gciconnect.vercel.app/)
 
 ## License
