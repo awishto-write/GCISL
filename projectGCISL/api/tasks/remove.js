@@ -12,7 +12,9 @@ if (mongoose.connection.readyState === 0) {
 
 const Task = mongoose.models.Task || mongoose.model('Task', new mongoose.Schema({
   title: String,
-  duration: String,
+  //duration: String,
+  creationDate: { type: Date, required: true, default: Date.now },
+  dueDate: { type: Date, required: false },
   document: String,
   color: String,
   status: { type: String, enum: ['None', 'In Progress', 'Completed', 'To Redo'], default: 'None' },

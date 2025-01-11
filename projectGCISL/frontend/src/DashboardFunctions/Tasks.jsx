@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import AdminNavBar from '../ClassComponents/AdminNavBar';
+import "react-datetime/css/react-datetime.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { FormatDate } from '../ClassComponents/FormatDate';
+import DateInputWithIcon from '../ClassComponents/DateInputWithIcon';
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);
   const [user, setUser] = useState({ firstName: '', lastName: '', email: '' });
   const [isLoading, setIsLoading] = useState(true); // Loading state added
   const [editingTaskId, setEditingTaskId] = useState(null);
-  const [editTask, setEditTask] = useState({ title: '', duration: '', document: '', status: '' });
+  //const [editTask, setEditTask] = useState({ title: '', duration: '', document: '', status: '' });
+  const [editTask, setEditTask] = useState({ title: '', creationDate: new Date(), dueDate: null, document: '', status: 'None'});
   const [isClearing, setIsClearing] = useState(false);
 
   useEffect(() => {
@@ -80,9 +86,11 @@ const Tasks = () => {
   const handleAddTestTask = async () => {
     const newTask = {
       title: 'TASK',
-      duration: '(mm/dd/yyyy) - (mm/dd/yyyy)',
-      document: '',
-      status: 'None', // Line added: Default status
+      //duration: '(mm/dd/yyyy) - (mm/dd/yyyy)',
+      creationDate: new Date(), // Set current date for creation
+      dueDate: null, // Leave due date empty
+      document: '',  // Should we have description instead of document?
+      status: 'None',
     };
 
     const token = localStorage.getItem('token');
@@ -147,7 +155,6 @@ const Tasks = () => {
       console.error('Error updating task:', error);
     }
   };
-  
 
   const handleDeleteTask = async (id) => {
     const token = localStorage.getItem('token');
@@ -295,7 +302,7 @@ const TaskCard = ({
             placeholder="Task Title"
             style={styles.input}
           />
-          <input
+          {/* <input
             type="text"
             value={editTask.duration}
             onChange={(e) =>
@@ -303,7 +310,16 @@ const TaskCard = ({
             }
             placeholder="Task Duration"
             style={styles.input}
-          />
+          /> */}
+             {/* <p style={styles.input}>
+              Creation Date: {FormatDate(editTask.creationDate)}
+            </p> */}
+          <DatePicker
+            selected={editTask.dueDate}
+            onChange={(date) => setEditTask({ ...editTask, dueDate: date })}
+            dateFormat="yyyy-MM-dd"
+            placeholderText="Due Date"
+            customInput={<DateInputWithIcon />} />
           <input
             type="text"
             value={editTask.document}
@@ -336,8 +352,15 @@ const TaskCard = ({
       ) : (
         <>
           <h3 style={styles.taskTitle}>{task.title}</h3>
-          <p style={styles.duration}>Duration: {task.duration}</p>
-          <p>Status: {task.status || "None"}</p>{" "}
+          {/* <p style={styles.duration}>Duration: {task.duration}</p> */}
+          <p style={styles.taskDetails}>
+            <strong>Creation Date:</strong> {FormatDate(task.creationDate)}
+          </p>
+          <p style={styles.taskDetails}>
+            <strong>Due Date:</strong> {task.dueDate ? FormatDate(task.dueDate) : "Not Set"}
+          </p>
+          {/* <p>Status: {task.status || "None"}</p>{" "} */}
+          <p style={styles.taskDetails}><strong>Status:</strong> {task.status || "None"}</p>
           {/* Line added: Display `status` */}
           {task.document && (
             <a
@@ -350,7 +373,7 @@ const TaskCard = ({
           )}
           {task.assignedVolunteers && task.assignedVolunteers.length > 0 && (
             <p style={styles.assignedVolunteer}>
-              Assigned to:{" "}
+              <strong>Assigned to:{" "}</strong>
               {task.assignedVolunteers
                 .map(
                   (volunteer) => `${volunteer.firstName} ${volunteer.lastName}`
@@ -428,8 +451,13 @@ const styles = {
   info: {
     flex: 1,
   },
+  // taskTitle: {
+  //   margin: '0 0 0.2rem 0',
+  // },
   taskTitle: {
-    margin: '0 0 0.2rem 0',
+    fontSize: '1.2rem',
+    fontWeight: 'bold',
+    marginBottom: '0.5rem',
   },
   duration: {
     color: '#666',
@@ -471,6 +499,9 @@ const styles = {
     cursor: 'pointer',
     borderRadius: '5px',
     marginTop: '0.5rem',
+  },
+  taskDetails: {
+    marginBottom: '0.2rem', // Adds spacing between each detail
   },
 };
 

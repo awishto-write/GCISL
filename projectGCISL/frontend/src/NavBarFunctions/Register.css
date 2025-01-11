@@ -131,3 +131,24 @@ html, body {
 .form-register .field .auth-btn:active {
   transform: scale(0.95);
 }
+
+/* .p-register { 
+  text-align: center; 
+  margin-top: 20px; 
+} */
+
+.p-register { /* Unique class for login paragraph */
+  text-align: center; /* Center the paragraph text */
+  margin-top: 20px; /* Margin on top */
+  width: 100%; /* Ensure it spans the full width */
+  display: flex; /* Use flexbox for alignment */
+  justify-content: center; /* Center content horizontally */
+  gap: 5px; /* Add spacing between elements */
+}
+.p-register a { /* Unique class for login links */
+  color: #007bff; /* Link color */
+  text-decoration: none; /* Remove underline */
+}
+.p-register a:hover { /* Hover effect for login links */
+  text-decoration: underline; /* Underline on hover */
+}

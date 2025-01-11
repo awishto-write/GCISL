@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AdminNavBar from '../ClassComponents/AdminNavBar';
 import VolunteerSidebar from '../ClassComponents/VolunteerSidebar';
+import { FormatDate } from '../ClassComponents/FormatDate';
 
 const VolunteerTasks = () => {
   const [tasks, setTasks] = useState([]);
@@ -8,7 +9,7 @@ const VolunteerTasks = () => {
   const [taskCount, setTaskCount] = useState(() => {
     // Initialize taskCount from localStorage, default to 0 if not present
     const savedCount = localStorage.getItem('taskCount');
-    return savedCount ? parseInt(savedCount, 10) : 0;
+    return savedCount ? parseInt(savedCount, 10) : 0; //  Using 10 ensures the string is interpreted as a decimal number (base 10)
   });
 
   useEffect(() => {
@@ -133,34 +134,33 @@ const VolunteerTasks = () => {
         lastInitial={user.lastName.charAt(0)}
       />
       <div style={styles.dashboard}>
-        {/* <VolunteerSidebar /> */}
         <VolunteerSidebar taskCount={taskCount} /> {/* Pass taskCount to Sidebar */}
         <div style={styles.content}>
-          <h2>My Tasks</h2>
-          <div style={styles.taskGrid}>
+          <div style={styles.tasksHeader}>
+            <h2>My Tasks</h2>
+          </div>
+          <div style={styles.tasksList}>
             {tasks.length > 0 ? (
               tasks.map((task) => (
                 <div key={task._id} style={styles.taskCard}>
-                  <h3>{task.title}</h3>
-                  <p>
-                    <strong>Duration:</strong> {task.duration}
-                  </p>
-                  <p>
-                    <strong>Status:</strong> {task.status || "None"}
-                  </p>
-                  <p>
-                    <strong>Description:</strong> {task.description}
-                  </p>
-
-                  <div style={styles.actions}>
-                    <div style={styles.dropdownContainer}>
+                  <div style={styles.taskInfo}>
+                    <h3 style={styles.taskTitle}>{task.title}</h3>
+                    <p style={styles.taskDetails}>
+                      <strong>Due Date:</strong> {FormatDate(task.dueDate) || "Not Set"}
+                    </p>
+                    <p style={styles.taskDetails}>
+                      <strong>Status:</strong> {task.status || "None"}
+                    </p>
+                    <p>
+                      <strong>Document:</strong> {task.document || "No document"}
+                    </p>
+          
+                   <div style={styles.actions}>
+                     <div style={styles.dropdownContainer}>
                       <select
                         style={styles.statusSelect}
                         value={task.status || "None"}
-                        onChange={(e) =>
-                          updateTaskStatus(task._id, e.target.value)
-                        }
-                      >
+                        onChange={(e) => updateTaskStatus(task._id, e.target.value)}>
                         <option value="None" disabled>
                           Select Status
                         </option>
@@ -170,8 +170,9 @@ const VolunteerTasks = () => {
                       <span style={styles.dropdownArrow}>▼</span>
                     </div>
                   </div>
-                
                 </div>
+                </div>
+                
               ))
             ) : (
               <p>No tasks assigned.</p>
@@ -181,41 +182,63 @@ const VolunteerTasks = () => {
       </div>
     </div>
   );
-};
+};  
 
 const styles = {
   dashboard: {
     display: 'flex',
   },
   content: {
-    marginLeft: '200px',
-    padding: '1rem',
+    marginLeft: '180px', // Aligns with the sidebar
+    padding: '2rem',
+    width: 'calc(100vw - 180px)', // Adjust width based on the sidebar
+    boxSizing: 'border-box',
   },
-  taskGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-    gap: '1rem',
+
+  tasksHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderBottom: '2px solid #ccc', // Separating bar like in Admin Tasks
+    paddingBottom: '0.5rem',
+    marginBottom: '1rem', // Space below the header
+  },
+  tasksList: {
+    display: 'flex',
+    flexDirection: 'column', // Stack tasks vertically
+    gap: '1rem', // Space between tasks
   },
   taskCard: {
+    display: 'flex',
+    alignItems: 'center',
     backgroundColor: '#fff',
     border: '1px solid #ddd',
     borderRadius: '5px',
     padding: '1rem',
     boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+    width: '100%', // Full width
   },
+  
+  icon: {
+    width: '50px',
+    height: '50px',
+    borderRadius: '5px',
+    backgroundColor: '#d9534f',
+    marginRight: '1rem',
+  },
+  taskInfo: {
+    flex: 1, // Allow task details to stretch
+  },
+  taskTitle: {
+    fontSize: '1.2rem',
+    fontWeight: 'bold',
+    marginBottom: '0.5rem',
+  },
+
   actions: {
     display: 'flex',
     gap: '1rem',
-    marginTop: '1rem',
-  },
-  statusButton: {
-    backgroundColor: '#007bff',
-    color: 'white',
-    border: 'none',
-    padding: '0.5rem 1rem',
-    fontSize: '1rem',
-    cursor: 'pointer',
-    borderRadius: '5px',
+      marginTop: '1rem',
   },
   dropdownContainer: {
     position: 'relative',
@@ -235,7 +258,7 @@ const styles = {
     appearance: 'none', // Hides the default dropdown arrow
     textAlign: 'center',
   },
-  
+
   dropdownArrow: {
     position: 'absolute',
     top: '50%',
@@ -244,6 +267,9 @@ const styles = {
     fontSize: '1rem',
     color: '#fff', // Match text color
     pointerEvents: 'none', // Prevent interaction with the arrow
+  },
+  taskDetails: {
+    marginBottom: '0.2rem', // Adds spacing between each detail
   },
 };
 
