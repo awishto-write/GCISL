@@ -10,7 +10,9 @@ if (mongoose.connection.readyState === 0) {
 
 const Task = mongoose.models.Task || mongoose.model('Task', new mongoose.Schema({
   title: String,
-  duration: String,
+  //duration: String,
+  creationDate: { type: Date, required: true, default: Date.now },
+  dueDate: { type: Date, required: false },
   document: String,
   color: String,
   status: String,
@@ -25,8 +27,10 @@ module.exports = async (req, res) => {
       const tasks = await Task.find({}).populate('assignedVolunteers', 'firstName lastName');
       res.status(200).json(tasks);
     } else if (method === 'POST') {
-      const { title, duration, document, color, status } = req.body;
-      const newTask = await Task.create({ title, duration, document, color, status });
+      // const { title, duration, document, color, status } = req.body;
+      // const newTask = await Task.create({ title, duration, document, color, status });
+      const { title, creationDate, dueDate, document, color, status } = req.body;
+      const newTask = await Task.create({ title, creationDate, dueDate, document, color, status });
       res.status(201).json(newTask);
     } else {
       res.status(405).json({ error: 'Method Not Allowed' });

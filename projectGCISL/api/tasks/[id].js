@@ -12,7 +12,9 @@ if (mongoose.connection.readyState === 0) {
 
 const Task = mongoose.models.Task || mongoose.model('Task', new mongoose.Schema({
   title: String,
-  duration: String,
+  //duration: String,
+  creationDate: { type: Date, required: true, default: Date.now },
+  dueDate: { type: Date, required: false },
   document: String,
   color: String,
   status: { type: String, enum: ['None', 'In Progress', 'Completed', 'To Redo'], default: 'None' },
@@ -22,12 +24,14 @@ const Task = mongoose.models.Task || mongoose.model('Task', new mongoose.Schema(
 module.exports = async (req, res) => {
   if (req.method === 'PUT') {
     const { id } = req.query;
-    const { title, duration, document, color, status } = req.body;
+    //const { title, duration, document, color, status } = req.body;
+    const { title, creationDate, dueDate, document, color, status } = req.body;
 
     try {
       const task = await Task.findByIdAndUpdate(
         id,
-        { title, duration, document, color, status },
+        // { title, duration, document, color, status },
+        { title, creationDate, dueDate, document, color, status },
         { new: true }
       );
 

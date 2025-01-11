@@ -7,7 +7,9 @@ const VolunteerSidebar = ({ taskCount }) => {
         <ul style={listStyle}>
           <li style={listItemStyle}><SidebarLink to="/vdashboard/volunteers">Volunteers</SidebarLink></li>
           <li style={listItemStyle}>
-            <SidebarLink to="/vdashboard/tasks"> Tasks {taskCount > 0 ? `(${taskCount})` : ''} </SidebarLink>
+            <SidebarLink to="/vdashboard/tasks">
+                Tasks {taskCount > 0 ? <span style={{ color: '#a32436' }}>({taskCount})</span> : ''}
+            </SidebarLink>
           </li>
           <li style={listItemStyle}><SidebarLink to="/vdashboard/researches">Researches</SidebarLink></li>
           <li style={listItemStyle}><SidebarLink to="/vdashboard/logs">Logs</SidebarLink> </li>

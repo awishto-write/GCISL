@@ -173,11 +173,13 @@ app.get('/api/users', authenticateJWT, async (req, res) => {
 // Define Task Schema
 const taskSchema = new mongoose.Schema({
   title: String,
-  duration: String,
+  //duration: String,
+  creationDate: { type: Date, required: true, default: Date.now },
+  dueDate: { type: Date, required: false },
   document: String,
   color: String,
-  status: { type: String, enum: ['None', 'In Progress', 'Completed', 'To Redo'], default: 'None' }, // Just added
-  assignedVolunteers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] // Updated to store multiple volunteers
+  status: { type: String, enum: ['None', 'In Progress', 'Completed', 'To Redo'], default: 'None' },
+  assignedVolunteers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 });
 
 const Task = mongoose.model('Task', taskSchema);
@@ -221,10 +223,12 @@ app.get('/api/volunteer-task-count', authenticateJWT, async (req, res) => {
 
 
 app.post('/api/tasks', authenticateJWT, async (req, res) => {
-  const { title, duration, document, color, status } = req.body;
+  //const { title, duration, document, color, status } = req.body;
+  const { title, creationDate, dueDate, document, color, status } = req.body;
 
   try {
-    const newTask = new Task({ title, duration, document, color, status });
+   // const newTask = new Task({ title, duration, document, color, status });
+    const newTask = new Task({ title, creationDate, dueDate, document, color, status });
     await newTask.save();
     res.status(201).json(newTask);
   } catch (error) {
@@ -333,9 +337,11 @@ app.post('/api/tasks/remove', authenticateJWT, async (req, res) => {
 // Update, Delete, and Protected Routes
 // The status has been added
 app.put('/api/tasks/:id', authenticateJWT, async (req, res) => {
-  const { title, duration, document, color, status } = req.body;
+  //const { title, duration, document, color, status } = req.body;
+  const { title, creationDate, dueDate, document, color, status } = req.body;
   try {
-    const task = await Task.findByIdAndUpdate(req.params.id, { title, duration, document, color, status }, { new: true });
+    //const task = await Task.findByIdAndUpdate(req.params.id, { title, duration, document, color, status }, { new: true });
+    const task = await Task.findByIdAndUpdate(req.params.id, { title, creationDate, dueDate, document, color, status }, { new: true });
     if (!task){
       return res.status(404).json({ message: 'Task not found.' });
     }

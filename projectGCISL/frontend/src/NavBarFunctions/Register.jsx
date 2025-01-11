@@ -1,6 +1,6 @@
 // Register.jsx
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Register.css';
 
 const Register = () => {
@@ -122,16 +122,13 @@ const Register = () => {
             <option value="admin">Admin</option>
             <option value="volunteer">Volunteer</option>
           </select>
-          {/* <label>Select Status</label>  */}
-          {/*  Added the label above and commented the one that was in "option" */}
         </div>
         <div className="field">
           <input type="submit" value="Submit" className="auth-btn" />
         </div>
-        {/* <p className="p-register">
-          Already a member? <Link to="/login">Login here</Link>
-        </p> */}
-        {/* Plan to add something related to login */}
+        <p className="p-register">
+          Already a member? <Link to="/login"> Login here</Link>
+        </p>
       </form>
     </div>
   );
