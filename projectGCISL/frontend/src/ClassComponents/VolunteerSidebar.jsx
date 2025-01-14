@@ -11,8 +11,6 @@ const VolunteerSidebar = ({ taskCount }) => {
                 Tasks {taskCount > 0 ? <span style={{ color: '#a32436' }}>({taskCount})</span> : ''}
             </SidebarLink>
           </li>
-          <li style={listItemStyle}><SidebarLink to="/vdashboard/researches">Researches</SidebarLink></li>
-          <li style={listItemStyle}><SidebarLink to="/vdashboard/logs">Logs</SidebarLink> </li>
           <li style={listItemStyle}><SidebarLink to="/dashboard/logout">Logout</SidebarLink></li>
         </ul>
       </div>

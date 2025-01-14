@@ -8,7 +8,6 @@ const Sidebar = () => {
       <ul style={listStyle}>
         <li style={listItemStyle}><SidebarLink to="/dashboard/volunteers">Volunteers</SidebarLink></li>
         <li style={listItemStyle}><SidebarLink to="/dashboard/tasks">Tasks</SidebarLink></li>
-        <li style={listItemStyle}><SidebarLink to="/dashboard/researches">Researches</SidebarLink></li>
         <li style={listItemStyle}><SidebarLink to="/dashboard/logs">Logs</SidebarLink></li>
         <li style={listItemStyle}><SidebarLink to="/dashboard/logout">Logout</SidebarLink></li>
       </ul>
