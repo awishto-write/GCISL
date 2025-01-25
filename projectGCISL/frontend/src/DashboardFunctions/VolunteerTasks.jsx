@@ -145,15 +145,10 @@ const VolunteerTasks = () => {
                 <div key={task._id} style={styles.taskCard}>
                   <div style={styles.taskInfo}>
                     <h3 style={styles.taskTitle}>{task.title}</h3>
-                    <p style={styles.taskDetails}>
-                      <strong>Due Date:</strong> {FormatDate(task.dueDate) || "Not Set"}
-                    </p>
-                    <p style={styles.taskDetails}>
-                      <strong>Status:</strong> {task.status || "None"}
-                    </p>
-                    <p>
-                      <strong>Document:</strong> {task.document || "No document"}
-                    </p>
+                    <p style={styles.taskDetails}><strong>Due Date:</strong> {FormatDate(task.dueDate) || "Not Set"}</p>
+                    <p style={styles.taskDetails}><strong>Status:</strong> {task.status || "None"} </p>
+                    <p style={styles.taskDetails}><strong>Description:</strong> {task.description || "None"}</p>
+                    <p style={styles.taskDetails}><strong>Created By:</strong> {task.createdBy || "N/A"}</p>
           
                    <div style={styles.actions}>
                      <div style={styles.dropdownContainer}>

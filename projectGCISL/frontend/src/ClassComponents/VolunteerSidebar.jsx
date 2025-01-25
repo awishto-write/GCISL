@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const VolunteerSidebar = ({ taskCount }) => {
     return (
@@ -54,21 +54,31 @@ const linkStyle = {
   transition: 'background-color 0.3s, box-shadow 0.3s'
 };
 
-const SidebarLink = ({ to, children }) => (
-  <Link
-    to={to}
-    style={linkStyle}
-    onMouseOver={(e) => {
-      e.target.style.backgroundColor = '#f0f0f0';
-      e.target.style.boxShadow = 'inset 0 0 5px #aaa';
-    }}
-    onMouseOut={(e) => {
-      e.target.style.backgroundColor = '';
-      e.target.style.boxShadow = '';
-    }}
-  >
-    {children}
-  </Link>
-);
+const SidebarLink = ({ to, children }) => {
+  const location = useLocation();
+  const isActive = location.pathname === to;
+
+  return (
+    <Link
+      to={to}
+      style={{
+        ...linkStyle,
+        backgroundColor: isActive ? '#e0e0e0' : '', // Highlight active link
+        fontWeight: isActive ? 'bold' : '', // Optional for distinction
+      }}
+      onMouseOver={(e) => {
+        e.target.style.backgroundColor = '#f0f0f0';
+        e.target.style.boxShadow = 'inset 0 0 5px #aaa';
+      }}
+      onMouseOut={(e) => {
+        e.target.style.backgroundColor = isActive ? '#e0e0e0' : ''; // Retain active style
+        e.target.style.boxShadow = '';
+      }}
+    >
+      {children}
+    </Link>
+  );
+};
+
 
 export default VolunteerSidebar;
