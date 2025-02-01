@@ -68,6 +68,15 @@ const allowedAdminNames = [
   'Cory Bolkan',
 ];
 
+const logSchema = new mongoose.Schema({
+  action: { type: String, required: true }, // "Task Created" or "Task Deleted"
+  taskTitle: { type: String, required: true }, // Task title
+  assignees: [{ type: String }], // Array of assignee names
+  creationDate: { type: Date, required: true }, // Task creation date
+  dueDate: { type: Date }, // Task due date
+});
+const Log = mongoose.model('Log', logSchema);
+
 // Register Route
 app.post('/api/register', async (req, res) => {
   console.log('Request received:', req.body);
@@ -173,12 +182,12 @@ app.get('/api/users', authenticateJWT, async (req, res) => {
 // Define Task Schema
 const taskSchema = new mongoose.Schema({
   title: String,
-  //duration: String,
   creationDate: { type: Date, required: true, default: Date.now },
   dueDate: { type: Date, required: false },
-  document: String,
   color: String,
   status: { type: String, enum: ['None', 'In Progress', 'Completed', 'To Redo'], default: 'None' },
+  description: { type: String, default: '' }, // Add description
+  createdBy: { type: String, required: true }, // Add createdBy
   assignedVolunteers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 });
 
@@ -221,62 +230,49 @@ app.get('/api/volunteer-task-count', authenticateJWT, async (req, res) => {
   }
 });
 
-
 app.post('/api/tasks', authenticateJWT, async (req, res) => {
-  //const { title, duration, document, color, status } = req.body;
-  const { title, creationDate, dueDate, document, color, status } = req.body;
+  const { title, creationDate, dueDate, color, status, description, assignedVolunteers } = req.body;
 
   try {
-   // const newTask = new Task({ title, duration, document, color, status });
-    const newTask = new Task({ title, creationDate, dueDate, document, color, status });
+    // Get the authenticated user
+    const user = await User.findById(req.userId);
+
+    // Create the new task
+    const newTask = new Task({
+      title,
+      creationDate,
+      dueDate,
+      color,
+      status,
+      description,
+      createdBy: `${user.firstName} ${user.lastName}`,
+      assignedVolunteers,
+    });
     await newTask.save();
+
+    // Fetch assignee names if assignedVolunteers exist
+    const assigneeNames = assignedVolunteers
+      ? (
+          await User.find({ _id: { $in: assignedVolunteers } })
+        ).map((assignee) => `${assignee.firstName} ${assignee.lastName}`)
+      : [];
+
+    // Create a log for the task creation
+    const newLog = new Log({
+      action: `Task Created by Admin: ${user.firstName} ${user.lastName}`,
+      taskTitle: title,
+      assignees: assigneeNames,
+      creationDate,
+      dueDate,
+    });
+    await newLog.save();
+
     res.status(201).json(newTask);
   } catch (error) {
+    console.error('Error creating task:', error);
     res.status(400).json({ message: 'Error creating task.' });
   }
 });
-
-// // Route to assign multiple volunteers to a task
-// app.post('/api/tasks/assign', authenticateJWT, async (req, res) => {
-//   const { volunteerId, taskId } = req.body;
-
-//   try {
-//     const task = await Task.findById(taskId);
-//     const volunteer = await User.findById(volunteerId);
-
-//     if (!task || !volunteer) {
-//       return res.status(404).json({ message: 'Task or Volunteer not found.' });
-//     }
-
-//     if (!task.assignedVolunteers.includes(volunteerId)) {
-//       task.assignedVolunteers.push(volunteerId);
-//       await task.save();
-//     }
-
-//     res.json({ message: 'Task assigned to volunteer successfully.' });
-//   } catch (error) {
-//     res.status(500).json({ message: 'Error assigning task.' });
-//   }
-// });
-
-// // Route to remove a volunteer from a task
-// app.post('/api/tasks/remove', authenticateJWT, async (req, res) => {
-//   const { volunteerId, taskId } = req.body;
-
-//   try {
-//     const task = await Task.findById(taskId);
-//     if (!task) {
-//       return res.status(404).json({ message: 'Task not found.' });
-//     }
-
-//     task.assignedVolunteers = task.assignedVolunteers.filter(id => id.toString() !== volunteerId);
-//     await task.save();
-
-//     res.json({ message: 'Volunteer removed from task successfully.' });
-//   } catch (error) {
-//     res.status(500).json({ message: 'Error removing volunteer from task.' });
-//   }
-// });
 
 app.post('/api/tasks/assign', authenticateJWT, async (req, res) => {
   const { volunteerId, taskId } = req.body;
@@ -336,33 +332,142 @@ app.post('/api/tasks/remove', authenticateJWT, async (req, res) => {
 
 // Update, Delete, and Protected Routes
 // The status has been added
+// app.put('/api/tasks/:id', authenticateJWT, async (req, res) => {
+//   const { title, creationDate, dueDate, color, status, description } = req.body;
+//   try {
+//     const task = await Task.findByIdAndUpdate(req.params.id, { title, creationDate, dueDate, color, status, description }, { new: true });
+//     if (!task){
+//       return res.status(404).json({ message: 'Task not found.' });
+//     }
+//     res.json(task);
+//   } catch (error) {
+//     res.status(400).json({ message: 'Error updating task.' });
+//   }
+// });
+
+// app.put('/api/tasks/:id', authenticateJWT, async (req, res) => {
+//   const { title, creationDate, dueDate, color, status, description } = req.body;
+
+//   try {
+//     // Find and update the task
+//     const task = await Task.findByIdAndUpdate(
+//       req.params.id,
+//       { title, creationDate, dueDate, color, status, description },
+//       { new: true }
+//     );
+
+//     if (!task) {
+//       return res.status(404).json({ message: 'Task not found.' });
+//     }
+
+//     // Check if the user is a volunteer and the status is being set to "Completed"
+//     const user = await User.findById(req.userId);
+
+//    // if (user.statusType === 'VOLUNTEER' && status === 'Completed') {
+//     if (user.statusType === 'volunteer' && status === 'Completed') {
+//       const assignees = task.assignedVolunteers.length > 0
+//         ? (
+//             await User.find({ _id: { $in: task.assignedVolunteers } })
+//           ).map((volunteer) => `${volunteer.firstName} ${volunteer.lastName}`)
+//         : [];
+
+//       // Create a log for the task completion
+//       const newLog = new Log({
+//         action: `Completed Task by Volunteer: ${user.firstName} ${user.lastName}`,
+//         taskTitle: task.title,
+//         assignees,
+//         creationDate: task.creationDate,
+//         dueDate: task.dueDate,
+//       });
+
+//       await newLog.save();
+//     }
+
+//     // Return the updated task
+//     res.json(task);
+//   } catch (error) {
+//     console.error('Error updating task:', error);
+//     res.status(400).json({ message: 'Error updating task.' });
+//   }
+// });
+
 app.put('/api/tasks/:id', authenticateJWT, async (req, res) => {
-  //const { title, duration, document, color, status } = req.body;
-  const { title, creationDate, dueDate, document, color, status } = req.body;
+  const { title, creationDate, dueDate, color, status, description } = req.body;
+
   try {
-    //const task = await Task.findByIdAndUpdate(req.params.id, { title, duration, document, color, status }, { new: true });
-    const task = await Task.findByIdAndUpdate(req.params.id, { title, creationDate, dueDate, document, color, status }, { new: true });
-    if (!task){
+    // Find the existing task
+    const existingTask = await Task.findById(req.params.id);
+
+    if (!existingTask) {
       return res.status(404).json({ message: 'Task not found.' });
     }
-    res.json(task);
+
+    // Update the task with new values
+    const updatedTask = await Task.findByIdAndUpdate(
+      req.params.id,
+      { title, creationDate, dueDate, color, status, description },
+      { new: true }
+    );
+
+    // Check if the user is a volunteer and the status is being set to "Completed"
+    const user = await User.findById(req.userId);
+
+    if (user.statusType === 'volunteer' && status === 'Completed') {
+      const assignees = updatedTask.assignedVolunteers.length > 0
+        ? (
+            await User.find({ _id: { $in: updatedTask.assignedVolunteers } })
+          ).map((volunteer) => `${volunteer.firstName} ${volunteer.lastName}`)
+        : [];
+
+      // Create a log for task completion
+      const completionLog = new Log({
+        action: `Completed Task by Volunteer: ${user.firstName} ${user.lastName}`,
+        taskTitle: updatedTask.title,
+        assignees,
+        creationDate: updatedTask.creationDate,
+        dueDate: updatedTask.dueDate,
+      });
+
+      await completionLog.save();
+    } 
+
+    // Return the updated task
+    res.json(updatedTask);
   } catch (error) {
+    console.error('Error updating task:', error);
     res.status(400).json({ message: 'Error updating task.' });
   }
 });
 
+
 app.delete('/api/tasks/:id', authenticateJWT, async (req, res) => {
   try {
+    // Find the task to delete
     const task = await Task.findByIdAndDelete(req.params.id);
+
     if (!task) {
       return res.status(404).json({ message: 'Task not found.' });
     }
 
+    // Get the authenticated user
+    const user = await User.findById(req.userId);
+    // Create a log for the task deletion
+    const newLog = new Log({
+      action: `Task Deleted by Admin: ${user.firstName} ${user.lastName}`,
+      taskTitle: task.title,
+      assignees: [], // No assignees needed for deleted tasks
+      creationDate: task.creationDate,
+      dueDate: task.dueDate,
+    });
+    await newLog.save();
+
     res.sendStatus(204);
   } catch (error) {
+    console.error('Error deleting task:', error);
     res.status(500).json({ message: 'Error deleting task.' });
   }
 });
+
 
 // Route to clear all assignees from a task
 app.post('/api/tasks/:taskId/clear', authenticateJWT, async (req, res) => {
@@ -380,6 +485,36 @@ app.post('/api/tasks/:taskId/clear', authenticateJWT, async (req, res) => {
     res.status(500).json({ message: 'Error clearing assignees.' });
   }
 });
+
+// Route to fetch all logs
+app.get('/api/logs', authenticateJWT, async (req, res) => {
+  try {
+    const logs = await Log.find().sort({ date: -1 }); // Sort by most recent logs
+    // modify that sort?
+    res.json(logs);
+  } 
+  catch (error) {
+    console.error('Error fetching logs:', error);
+    res.status(500).json({ message: 'Error fetching logs.' });
+  }
+});
+
+app.delete('/api/logs/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletedLog = await Log.findByIdAndDelete(id);
+    if (!deletedLog) {
+      return res.status(404).json({ message: 'Log not found' });
+    }
+    res.status(200).json({ message: 'Log successfully deleted', deletedLog });
+  } 
+  catch (error) {
+    console.error('Error deleting log:', error);
+    res.status(500).json({ message: 'Failed to delete log', error });
+  }
+});
+
 
 // Export the app as a serverless function
 module.exports = app;

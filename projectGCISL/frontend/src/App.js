@@ -12,6 +12,7 @@ import GetInvolved from './NavBarFunctions/GetInvolved';
 import AdminDashboard from './DashboardFunctions/AdminDashboard';
 import Volunteers from './DashboardFunctions/Volunteers';
 import Tasks from './DashboardFunctions/Tasks';
+import Researches from './DashboardFunctions/Researches';
 import Logs from './DashboardFunctions/Logs';
 import Logout from './DashboardFunctions/Logout';
 import VolunteerDashboard from './DashboardFunctions/VolunteerDashboard';
@@ -129,6 +130,7 @@ const AppContent = () => {
         <Route path="/admin-dashboard" element={<ProtectedRoute><AdminDashboard user={user} /></ProtectedRoute>} />
         <Route path="/dashboard/volunteers" element={<ProtectedRoute><Volunteers user={user} /></ProtectedRoute>} />
         <Route path="/dashboard/tasks" element={<ProtectedRoute><Tasks user={user} /></ProtectedRoute>} />
+        <Route path="/dashboard/researches" element={<ProtectedRoute><Researches user={user} /></ProtectedRoute>} />
         <Route path="/dashboard/logs" element={<ProtectedRoute><Logs user={user} /></ProtectedRoute>} />
         {/* Volunteer Routes */}
         {/* Don't put user in VolunteerDashboard because it affects the task user anme for the admin */}
