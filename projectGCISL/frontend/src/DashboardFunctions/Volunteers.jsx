@@ -19,7 +19,6 @@ const Volunteers = () => {
 
       try {
         const env = process.env.REACT_APP_API_URL;
-        // Construct the full API endpoints
         const apiUrl = `${env}/api/user`;
         const volunteersApiUrl = `${env}/api/users?role=volunteer`;
         const tasksApiUrl = `${env}/api/tasks`;
@@ -75,52 +74,6 @@ const Volunteers = () => {
 
     fetchData();
   }, []);
-
-  // const handleAssignTask = async (volunteerId, taskId) => {
-  //   console.log(`Toggling task ${taskId} for volunteer ${volunteerId}`);
-    
-  //   const token = localStorage.getItem('token');
-  //   if (!token) {
-  //     console.error('No token found');
-  //     return;
-  //   }
-
-  //   const task = tasks.find(t => t._id === taskId);
-  //   if (!task) {
-  //     console.error(`Task with ID ${taskId} not found`);
-  //     return;
-  //   }
-
-  //   const isAssigned = task.assignedVolunteers.includes(volunteerId);
-
-  //   try {
-  //     const apiUrl = process.env.REACT_APP_API_URL;
-  //     const response = await fetch(`${apiUrl}/api/tasks/${isAssigned ? 'remove' : 'assign'}`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Authorization': `Bearer ${token}`,
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({ volunteerId, taskId }),
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error(`Failed to ${isAssigned ? 'remove' : 'assign'} task`);
-  //     }
-
-  //     const result = await response.json();
-  //     console.log(result.message);
-
-  //     // Force state update to trigger rerender
-  //     setTasks(prevTasks =>
-  //       prevTasks.map(t => t._id === taskId ? { ...t, assignedVolunteers: isAssigned ? t.assignedVolunteers.filter(id => id !== volunteerId) : [...t.assignedVolunteers, volunteerId] } : t)
-  //     );
-
-  //     console.log("Updated task assignments:", tasks);
-  //   } catch (error) {
-  //     console.error(`Error ${isAssigned ? 'removing' : 'assigning'} task:`, error);
-  //   }
-  // };
 
   const refreshTasks = async () => {
     const token = localStorage.getItem('token');
@@ -184,7 +137,6 @@ const Volunteers = () => {
     }
   };
 
-
   return (
     <div>
       <AdminNavBar role="ADMIN" firstName={user.firstName} lastInitial={user.lastName.charAt(0)} />
@@ -194,37 +146,50 @@ const Volunteers = () => {
           <h2>Volunteers List</h2>
           <div style={styles.volunteersList}>
             {volunteers.length > 0 ? (
-              volunteers.map((volunteer) => (
-                <div key={volunteer._id} style={styles.volunteerCard}>
-                  <div style={styles.volunteerInfo}>
-                    <button onClick={() => setSelectedVolunteer(volunteer._id)} style={styles.menuButton}>
-                      &#x22EE; {/* Three dots menu */}
-                    </button>
-                    <h3 style={styles.volunteerName}>{volunteer.firstName} {volunteer.lastName}</h3>
-                    {selectedVolunteer === volunteer._id && (
-                      <div style={styles.dropdownMenu}>
-                        {tasks.map((task) => (
-                          <div
-                            key={task._id}
-                            style={{
-                              ...styles.dropdownItem,
-                              ...(task.assignedVolunteers.includes(volunteer._id) ? styles.dropdownItemActive : {}),
-                              ...(hoveredTaskId === task._id && !task.assignedVolunteers.includes(volunteer._id)
-                                ? styles.dropdownItemHover
-                                : {}),
-                            }}
-                            onClick={() => handleAssignTask(volunteer._id, task._id)}
-                            onMouseEnter={() => setHoveredTaskId(task._id)}
-                            onMouseLeave={() => setHoveredTaskId(null)}
-                          >
-                            {task.title}
-                          </div>
-                        ))}
-                      </div>
-                    )}
+              volunteers.map((volunteer) => {
+                const assignedTasks = tasks.filter(task => task.assignedVolunteers.some(vol => vol._id === volunteer._id));
+                return (
+                  <div key={volunteer._id} style={styles.volunteerCard}>
+                    <div style={styles.volunteerInfo}>
+                      <button onClick={() => setSelectedVolunteer(volunteer._id)} style={styles.menuButton}>
+                        &#x22EE; {/* Three dots menu */}
+                      </button>
+                      <h3 style={styles.volunteerName}>
+                        {volunteer.firstName} {volunteer.lastName}
+                      </h3>
+                      <p style={styles.volunteerEmail}>
+                        {volunteer.email}
+                      </p>
+                      {assignedTasks.length > 0 && (
+                        <span style={styles.assignedBadge}>
+                          {assignedTasks.length} Task(s) Assigned: {assignedTasks.map((task) => task.title).join(', ')}
+                        </span>
+                      )}
+                      {selectedVolunteer === volunteer._id && (
+                        <div style={styles.dropdownMenu}>
+                          {tasks.map((task) => (
+                            <div
+                              key={task._id}
+                              style={{
+                                ...styles.dropdownItem,
+                                ...(task.assignedVolunteers.includes(volunteer._id) ? styles.dropdownItemActive : {}),
+                                ...(hoveredTaskId === task._id && !task.assignedVolunteers.includes(volunteer._id)
+                                  ? styles.dropdownItemHover
+                                  : {}),
+                              }}
+                              onClick={() => handleAssignTask(volunteer._id, task._id)}
+                              onMouseEnter={() => setHoveredTaskId(task._id)}
+                              onMouseLeave={() => setHoveredTaskId(null)}
+                            >
+                              {task.title}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))
+                );
+              })
             ) : (
               <p>No volunteers available</p>
             )}
@@ -264,7 +229,8 @@ const styles = {
   },
   volunteerInfo: {
     display: 'flex',
-    alignItems: 'center',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
   },
   menuButton: {
     background: 'none',
@@ -274,8 +240,21 @@ const styles = {
     marginRight: '1rem',
   },
   volunteerName: {
-    margin: '0 0 0 1rem',
+    margin: '0',
     flex: 1,
+  },
+  volunteerEmail: {
+    fontSize: '0.9rem',
+    color: '#666',
+    margin: '0.2rem 0',
+  },
+  assignedBadge: {
+    marginTop: '0.5rem',
+    backgroundColor: '#FFD700', // Gold color
+    color: '#000',
+    padding: '2px 8px',
+    borderRadius: '5px',
+    fontSize: '0.9rem',
   },
   dropdownMenu: {
     position: 'absolute',

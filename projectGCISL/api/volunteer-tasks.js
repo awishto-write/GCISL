@@ -12,13 +12,18 @@ if (mongoose.connection.readyState === 0) {
 
 const Task = mongoose.models.Task || mongoose.model('Task', new mongoose.Schema({
   title: String,
-  //duration: String,
   creationDate: { type: Date, required: true, default: Date.now },
   dueDate: { type: Date, required: false },
-  document: String,
   color: String,
   status: { type: String, enum: ['None', 'In Progress', 'Completed', 'To Redo'], default: 'None' },
-  assignedVolunteers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
+  description: { type: String, default: '' },
+  createdBy: { type: String, required: true },
+  assignedVolunteers: [
+    {
+      volunteerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+      status: { type: String, enum: ['In Progress', 'Completed'], default: 'In Progress' }
+    }
+  ]
 }));
 
 module.exports = async (req, res) => {

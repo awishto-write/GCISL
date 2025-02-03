@@ -11,6 +11,7 @@ const Tasks = () => {
   const [user, setUser] = useState({ firstName: "", lastName: "", email: "" });
   const [isLoading, setIsLoading] = useState(true); // Loading state added
   const [editingTaskId, setEditingTaskId] = useState(null);
+  const [filterStatus, setFilterStatus] = useState('All');
   const currentDate = new Date();
   // const defaultDueDate = new Date(currentDate);
   // defaultDueDate.setDate(defaultDueDate.getDate() + 14); // Set 14 days from creation date
@@ -23,6 +24,7 @@ const Tasks = () => {
     description: "",
     createdBy: "",
   });
+  
   const [isClearing, setIsClearing] = useState(false);
   const [notification, setNotification] = useState(''); // Stores the notification message
 
@@ -260,6 +262,15 @@ const Tasks = () => {
     }
   };
 
+  const handleCancelEdit = () => {
+    setEditingTaskId(null);
+    setEditTask({ title: '', duration: '', document: '', status: '' });
+  };
+
+  
+
+  const filteredTasks = filterStatus === 'All' ? tasks : tasks.filter(task => task.status === filterStatus);
+
   // Show "Loading..." if data is still being fetched
   if (isLoading) {
     return <p>Loading...</p>;
@@ -272,22 +283,34 @@ const Tasks = () => {
         firstName={user.firstName}
         lastInitial={user.lastName.charAt(0)}
       />
-      {notification && (
+       {notification && (
           <div style={styles.notificationStyle}>
               {notification}
           </div>
       )}
-
       <div style={styles.tasksPage}>
         <div style={styles.tasksHeader}>
           <h2>Tasks</h2>
+          <div>
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              style={styles.filterDropdown}
+            >
+              <option value="All">All</option>
+              <option value="None">None</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+              <option value="To Redo">To Redo</option>
+            </select>
+          </div>
           <button style={styles.addTaskButton} onClick={handleAddTestTask}>
             + Create Task
           </button>
         </div>
         <div style={styles.tasksList}>
-          {tasks.length > 0 ? (
-            tasks.map((task) => (
+          {filteredTasks.length > 0 ? (
+            filteredTasks.map((task) => (
               <TaskCard
                 key={task._id}
                 task={task}
@@ -298,7 +321,9 @@ const Tasks = () => {
                 onSave={handleSaveEdit}
                 onDelete={() => handleDeleteTask(task._id)}
                 onClearAssignees={handleClearAssignees}
+                onCancel={handleCancelEdit}
                 isClearing={isClearing}
+                user={user}
               />
             ))
           ) : (
@@ -319,6 +344,7 @@ const TaskCard = ({
   onSave,
   onDelete,
   onClearAssignees,
+  onCancel,
   isClearing,
 }) => (
   <div style={styles.taskCard}>
@@ -394,9 +420,14 @@ const TaskCard = ({
     </div>
     <div style={styles.actions}>
       {isEditing ? (
+        <>
         <button style={styles.defaultButton} onClick={onSave}>
           Save
         </button>
+        <button style={styles.defaultButton} onClick={onCancel}>
+          Cancel
+        </button>
+      </>
       ) : (
         <button style={styles.defaultButton} onClick={onEdit}>
           Edit
@@ -522,6 +553,12 @@ const styles = {
   },
   taskDetails: {
     marginBottom: '0.2rem', // Adds spacing between each detail
+  },
+  filterDropdown: {
+    padding: '0.5rem',
+    marginRight: '1rem',
+    borderRadius: '5px',
+    border: '1px solid #ccc',
   },
 };
 
