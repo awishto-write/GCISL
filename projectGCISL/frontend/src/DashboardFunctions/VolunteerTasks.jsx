@@ -7,13 +7,11 @@ const VolunteerTasks = () => {
   const [tasks, setTasks] = useState([]);
   const [user, setUser] = useState({ firstName: '', lastName: '', email: '' });
   const [taskCount, setTaskCount] = useState(() => {
-    // Initialize taskCount from localStorage, default to 0 if not present
     const savedCount = localStorage.getItem('taskCount');
-    return savedCount ? parseInt(savedCount, 10) : 0; //  Using 10 ensures the string is interpreted as a decimal number (base 10)
+    return savedCount ? parseInt(savedCount, 10) : 0;
   });
 
   useEffect(() => {
-    // Fetch the current user data
     const fetchUserData = async () => {
       const token = localStorage.getItem('token');
       if (!token) {
@@ -56,7 +54,7 @@ const VolunteerTasks = () => {
         console.error('No token found');
         return;
       }
-  
+
       try {
         const apiUrl = process.env.REACT_APP_API_URL;
         const response = await fetch(`${apiUrl}/api/volunteer-tasks`, {
@@ -66,33 +64,30 @@ const VolunteerTasks = () => {
             'Content-Type': 'application/json',
           },
         });
-  
+
         if (response.ok) {
           const data = await response.json();
           setTasks(data);
-
-           // Update task count and save it to localStorage
           const count = data.length;
           setTaskCount(count);
           localStorage.setItem('taskCount', count);
-
         } else if (response.status === 404) {
           console.log('No tasks assigned to this volunteer.');
-          setTasks([]); // Clear tasks if none are assigned
+          setTasks([]);
         } else {
           console.error('Error fetching tasks:', response.statusText);
           setTasks([]);
-          setTaskCount(0); // Reset task count
+          setTaskCount(0);
           localStorage.setItem('taskCount', 0);
         }
       } catch (error) {
         console.error('Error fetching tasks:', error);
       }
     };
-  
+
     fetchTasks();
   }, []);
-  
+
   const updateTaskStatus = async (taskId, newStatus) => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -118,6 +113,17 @@ const VolunteerTasks = () => {
             task._id === taskId ? { ...task, status: updatedTask.status } : task
           )
         );
+
+        // Update the progress count in the frontend
+        if (newStatus === 'Completed') {
+          setTasks((prevTasks) =>
+            prevTasks.map((task) =>
+              task._id === taskId
+                ? { ...task, progressCount: (task.progressCount || 0) + 1 }
+                : task
+            )
+          );
+        }
       } else {
         console.error('Error updating task status:', response.statusText);
       }
@@ -128,13 +134,9 @@ const VolunteerTasks = () => {
 
   return (
     <div>
-      <AdminNavBar
-        role="VOLUNTEER"
-        firstName={user.firstName}
-        lastInitial={user.lastName.charAt(0)}
-      />
+      <AdminNavBar role="VOLUNTEER" firstName={user.firstName} lastInitial={user.lastName.charAt(0)} />
       <div style={styles.dashboard}>
-        <VolunteerSidebar taskCount={taskCount} /> {/* Pass taskCount to Sidebar */}
+        <VolunteerSidebar taskCount={taskCount} />
         <div style={styles.content}>
           <div style={styles.tasksHeader}>
             <h2>My Tasks</h2>
@@ -146,28 +148,28 @@ const VolunteerTasks = () => {
                   <div style={styles.taskInfo}>
                     <h3 style={styles.taskTitle}>{task.title}</h3>
                     <p style={styles.taskDetails}><strong>Due Date:</strong> {FormatDate(task.dueDate) || "Not Set"}</p>
-                    <p style={styles.taskDetails}><strong>Status:</strong> {task.status || "None"} </p>
+                    <p style={styles.taskDetails}><strong>Status:</strong> {task.status || "None"}</p>
                     <p style={styles.taskDetails}><strong>Description:</strong> {task.description || "None"}</p>
                     <p style={styles.taskDetails}><strong>Created By:</strong> {task.createdBy || "N/A"}</p>
-          
-                   <div style={styles.actions}>
-                     <div style={styles.dropdownContainer}>
-                      <select
-                        style={styles.statusSelect}
-                        value={task.status || "None"}
-                        onChange={(e) => updateTaskStatus(task._id, e.target.value)}>
-                        <option value="None" disabled>
-                          Select Status
-                        </option>
-                        <option value="In Progress">In Progress</option>
-                        <option value="Completed">Completed</option>
-                      </select>
-                      <span style={styles.dropdownArrow}>▼</span>
+                    <p style={styles.taskDetails}><strong>Progress:</strong> {(task.progressCount || 0)}/{task.assignees.length || 1}</p>
+                    <div style={styles.actions}>
+                      <div style={styles.dropdownContainer}>
+                        <select
+                          style={styles.statusSelect}
+                          value={task.status || "None"}
+                          onChange={(e) => updateTaskStatus(task._id, e.target.value)}
+                        >
+                          <option value="None" disabled>
+                            Select Status
+                          </option>
+                          <option value="In Progress">In Progress</option>
+                          <option value="Completed">Completed</option>
+                        </select>
+                        <span style={styles.dropdownArrow}>▼</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-                </div>
-                
               ))
             ) : (
               <p>No tasks assigned.</p>
@@ -177,7 +179,7 @@ const VolunteerTasks = () => {
       </div>
     </div>
   );
-};  
+};
 
 const styles = {
   dashboard: {

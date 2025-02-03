@@ -102,6 +102,7 @@ const VolunteerList = () => {
               volunteers.map((volunteer) => (
                 <div key={volunteer._id} style={styles.volunteerCard}>
                   <h3 style={styles.volunteerName}>{volunteer.firstName} {volunteer.lastName}</h3>
+                  <p style={styles.volunteerEmail}>{volunteer.email}</p>
                 </div>
               ))
             ) : (
@@ -144,6 +145,9 @@ const styles = {
   volunteerName: {
     margin: 0,
     fontSize: '1.2rem',
+  },
+  volunteerEmail: {
+    color: '#666',
   },
 };
 

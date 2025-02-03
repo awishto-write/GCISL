@@ -51,7 +51,7 @@ html {
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
   background-color: white;
   text-align: center;
-  height: 700px; /* Double the height */
+  min-height: 750px; /* Increase the min-height for additional content */
   display: flex;
   flex-direction: column; /* Makes sure the children are arranged vertically */
   justify-content: space-between; /* Pushes the button to the bottom */
@@ -59,11 +59,11 @@ html {
 }
 
 .involvement-card img {
-  width: 85%; 
-  height: auto; /* Maintain aspect ratio */
+  width: 260px; /* Set a fixed width */
+  height: 260px; /* Set a fixed height */
   border-radius: 50%; /* Make it a circle */
   position: absolute;
-  top: -120px; /* Adjust to position half above and half inside */
+  top: -100px; /* Adjust to position half above and half inside */
   left: 50%;
   transform: translateX(-50%);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Add shadow for effect */
@@ -72,7 +72,7 @@ html {
 .involvement-card h2 {
   font-size: 24px;
   color: #a32436;
-  margin-top: 180px; /* Move title down to avoid image overlap */
+  margin-top: 150px; /* Move title down to avoid image overlap */
   margin-bottom: 10px;
   text-decoration: underline; /* Add underline to the titles */
 }
@@ -81,6 +81,7 @@ html {
   font-size: 16px;
   color: black;
   margin-bottom: 20px;
+  padding: 0 10px; /* Add some padding for readability */
 }
 
 .involvement-card button {
@@ -102,50 +103,105 @@ html {
 /* Responsive Design */
 @media screen and (max-width: 1024px) {
   .get-involved h1 {
-    font-size: 48px;
+    font-size: 36px;
     margin-bottom: 10px;
-  }
-  
-  .get-involved p {
-    font-size: 20px;
-    font-weight: 600;
+    margin-top: 50px;
   }
 
-  .involvement-options {
-    flex-direction: column;
-    align-items: center;
+  .get-involved p {
+    font-size: 18px;
   }
 
   .involvement-card {
-    width: 80%; /* Make cards take more space on smaller screens */
-    margin: 10px 0;
+    width: 40%; /* Adjust card width for medium screens */
+    margin-top: 50px; /* Reduce top margin for medium screens */
   }
 
   .involvement-card img {
-    width: 75%; /* Adjust width for smaller screens */
+    width: 180px; /* Adjust width for medium screens */
+    height: 180px; /* Maintain aspect ratio */
+    top: -90px; /* Adjust positioning */
   }
 
   .involvement-card h2 {
-    font-size: 28px;
-    margin-top: 140px; /* Adjust for image overlap on smaller screens */
+    font-size: 22px;
+    margin-top: 120px; /* Adjust for image overlap on medium screens */
   }
-  
+
   .involvement-card p {
-    font-size: 18px;
+    font-size: 16px;
   }
-  
+
   .involvement-card button {
-    font-size: 18px;
-    padding: 12px 24px;
+    font-size: 16px;
+    padding: 8px 16px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .get-involved h1 {
+    font-size: 32px;
+    margin-bottom: 8px;
+  }
+
+  .get-involved p {
+    font-size: 16px;
+  }
+
+  .involvement-card {
+    width: 60%; /* Adjust card width for smaller screens */
+    margin-top: 50px; /* Reduce top margin for smaller screens */
+  }
+
+  .involvement-card img {
+    width: 140px; /* Adjust width for smaller screens */
+    height: 140px; /* Maintain aspect ratio */
+    top: -70px; /* Adjust positioning */
+  }
+
+  .involvement-card h2 {
+    font-size: 20px;
+    margin-top: 100px; /* Adjust for image overlap on smaller screens */
+  }
+
+  .involvement-card p {
+    font-size: 14px;
+  }
+
+  .involvement-card button {
+    font-size: 14px;
+    padding: 6px 12px;
   }
 }
 
 @media screen and (max-width: 550px) {
   .get-involved h1 {
-    font-size: 36px;
+    font-size: 28px;
+    margin-bottom: 8px;
   }
 
   .involvement-card {
     width: 90%; /* Make cards take almost full width on smaller screens */
+    margin-top: 40px; /* Further reduce top margin */
+  }
+
+  .involvement-card img {
+    width: 120px; /* Adjust width for smaller screens */
+    height: 120px; /* Maintain aspect ratio */
+    top: -60px; /* Adjust positioning */
+  }
+
+  .involvement-card h2 {
+    font-size: 18px;
+    margin-top: 80px; /* Adjust for image overlap on smaller screens */
+  }
+
+  .involvement-card p {
+    font-size: 12px;
+  }
+
+  .involvement-card button {
+    font-size: 12px;
+    padding: 5px 10px;
   }
 }

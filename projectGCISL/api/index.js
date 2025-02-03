@@ -179,19 +179,24 @@ app.get('/api/users', authenticateJWT, async (req, res) => {
   }
 });
 
-// Define Task Schema
 const taskSchema = new mongoose.Schema({
   title: String,
   creationDate: { type: Date, required: true, default: Date.now },
   dueDate: { type: Date, required: false },
   color: String,
   status: { type: String, enum: ['None', 'In Progress', 'Completed', 'To Redo'], default: 'None' },
-  description: { type: String, default: '' }, // Add description
-  createdBy: { type: String, required: true }, // Add createdBy
-  assignedVolunteers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  description: { type: String, default: '' },
+  createdBy: { type: String, required: true },
+  assignedVolunteers: [
+    {
+      volunteerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+      status: { type: String, enum: ['In Progress', 'Completed'], default: 'In Progress' }
+    }
+  ]
 });
 
 const Task = mongoose.model('Task', taskSchema);
+
 
 // Task Routes
 app.get('/api/tasks', authenticateJWT, async (req, res) => {
@@ -512,6 +517,34 @@ app.delete('/api/logs/:id', async (req, res) => {
   catch (error) {
     console.error('Error deleting log:', error);
     res.status(500).json({ message: 'Failed to delete log', error });
+  }
+});
+
+app.put('/api/tasks/:taskId/volunteers/:volunteerId/status', authenticateJWT, async (req, res) => {
+  const { status } = req.body;
+
+  try {
+    const task = await Task.findById(req.params.taskId);
+    if (!task) {
+      return res.status(404).json({ message: 'Task not found.' });
+    }
+
+    // Find the volunteer in the assignedVolunteers array and update their status
+    const volunteerIndex = task.assignedVolunteers.findIndex(
+      (v) => v.volunteerId.toString() === req.params.volunteerId
+    );
+
+    if (volunteerIndex === -1) {
+      return res.status(404).json({ message: 'Volunteer not found in task.' });
+    }
+
+    task.assignedVolunteers[volunteerIndex].status = status;
+    await task.save();
+
+    res.json(task);
+  } catch (error) {
+    console.error('Error updating volunteer status:', error);
+    res.status(500).json({ message: 'Error updating volunteer status.' });
   }
 });
 
