@@ -106,15 +106,15 @@ const Volunteers = () => {
       console.error('No token found');
       return;
     }
-
+  
     const task = tasks.find(t => t._id === taskId);
     if (!task) {
       console.error(`Task with ID ${taskId} not found`);
       return;
     }
-
+  
     const isAssigned = task.assignedVolunteers.some(vol => vol._id === volunteerId);
-
+  
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
       const endpoint = `${apiUrl}/api/tasks/${isAssigned ? 'remove' : 'assign'}`;
@@ -126,16 +126,19 @@ const Volunteers = () => {
         },
         body: JSON.stringify({ volunteerId, taskId }),
       });
-
+  
       if (response.ok) {
         await refreshTasks();
         setSelectedVolunteer(null);
         setHoveredTaskId(null);
+      } else {
+        console.error('Error assigning/removing task:', response.statusText);
       }
     } catch (error) {
       console.error('Error assigning/removing task:', error);
     }
-  };
+  };  
+  
 
   return (
     <div>
