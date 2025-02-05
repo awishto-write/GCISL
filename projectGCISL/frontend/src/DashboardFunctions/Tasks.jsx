@@ -11,14 +11,11 @@ const Tasks = () => {
   const [user, setUser] = useState({ firstName: "", lastName: "", email: "" });
   const [isLoading, setIsLoading] = useState(true); // Loading state added
   const [editingTaskId, setEditingTaskId] = useState(null);
-  const [filterStatus, setFilterStatus] = useState('All');
+  const [filter, setFilter] = useState('All'); // Ensure filter options remain the same
   const currentDate = new Date();
-  // const defaultDueDate = new Date(currentDate);
-  // defaultDueDate.setDate(defaultDueDate.getDate() + 14); // Set 14 days from creation date
   const [editTask, setEditTask] = useState({
     title: "",
     creationDate: currentDate,
-    //dueDate: defaultDueDate, //  
     dueDate: null,
     status: "None",
     description: "",
@@ -267,9 +264,9 @@ const Tasks = () => {
     setEditTask({ title: '', duration: '', document: '', status: '' });
   };
 
-  
-
-  const filteredTasks = filterStatus === 'All' ? tasks : tasks.filter(task => task.status === filterStatus);
+  const getFilteredTasks = () => {
+    return filter === 'All' ? tasks : tasks.filter(task => task.status === filter);
+  };
 
   // Show "Loading..." if data is still being fetched
   if (isLoading) {
@@ -291,26 +288,45 @@ const Tasks = () => {
       <div style={styles.tasksPage}>
         <div style={styles.tasksHeader}>
           <h2>Tasks</h2>
-          <div>
-            <select
-              value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value)}
-              style={styles.filterDropdown}
+          <div style={styles.filterStyle}>
+            <button
+              style={styles.filterButtonStyle(filter === "All")}
+              onClick={() => setFilter("All")}
             >
-              <option value="All">All</option>
-              <option value="None">None</option>
-              <option value="In Progress">In Progress</option>
-              <option value="Completed">Completed</option>
-              <option value="To Redo">To Redo</option>
-            </select>
+              All
+            </button>
+            <button
+              style={styles.filterButtonStyle(filter === "None")}
+              onClick={() => setFilter("None")}
+            >
+              None
+            </button>
+            <button
+              style={styles.filterButtonStyle(filter === "In Progress")}
+              onClick={() => setFilter("In Progress")}
+            >
+              In Progress
+            </button>
+            <button
+              style={styles.filterButtonStyle(filter === "Completed")}
+              onClick={() => setFilter("Completed")}
+            >
+              Completed
+            </button>
+            <button
+              style={styles.filterButtonStyle(filter === "To Redo")}
+              onClick={() => setFilter("To Redo")}
+            >
+              To Redo
+            </button>
           </div>
           <button style={styles.addTaskButton} onClick={handleAddTestTask}>
             + Create Task
           </button>
         </div>
         <div style={styles.tasksList}>
-          {filteredTasks.length > 0 ? (
-            filteredTasks.map((task) => (
+          {getFilteredTasks().length > 0 ? (
+            getFilteredTasks().map((task) => (
               <TaskCard
                 key={task._id}
                 task={task}
@@ -414,6 +430,7 @@ const TaskCard = ({
                 )
                 .join(", ")}
             </p>
+            
           )}
         </>
       )}
@@ -502,9 +519,6 @@ const styles = {
   info: {
     flex: 1,
   },
-  // taskTitle: {
-  //   margin: '0 0 0.2rem 0',
-  // },
   taskTitle: {
     fontSize: '1.2rem',
     fontWeight: 'bold',
@@ -554,12 +568,18 @@ const styles = {
   taskDetails: {
     marginBottom: '0.2rem', // Adds spacing between each detail
   },
-  filterDropdown: {
-    padding: '0.5rem',
-    marginRight: '1rem',
-    borderRadius: '5px',
-    border: '1px solid #ccc',
+  filterStyle: {
+    display: 'flex',
+    gap: '1rem',
   },
+  filterButtonStyle: (isActive) => ({
+    padding: '0.5rem 1rem',
+    border: 'none',
+    borderRadius: '5px',
+    backgroundColor: isActive ? '#4caf50' : '#ccc',
+    color: isActive ? 'white' : 'black',
+    cursor: 'pointer',
+  }),
 };
 
 export default Tasks;
