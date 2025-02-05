@@ -1,10 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Contact.css'; // Ensure the CSS styles remain consistent
 
 export default function Contact() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [selectedReason, setSelectedReason] = useState("");
 
+  useEffect(() => {
+    // Extract the 'reason' parameter from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const reasonFromURL = urlParams.get("reason");
+  
+    // Set the reason in state if it exists
+    if (reasonFromURL) {
+      setSelectedReason(reasonFromURL);
+    }
+  }, []);
+  
   const handleSubmit = (event) => {
     event.preventDefault();
     setLoading(true);
@@ -15,6 +27,7 @@ export default function Contact() {
     data.append('entry.1653249143', event.target.user_name.value);  // For Name
     data.append('entry.345674368', event.target.user_email.value); // For Email Address
     data.append('entry.2077810956', event.target.user_phone.value); // For Phone Number
+    data.append('entry.1250551985', event.target.contact_reason.value); 
     data.append('entry.1274324805', event.target.message.value);    // For Message
 
     fetch(formActionURL, {
@@ -47,8 +60,10 @@ export default function Contact() {
             <div className="contact__half contact__left">
               <h3 className="contact__title">Contact us!</h3>
               <p className="contact__para">
-                Have questions or suggestions?<br />
-                Please fill in this form to let our team know.<br />
+                Have questions or suggestions?
+                <br />
+                Please fill in this form to let our team know.
+                <br />
                 We highly value your input.
               </p>
 
@@ -59,20 +74,32 @@ export default function Contact() {
               <div className="staff__info-background">
                 <div className="staff__info">
                   <div className="staff__member">
-                    <img src={`${process.env.PUBLIC_URL}/darcie_Image.png`} alt="Darcie Bagott" className="staff__image" />
+                    <img
+                      src={`${process.env.PUBLIC_URL}/darcie_Image.png`}
+                      alt="Darcie Bagott"
+                      className="staff__image"
+                    />
                     <div>
                       <p>Darcie Bagott</p>
                       <span>Program Specialist</span>
-                      <a href="mailto:darcie.bagott@wsu.edu">darcie.bagott@wsu.edu</a> {/* Clickable email */}
+                      <a href="mailto:darcie.bagott@wsu.edu">
+                        darcie.bagott@wsu.edu
+                      </a>{" "}
+                      {/* Clickable email */}
                       <p>(509) 335-6387</p>
                     </div>
                   </div>
                   <div className="staff__member">
-                    <img src={`${process.env.PUBLIC_URL}/cory_Image.png`} alt="Cory Bolkan" className="staff__image" />
+                    <img
+                      src={`${process.env.PUBLIC_URL}/cory_Image.png`}
+                      alt="Cory Bolkan"
+                      className="staff__image"
+                    />
                     <div>
                       <p>Cory Bolkan</p>
-                      <span>Add position</span>
-                      <a href="mailto:bolkan@wsu.edu">bolkan@wsu.edu</a> {/* Clickable email */}
+                      <span>Professor</span>
+                      <a href="mailto:bolkan@wsu.edu">bolkan@wsu.edu</a>{" "}
+                      {/* Clickable email */}
                       <p>(360) 546-9336</p>
                     </div>
                   </div>
@@ -85,21 +112,57 @@ export default function Contact() {
               <form onSubmit={handleSubmit} id="contact__form">
                 <div className="form__item">
                   <label className="form__item--label">Name*</label>
-                  <input type="text" className="input" name="user_name" required />
+                  <input
+                    type="text"
+                    className="input"
+                    name="user_name"
+                    required
+                  />
                 </div>
                 <div className="form__item">
                   <label className="form__item--label">Email Address*</label>
-                  <input type="email" className="input" name="user_email" required />
+                  <input
+                    type="email"
+                    className="input"
+                    name="user_email"
+                    required
+                  />
                 </div>
                 <div className="form__item">
                   <label className="form__item--label">Phone Number*</label>
-                  <input type="text" className="input" name="user_phone" required />
+                  <input
+                    type="text"
+                    className="input"
+                    name="user_phone"
+                    required
+                  />
+                </div>
+                <div className="form__item">
+                  <label className="form__item--label">
+                    Reason for Contacting Us*
+                  </label>
+                  <select className="input" name="contact_reason" required
+                      value={selectedReason} onChange={(e) => setSelectedReason(e.target.value)}>
+                    <option value="" disabled> Select an option </option>
+                    <option value="Education & Mentorship"> Education & Mentorship </option>
+                    <option value="Outreach & Charitable Contributions"> Outreach & Charitable Contributions </option>
+                    <option value="Research Involvement">Research Involvement</option>
+                    <option value="Other">Other</option>
+                  </select>
                 </div>
                 <div className="form__item">
                   <label className="form__item--label">Message*</label>
-                  <textarea className="input" name="message" required></textarea>
+                  <textarea
+                    className="input"
+                    name="message"
+                    required
+                  ></textarea>
                 </div>
-                <button type="submit" id="contact__submit" className="form__submit">
+                <button
+                  type="submit"
+                  id="contact__submit"
+                  className="form__submit"
+                >
                   Submit
                 </button>
               </form>
@@ -113,7 +176,10 @@ export default function Contact() {
 
               {success && (
                 <div className="contact__overlay contact__overlay--success contact__overlay--visible">
-                  <h1>Thank you for the message!<br /> I hope you have a nice day!</h1>
+                  <h1>
+                    Thank you for the message!
+                    <br /> I hope you have a nice day!
+                  </h1>
                 </div>
               )}
             </div>

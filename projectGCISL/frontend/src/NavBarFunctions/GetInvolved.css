@@ -74,7 +74,15 @@ html {
   color: #a32436;
   margin-top: 150px; /* Move title down to avoid image overlap */
   margin-bottom: 10px;
-  text-decoration: underline; /* Add underline to the titles */
+  /*text-decoration: underline; /* Add underline to the titles */
+}
+
+.involvement-card:first-of-type h2 a {
+  text-decoration: underline;
+  color: inherit; /* Keeps it the same color as the heading */
+}
+.involvement-card:first-of-type h2 a:hover {
+  text-decoration: none; /* Optional: Remove underline on hover */
 }
 
 .involvement-card p {
