@@ -7,13 +7,11 @@ const VolunteerTasks = () => {
   const [tasks, setTasks] = useState([]);
   const [user, setUser] = useState({ firstName: '', lastName: '', email: '' });
   const [taskCount, setTaskCount] = useState(() => {
-    // Initialize taskCount from localStorage, default to 0 if not present
     const savedCount = localStorage.getItem('taskCount');
-    return savedCount ? parseInt(savedCount, 10) : 0; //  Using 10 ensures the string is interpreted as a decimal number (base 10)
+    return savedCount ? parseInt(savedCount, 10) : 0; 
   });
 
   useEffect(() => {
-    // Fetch the current user data
     const fetchUserData = async () => {
       const token = localStorage.getItem('token');
       if (!token) {
@@ -71,18 +69,17 @@ const VolunteerTasks = () => {
           const data = await response.json();
           setTasks(data);
 
-           // Update task count and save it to localStorage
           const count = data.length;
           setTaskCount(count);
           localStorage.setItem('taskCount', count);
 
         } else if (response.status === 404) {
           console.log('No tasks assigned to this volunteer.');
-          setTasks([]); // Clear tasks if none are assigned
+          setTasks([]);
         } else {
           console.error('Error fetching tasks:', response.statusText);
           setTasks([]);
-          setTaskCount(0); // Reset task count
+          setTaskCount(0);
           localStorage.setItem('taskCount', 0);
         }
       } catch (error) {
@@ -92,8 +89,18 @@ const VolunteerTasks = () => {
   
     fetchTasks();
   }, []);
-  
+
   const updateTaskStatus = async (taskId, newStatus) => {
+    if (newStatus === 'Completed') {
+      const task = tasks.find(t => t._id === taskId);
+      if (task.assignedVolunteers.length > 1) {
+        const confirmMessage = `This task is assigned to multiple volunteers. Make sure you are ready to complete the task. You are turning it in for all group members. Do you want to proceed?`;
+        if (!window.confirm(confirmMessage)) {
+          return;
+        }
+      }
+    }
+
     const token = localStorage.getItem('token');
     if (!token) {
       console.error('No token found');
@@ -134,7 +141,7 @@ const VolunteerTasks = () => {
         lastInitial={user.lastName.charAt(0)}
       />
       <div style={styles.dashboard}>
-        <VolunteerSidebar taskCount={taskCount} /> {/* Pass taskCount to Sidebar */}
+        <VolunteerSidebar taskCount={taskCount} /> 
         <div style={styles.content}>
           <div style={styles.tasksHeader}>
             <h2>My Tasks</h2>
@@ -149,7 +156,18 @@ const VolunteerTasks = () => {
                     <p style={styles.taskDetails}><strong>Status:</strong> {task.status || "None"} </p>
                     <p style={styles.taskDetails}><strong>Description:</strong> {task.description || "None"}</p>
                     <p style={styles.taskDetails}><strong>Created By:</strong> {task.createdBy || "N/A"}</p>
-          
+                    
+                    {task.assignedVolunteers && task.assignedVolunteers.length > 0 && (
+                      <p style={styles.assignedVolunteer}>
+                        <strong>Assigned to:{" "}</strong>
+                        {task.assignedVolunteers
+                          .map(
+                            (volunteer) => `${volunteer.firstName} ${volunteer.lastName}`
+                          )
+                          .join(", ")}
+                      </p>
+                    )}
+                    
                    <div style={styles.actions}>
                      <div style={styles.dropdownContainer}>
                       <select
@@ -184,9 +202,9 @@ const styles = {
     display: 'flex',
   },
   content: {
-    marginLeft: '180px', // Aligns with the sidebar
+    marginLeft: '180px', 
     padding: '2rem',
-    width: 'calc(100vw - 180px)', // Adjust width based on the sidebar
+    width: 'calc(100vw - 180px)', 
     boxSizing: 'border-box',
   },
 
@@ -194,14 +212,14 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderBottom: '2px solid #ccc', // Separating bar like in Admin Tasks
+    borderBottom: '2px solid #ccc', 
     paddingBottom: '0.5rem',
-    marginBottom: '1rem', // Space below the header
+    marginBottom: '1rem', 
   },
   tasksList: {
     display: 'flex',
-    flexDirection: 'column', // Stack tasks vertically
-    gap: '1rem', // Space between tasks
+    flexDirection: 'column', 
+    gap: '1rem', 
   },
   taskCard: {
     display: 'flex',
@@ -211,7 +229,7 @@ const styles = {
     borderRadius: '5px',
     padding: '1rem',
     boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
-    width: '100%', // Full width
+    width: '100%', 
   },
   
   icon: {
@@ -222,7 +240,7 @@ const styles = {
     marginRight: '1rem',
   },
   taskInfo: {
-    flex: 1, // Allow task details to stretch
+    flex: 1, 
   },
   taskTitle: {
     fontSize: '1.2rem',
@@ -233,24 +251,24 @@ const styles = {
   actions: {
     display: 'flex',
     gap: '1rem',
-      marginTop: '1rem',
+    marginTop: '1rem',
   },
   dropdownContainer: {
     position: 'relative',
     width: '100%',
-    maxWidth: '200px', // Optional: Adjust the max width
+    maxWidth: '200px', 
     margin: '0.5rem auto',
   },
   statusSelect: {
     width: '100%',
-    padding: '0.75rem', // Adjust padding for a button-like appearance
+    padding: '0.75rem', 
     fontSize: '1rem',
     borderRadius: '5px',
     border: '1px solid #007bff',
     backgroundColor: '#007bff',
     color: '#fff',
     cursor: 'pointer',
-    appearance: 'none', // Hides the default dropdown arrow
+    appearance: 'none', 
     textAlign: 'center',
   },
 
@@ -260,11 +278,14 @@ const styles = {
     right: '1rem',
     transform: 'translateY(-50%)',
     fontSize: '1rem',
-    color: '#fff', // Match text color
-    pointerEvents: 'none', // Prevent interaction with the arrow
+    color: '#fff',
+    pointerEvents: 'none', 
   },
   taskDetails: {
-    marginBottom: '0.2rem', // Adds spacing between each detail
+    marginBottom: '0.2rem', 
+  },
+  assignedVolunteer: {
+    marginTop: '0.5rem',
   },
 };
 

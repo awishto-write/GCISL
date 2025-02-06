@@ -284,96 +284,6 @@ li {
   color: #ca1237;
 }
 
-/* RESPONSIVE DESIGN */
-/* @media screen and (max-width: 1024px) {
-  .section__row {
-    max-width: 100vw;
-    display: block;
-  }
-
-  .contact__wrapper {
-    flex-direction: column;
-    height: 70vh;
-    max-width: 100vw;
-  }
-
-  .contact__half {
-    width: 100%;
-  }
-
-  .contact__left {
-    width: 100%;
-    text-align: center;
-  }
-
-  .contact__right {
-    width: 100%;
-    height: 100vh;
-  }
-
-  .contact__title {
-    font-size: 48px;
-    margin-bottom: 10px;
-  }
-
-  .contact__para {
-    font-size: 20px;
-    font-weight: 600;
-  }
-}
-
-@media screen and (max-width: 550px) {
-  .section__row {
-    max-width: 100vw;
-  }
-
-  .section__container {
-    padding: 40px 0;
-  }
-
-  .contact__wrapper {
-    flex-direction: column;
-    height: 100vh;
-  }
-
-  .contact__half {
-    width: 100%;
-  }
-  .contact__left {
-    width: 100%;
-  }
-
-  .contact__right {
-    width: 100%;
-    height: 100vh;
-  }
-
-  h1 {
-    font-size: 36px;
-  }
-}
-
-@media screen and (max-width: 450px) {
-  .nav__container {
-      flex-direction: column;
-      align-items: center;
-  }
-
-  .nav__links {
-      margin-top: 20px;
-  }
-
-  .nav__link {
-      font-size: 8px;
-      margin: 8px;
-      padding: 4px;
-  }
-
-  h1 {
-    font-size: 36px !important;
-    font-weight: 700 !important;
-  }
-} */
 
 /* Adjust the layout on smaller screens */
 @media screen and (max-width: 1024px) {
@@ -413,4 +323,27 @@ li {
   .contact__para {
     font-size: 16px; /* Smaller text for mobile */
   }
+}
+
+select.input {
+  width: 100%;
+  background: #a60f2d; /* Match the background color of other inputs */
+  color: #fff; /* Match the text color */
+  outline: none;
+  border: 1px solid #c0c4cc; /* Match the border style */
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  height: 40px; /* Match the height of the inputs */
+  transition: all 300ms ease; /* Add the same transition effect */
+  padding: 0 10px; /* Add padding for better alignment */
+  /* appearance: none; Remove the default dropdown arrow styling */
+}
+
+select.input:hover {
+  border-color: #ca1237; /* Match the hover state of other inputs */
+}
+
+select.input:focus {
+  border-color: #000; /* Match the focus state of other inputs */
 }
