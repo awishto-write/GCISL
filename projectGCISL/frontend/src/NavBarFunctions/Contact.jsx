@@ -26,8 +26,8 @@ export default function Contact() {
     const data = new FormData();
     data.append('entry.1653249143', event.target.user_name.value);  // For Name
     data.append('entry.345674368', event.target.user_email.value); // For Email Address
-    data.append('entry.2077810956', event.target.user_phone.value); // For Phone Number
-    data.append('entry.1250551985', event.target.contact_reason.value); 
+    data.append('entry.1203962156', event.target.user_phone.value); // For Phone Number
+    data.append('entry.1250551985', event.target.contact_reason.value); // For Reason (Dropdown)
     data.append('entry.1274324805', event.target.message.value);    // For Message
 
     fetch(formActionURL, {
@@ -39,7 +39,7 @@ export default function Contact() {
         setLoading(false);
         setSuccess(true);
 
-         // Reset the form after 5 seconds
+        // Reset the form after 5 seconds
         setTimeout(() => {
           setSuccess(false); // Hide success message
           event.target.reset(); // Reset the form fields
@@ -188,4 +188,4 @@ export default function Contact() {
       </div>
     </section>
   );
-};
+}
