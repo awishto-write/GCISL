@@ -80,8 +80,7 @@ List which add-ons are included in the project, and the purpose each add-on serv
   - Frontend: Start the frontend development server(http://localhost:3000):
   ```sh
   cd projectGCISL/api
-  npm node.js
-  npm run dev
+  npm start
   ```
 
 ## Functionality  
