@@ -1,0 +1,207 @@
+* {
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
+    padding: 0;
+    margin: 0;
+}
+  
+html {
+    scroll-behavior: smooth;
+}
+
+.research {
+    padding: 40px;
+    text-align: center;
+    padding-bottom: 80px; 
+}
+
+.research h1 {
+    margin-bottom: 30px;
+    margin-top: 70px;
+}
+
+/* Table Styling */
+.research-table {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+/* Table Borders: Separates Columns */
+.research-table td {
+    border: 2px solid black;
+    padding: 20px;
+    vertical-align: middle;
+}
+
+/* Image Column */
+.research-image-cell {
+    height: 200px;
+    width: 250px;
+}
+
+.research-image {
+    width: 100%;
+    height: 100%;
+    /* object-fit: cover; */
+}
+
+/* Title Column */
+.research-title-cell {
+    /* width: 250px; */
+    width: 200px; 
+    text-align: center;
+    background-color: #f8f8f8;
+    /* Light background for title */
+}
+
+.research-title {
+    color: #a32436;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+/* Description + Link Column */
+
+
+.research-info-cell {
+    padding: 10px;
+}
+
+.research-info-cell a {
+    color: #a32436;
+    text-decoration: none;
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+    size: 10px;
+}
+
+.research-info-cell a:hover {
+    text-decoration: underline;
+} 
+
+
+
+@media screen and (max-width: 1200px) {
+    .research h1 {
+        margin-top: 100px; /* Extra space for slightly smaller screens */
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .research h1 {
+        margin-top: 100px;
+    }
+
+    .research-table {
+        width: 95%;
+    }
+
+    .research-table td {
+        padding: 15px; /* Adjusts padding for smaller screens */
+    }
+
+    .research-image-cell,
+    .research-title-cell,
+    .research-info-cell {
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .research h1 {
+        margin-top: 120px; /* More space for smaller screens */
+    }
+
+    .research-table {
+        width: 100%;
+    }
+
+    .research-table td {
+        padding: 12px; /* Slightly reduces padding */
+    }
+
+    .research-image-cell {
+        width: 150px; /* Adjust image size */
+        height: 150px;
+    }
+
+    .research-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+@media screen and (max-width: 580px) {
+    .research h1 {
+        margin-top: 120px; /* More space for smaller screens */
+    }
+
+    .research-table {
+        width: 100%;
+    }
+
+    .research-table td {
+        padding: 10px; /* Slightly reduces padding */
+    }
+
+    .research-image-cell {
+        /* Adjust image size */
+        height: 140px;
+        width: 160px;
+    }
+
+    .research-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .research-title-cell {
+       
+        width: 100px;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .research h1 {
+        margin-top: 120px; /* More space for smaller screens */
+    }
+
+    .research-table {
+        width: 100%;
+    }
+
+    .research-table td {
+        padding: 10px; /* Slightly reduces padding */
+    }
+
+    .research-image-cell {
+        height: 200px;
+        width: 200px;
+    }
+
+    .research-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .research-title-cell {
+        size: 12px;
+        width: auto; /* Allows it to scale dynamically */
+        max-width: 140px; /* Prevents it from shrinking too much */
+        word-break: normal;
+    }
+
+    .research-title {
+        font-size: 16px;
+        word-wrap: break-word; 
+        overflow-wrap: break-word; 
+        white-space: normal; /* Allows text to wrap instead of staying on one line */
+        max-width: 100%; /* Prevents content from overflowing */
+    }
+}
+
