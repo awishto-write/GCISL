@@ -21,7 +21,7 @@ import HeroSection from './ClassComponents/HeroSection';
 import VolunteerSidebar from './ClassComponents/VolunteerSidebar';
 import VolunteerList from './DashboardFunctions/VolunteerList';
 import VolunteerTasks from './DashboardFunctions/VolunteerTasks';
-import './App.css'; // Check
+import './App.css'; 
 
 const AppContent = () => {
   const location = useLocation();
