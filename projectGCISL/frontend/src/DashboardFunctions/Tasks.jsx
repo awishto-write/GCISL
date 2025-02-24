@@ -153,7 +153,7 @@ const Tasks = () => {
     }
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
-      const response = await fetch(`${apiUrl}/api/tasks/${editingTaskId}`, {
+      const response = await fetch(`${apiUrl}/api/tasks?id=${editingTaskId}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -181,7 +181,7 @@ const Tasks = () => {
     }
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
-      const response = await fetch(`${apiUrl}/api/tasks/${id}`, {
+      const response = await fetch(`${apiUrl}/api/tasks?id=${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
