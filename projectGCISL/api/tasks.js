@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
-const Task = require('../models/Task');
-const User = require('../models/UserModel');
-const Log = require('../models/Log');
-const authenticateJWT = require('../middleware/authenticateJWT');
+const Task = require('./models/Task');
+const User = require('./models/UserModel');
+const Log = require('./models/Log');
+const authenticateJWT = require('./middleware/authenticateJWT');
 require('dotenv').config();
 
 if (mongoose.connection.readyState === 0) {

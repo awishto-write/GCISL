@@ -153,7 +153,7 @@ const Tasks = () => {
     }
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
-      const response = await fetch(`${apiUrl}/api/tasks?id=${editingTaskId}`, {
+      const response = await fetch(`${apiUrl}/api/tasks/${editingTaskId}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -174,29 +174,29 @@ const Tasks = () => {
   }; 
 
   const handleDeleteTask = async (id) => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      console.error("No token found");
-      return;
+  const token = localStorage.getItem("token");
+  if (!token) {
+    console.error("No token found");
+    return;
+  }
+  try {
+    const apiUrl = process.env.REACT_APP_API_URL;
+    const response = await fetch(`${apiUrl}/api/tasks/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (response.ok) {
+      setTasks(tasks.filter((task) => task._id !== id));
+      showNotification('Task successfully deleted!');
+    } else {
+      console.error("Error deleting task:", response.statusText);
     }
-    try {
-      const apiUrl = process.env.REACT_APP_API_URL;
-      const response = await fetch(`${apiUrl}/api/tasks?id=${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.ok) {
-        setTasks(tasks.filter((task) => task._id !== id));
-        showNotification('Task successfully deleted!');
-      } else {
-        console.error("Error deleting task:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Error deleting task:", error);
-    }
-  };
+  } catch (error) {
+    console.error("Error deleting task:", error);
+  }
+};
 
   const handleClearAssignees = async (taskId) => {
     setIsClearing(true); // Indicate that the clearing process has started
