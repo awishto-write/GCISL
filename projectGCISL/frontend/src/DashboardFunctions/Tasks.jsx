@@ -210,7 +210,7 @@ const Tasks = () => {
 
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
-      const response = await fetch(`${apiUrl}/api/tasks/${taskId}/clear`, {
+      const response = await fetch(`${apiUrl}/api/tasks/clear`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
