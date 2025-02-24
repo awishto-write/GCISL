@@ -5,7 +5,9 @@ const authenticateJWT = require('./middleware/authenticateJWT');
 
 router.get('/', authenticateJWT, async (req, res) => {
   try {
-    const user = await User.findById(req.userId).select('firstName lastName');
+    const user = await User.findById(req.userId).select('firstName lastName'); 
+    console.log('value of user:', user);
+    console.log('userRouter:', typeof require('./user'));
     if (!user) {
       return res.status(404).json({ message: 'User not found.' });
     }
