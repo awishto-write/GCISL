@@ -9,20 +9,6 @@ const Login = () => {
   const navigate = useNavigate(); // Use useNavigate for navigation
   const apiUrl = process.env.REACT_APP_API_URL; // Get API URL from environment variable
 
-  // Check if the user is already logged in and redirect them automatically
-  // useEffect(() => {
-  //   const token = localStorage.getItem('token');
-  //   const statusType = localStorage.getItem('statusType'); // Save statusType in localStorage
-
-  //   if (token) {
-  //     if (statusType === 'admin') {
-  //       navigate('/admin-dashboard');
-  //     } else if (statusType === 'volunteer') {
-  //       navigate('/volunteer-dashboard');
-  //     }
-  //   }
-  // }, [navigate]);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === 'email') {

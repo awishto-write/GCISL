@@ -9,6 +9,7 @@ import About from './NavBarFunctions/About';
 import Login from './NavBarFunctions/Login';
 import Register from './NavBarFunctions/Register';
 import GetInvolved from './NavBarFunctions/GetInvolved';
+import Research from './NavBarFunctions/Research';
 import AdminDashboard from './DashboardFunctions/AdminDashboard';
 import Volunteers from './DashboardFunctions/Volunteers';
 import Tasks from './DashboardFunctions/Tasks';
@@ -125,6 +126,7 @@ const AppContent = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/get-involved" element={<GetInvolved />} />
+        <Route path="/research" element={<Research />} />
         {/* Admin Routes */}
         <Route path="/admin-dashboard" element={<ProtectedRoute><AdminDashboard user={user} /></ProtectedRoute>} />
         <Route path="/dashboard/volunteers" element={<ProtectedRoute><Volunteers user={user} /></ProtectedRoute>} />

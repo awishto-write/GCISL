@@ -155,7 +155,7 @@ const Tasks = () => {
       console.error("No token found");
       return;
     }
-
+  
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
       const response = await fetch(`${apiUrl}/api/tasks/${editingTaskId}`, {
@@ -166,20 +166,19 @@ const Tasks = () => {
         },
         body: JSON.stringify(editTask),
       });
-
+  
       if (!response.ok) {
         throw new Error("Failed to update task");
       }
-
+  
       const updatedTask = await response.json();
-      setTasks(
-        tasks.map((task) => (task._id === editingTaskId ? updatedTask : task))
-      );
+      setTasks(tasks.map((task) => (task._id === editingTaskId ? updatedTask : task)));
       setEditingTaskId(null);
+      showNotification('Task successfully updated!'); // Show notification
     } catch (error) {
       console.error("Error updating task:", error);
     }
-  };
+  };  
 
   const handleDeleteTask = async (id) => {
     const token = localStorage.getItem("token");
@@ -187,7 +186,7 @@ const Tasks = () => {
       console.error("No token found");
       return;
     }
-
+  
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
       const response = await fetch(`${apiUrl}/api/tasks/${id}`, {
@@ -196,18 +195,17 @@ const Tasks = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-
+  
       if (response.ok) {
         setTasks(tasks.filter((task) => task._id !== id));
-        showNotification('Task successfully deleted!'); 
-      } 
-      else {
+        showNotification('Task successfully deleted!'); // Show notification
+      } else {
         console.error("Error deleting task:", response.statusText);
       }
     } catch (error) {
       console.error("Error deleting task:", error);
     }
-  };
+  };  
 
   const handleClearAssignees = async (taskId) => {
     setIsClearing(true); // Indicate that the clearing process has started

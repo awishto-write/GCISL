@@ -1,65 +1,85 @@
-const mongoose = require('mongoose');
-require('dotenv').config();
+const express = require('express');
+const router = express.Router();
+const Task = require('../models/Task');
+const User = require('../models/User'); // Ensure User model is imported
+const Log = require('../models/Log'); // Ensure Log model is imported
+const authenticateJWT = require('../middleware/authenticateJWT');
 
-if (mongoose.connection.readyState === 0) {
-  mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-    .then(() => console.log('Connected to MongoDB'))
-    .catch((err) => console.error('MongoDB connection error:', err));
-}
+// Update a task
+router.put('/:id', authenticateJWT, async (req, res) => {
+  const { title, creationDate, dueDate, color, status, description } = req.body;
 
-const Task = mongoose.models.Task || mongoose.model('Task', new mongoose.Schema({
-  title: String,
-  //duration: String,
-  creationDate: { type: Date, required: true, default: Date.now },
-  dueDate: { type: Date, required: false },
-  document: String,
-  color: String,
-  status: { type: String, enum: ['None', 'In Progress', 'Completed', 'To Redo'], default: 'None' },
-  assignedVolunteers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
-}));
+  try {
+    const existingTask = await Task.findById(req.params.id);
 
-module.exports = async (req, res) => {
-  if (req.method === 'PUT') {
-    const { id } = req.query;
-    //const { title, duration, document, color, status } = req.body;
-    const { title, creationDate, dueDate, document, color, status } = req.body;
-
-    try {
-      const task = await Task.findByIdAndUpdate(
-        id,
-        // { title, duration, document, color, status },
-        { title, creationDate, dueDate, document, color, status },
-        { new: true }
-      );
-
-      if (!task) {
-        return res.status(404).json({ message: 'Task not found.' });
-      }
-
-      res.status(200).json(task);
-    } catch (error) {
-      console.error('Error updating task:', error);
-      res.status(400).json({ message: 'Error updating task.' });
+    if (!existingTask) {
+      return res.status(404).json({ message: 'Task not found.' });
     }
-  } else if (req.method === 'DELETE') {
-    const { id } = req.query;
 
-    try {
-      const task = await Task.findByIdAndDelete(id);
+    const updatedTask = await Task.findByIdAndUpdate(
+      req.params.id,
+      { title, creationDate, dueDate, color, status, description },
+      { new: true }
+    );
 
-      if (!task) {
-        return res.status(404).json({ message: 'Task not found.' });
-      }
+    const user = await User.findById(req.userId);
 
-      res.sendStatus(204);
-    } catch (error) {
-      console.error('Error deleting task:', error);
-      res.status(500).json({ message: 'Error deleting task.' });
+    if (user.statusType === 'volunteer' && status === 'Completed') {
+      const assignees = updatedTask.assignedVolunteers.length > 0
+        ? (
+            await User.find({ _id: { $in: updatedTask.assignedVolunteers } })
+          ).map((volunteer) => `${volunteer.firstName} ${volunteer.lastName}`)
+        : [];
+
+      const completionLog = new Log({
+        action: `Completed Task by Volunteer: ${user.firstName} ${user.lastName}`,
+        taskTitle: updatedTask.title,
+        assignees,
+        creationDate: updatedTask.creationDate,
+        dueDate: updatedTask.dueDate,
+      });
+
+      await completionLog.save();
     }
-  } else {
-    res.status(405).json({ message: 'Method Not Allowed' });
+
+    const updateLog = new Log({
+      action: `Task Updated by ${user.firstName} ${user.lastName}`,
+      taskTitle: updatedTask.title,
+      creationDate: updatedTask.creationDate,
+      dueDate: updatedTask.dueDate,
+    });
+    await updateLog.save();
+
+    res.status(200).json(updatedTask);
+  } catch (error) {
+    console.error('Error updating task:', error);
+    res.status(400).json({ message: 'Error updating task.' });
   }
-};
+});
+
+// Delete a task
+router.delete('/:id', authenticateJWT, async (req, res) => {
+  try {
+    const task = await Task.findByIdAndDelete(req.params.id);
+
+    if (!task) {
+      return res.status(404).json({ message: 'Task not found.' });
+    }
+
+    const user = await User.findById(req.userId);
+    const deleteLog = new Log({
+      action: `Task Deleted by ${user.firstName} ${user.lastName}`,
+      taskTitle: task.title,
+      creationDate: task.creationDate,
+      dueDate: task.dueDate,
+    });
+    await deleteLog.save();
+
+    res.sendStatus(204);
+  } catch (error) {
+    console.error('Error deleting task:', error);
+    res.status(500).json({ message: 'Error deleting task.' });
+  }
+});
+
+module.exports = router;
