@@ -1,26 +1,44 @@
-const express = require('express');
-const router = express.Router();
+const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('./models/UserModel');
+require('dotenv').config();
 
-router.post('/', async (req, res) => {
-  const { email, password } = req.body;
+if (mongoose.connection.readyState === 0) {
+  mongoose.connect(process.env.MONGODB_URI)
+    .then(() => console.log("Connected to MongoDB for login"))
+    .catch((err) => console.error("MongoDB connection error:", err));
+}
 
-  // Check for missing fields
-  if (!email || !password) {
-    return res.status(400).json({ error: 'Email and password are required.' });
+const userSchema = new mongoose.Schema({
+  firstName: String,
+  lastName: String,
+  email: { type: String, unique: true },
+  phoneNumber: String,
+  password: String,
+  statusType: String,
+});
+
+const User = mongoose.models.User || mongoose.model('User', userSchema);
+
+module.exports = async (req, res) => {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: "Method Not Allowed" });
   }
 
-  try {
-    const user = await User.findOne({ email });
+  const { email, password } = req.body;
 
+  try {
+    console.log('Login attempt:', email);
+
+    const user = await User.findOne({ email });
     if (!user) {
+      console.log('User not found:', email);
       return res.status(400).json({ error: 'Invalid email or password.' });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
+      console.log('Password mismatch for user:', email);
       return res.status(400).json({ error: 'Invalid email or password.' });
     }
 
@@ -30,10 +48,16 @@ router.post('/', async (req, res) => {
       { expiresIn: '2h' }
     );
 
-    res.json({ message: 'Login successful', token, statusType: user.statusType });
+    console.log('Token generated for user:', email);
+
+    res.json({
+      message: 'Login successful',
+      token,
+      statusType: user.statusType,
+      redirectUrl: user.statusType === 'admin' ? '/admin-dashboard' : '/volunteer-dashboard'
+    });
   } catch (error) {
+    console.error('Login error:', error);
     res.status(500).json({ error: 'Login failed.' });
   }
-});
-
-module.exports = router;
+};
