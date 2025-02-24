@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Task = require('./models/Task');
-const User = require('./models/User'); // Ensure User model is imported
+const User = require('./models/UserModel'); // Ensure User model is imported
 const Log = require('./models/Log'); // Ensure Log model is imported
 const authenticateJWT = require('./middleware/authenticateJWT');
 
