@@ -8,6 +8,8 @@ router.get('/', authenticateJWT, async (req, res) => {
 
   try {
     const users = await User.find({ statusType: role });
+    console.log('value of users:', users);
+    console.log('usersRouter:', typeof require('./users'));
     res.status(200).json(users);
   } catch (error) {
     console.error('Error fetching users:', error);
