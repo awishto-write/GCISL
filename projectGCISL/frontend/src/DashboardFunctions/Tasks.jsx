@@ -108,19 +108,17 @@ const Tasks = () => {
   const handleAddTestTask = async () => {
     const newTask = {
       title: "TASK",
-      creationDate: new Date(), // Set current date for creation
-      dueDate: null, // Leave due date empty
+      creationDate: new Date(),
+      dueDate: null,
       status: "None",
       description: "",
-      createdBy: `${user.firstName} ${user.lastName}`, // Use logged-in user details
+      createdBy: `${user.firstName} ${user.lastName}`,
     };
-
     const token = localStorage.getItem("token");
     if (!token) {
       console.error("No token found");
       return;
     }
-
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
       const response = await fetch(`${apiUrl}/api/tasks`, {
@@ -131,14 +129,12 @@ const Tasks = () => {
         },
         body: JSON.stringify(newTask),
       });
-
       if (!response.ok) {
         throw new Error("Failed to add task");
       }
-
       const addedTask = await response.json();
       setTasks([...tasks, addedTask]);
-      showNotification('Task successfully created!'); // Show notification
+      showNotification('Task successfully created!');
     } catch (error) {
       console.error("Error adding task:", error);
     }
@@ -155,7 +151,6 @@ const Tasks = () => {
       console.error("No token found");
       return;
     }
-  
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
       const response = await fetch(`${apiUrl}/api/tasks/${editingTaskId}`, {
@@ -166,19 +161,17 @@ const Tasks = () => {
         },
         body: JSON.stringify(editTask),
       });
-  
       if (!response.ok) {
         throw new Error("Failed to update task");
       }
-  
       const updatedTask = await response.json();
       setTasks(tasks.map((task) => (task._id === editingTaskId ? updatedTask : task)));
       setEditingTaskId(null);
-      showNotification('Task successfully updated!'); // Show notification
+      showNotification('Task successfully updated!');
     } catch (error) {
       console.error("Error updating task:", error);
     }
-  };  
+  }; 
 
   const handleDeleteTask = async (id) => {
     const token = localStorage.getItem("token");
@@ -186,7 +179,6 @@ const Tasks = () => {
       console.error("No token found");
       return;
     }
-  
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
       const response = await fetch(`${apiUrl}/api/tasks/${id}`, {
@@ -195,17 +187,16 @@ const Tasks = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-  
       if (response.ok) {
         setTasks(tasks.filter((task) => task._id !== id));
-        showNotification('Task successfully deleted!'); // Show notification
+        showNotification('Task successfully deleted!');
       } else {
         console.error("Error deleting task:", response.statusText);
       }
     } catch (error) {
       console.error("Error deleting task:", error);
     }
-  };  
+  };
 
   const handleClearAssignees = async (taskId) => {
     setIsClearing(true); // Indicate that the clearing process has started
