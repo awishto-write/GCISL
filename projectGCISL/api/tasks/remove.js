@@ -1,27 +1,37 @@
-const express = require('express');
-const router = express.Router();
+const mongoose = require('mongoose');
 const Task = require('../models/Task');
 const authenticateJWT = require('../middleware/authenticateJWT');
+require('dotenv').config();
 
-router.post('/', authenticateJWT, async (req, res) => {
-  const { volunteerId, taskId } = req.body;
+if (mongoose.connection.readyState === 0) {
+  mongoose.connect(process.env.MONGODB_URI)
+    .then(() => console.log("Connected to MongoDB for removing volunteers"))
+    .catch((err) => console.error("MongoDB connection error:", err));
+}
 
-  try {
-    const task = await Task.findById(taskId);
-    if (!task) {
-      return res.status(404).json({ message: 'Task not found.' });
+module.exports = async (req, res) => {
+  await authenticateJWT(req, res, async () => {
+    if (req.method !== 'POST') {
+      return res.status(405).json({ error: "Method Not Allowed" });
     }
 
-    task.assignedVolunteers = task.assignedVolunteers.filter(
-      (id) => id.toString() !== volunteerId
-    );
+    const { volunteerId, taskId } = req.body;
 
-    await task.save();
-    res.status(200).json({ message: 'Volunteer removed from task successfully.' });
-  } catch (error) {
-    console.error('Error removing volunteer from task:', error);
-    res.status(500).json({ message: 'Error removing volunteer from task.' });
-  }
-});
+    try {
+      const task = await Task.findById(taskId);
+      if (!task) {
+        return res.status(404).json({ message: 'Task not found.' });
+      }
 
-module.exports = router;
+      task.assignedVolunteers = task.assignedVolunteers.filter(
+        (id) => id.toString() !== volunteerId
+      );
+
+      await task.save();
+      res.status(200).json({ message: 'Volunteer removed from task successfully.' });
+    } catch (error) {
+      console.error('Error removing volunteer from task:', error);
+      res.status(500).json({ message: 'Error removing volunteer from task.' });
+    }
+  });
+};

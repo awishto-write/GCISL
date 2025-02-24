@@ -1,7 +1,13 @@
-const express = require('express');
-const router = express.Router();
+const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const User = require('./models/UserModel');
+require('dotenv').config();
+
+if (mongoose.connection.readyState === 0) {
+  mongoose.connect(process.env.MONGODB_URI)
+    .then(() => console.log("Connected to MongoDB for user registration"))
+    .catch((err) => console.error("MongoDB connection error:", err));
+}
 
 const allowedAdminNames = [
   'Naomi Dion-Gokan',
@@ -11,7 +17,11 @@ const allowedAdminNames = [
   'Cory Bolkan',
 ];
 
-router.post('/', async (req, res) => {
+module.exports = async (req, res) => {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: "Method Not Allowed" });
+  }
+
   const { firstName, lastName, email, phoneNumber, password, statusType } = req.body;
   const fullName = `${firstName} ${lastName}`;
 
@@ -33,8 +43,7 @@ router.post('/', async (req, res) => {
     await newUser.save();
     res.status(201).json({ message: 'User registered successfully!' });
   } catch (error) {
+    console.error('Error registering user:', error);
     res.status(400).json({ error: 'User already exists or registration failed.' });
   }
-});
-
-module.exports = router;
+};
