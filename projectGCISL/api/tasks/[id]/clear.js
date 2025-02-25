@@ -4,35 +4,27 @@ const connectDB = require('../../db');
 
 connectDB();
 
-export default async function handler(req, res) {
-  const { id } = req.query; // Get the task ID from the query parameters
-
-  if (req.method === 'OPTIONS') {
-    res.setHeader("Allow", "POST, OPTIONS");
-    return res.status(204).end();
-  }
-
+module.exports = async (req, res) => {
   await authenticateJWT(req, res, async () => {
-    if (req.method === 'POST') {
-      try {
-        // Find the task by ID
-        const task = await Task.findById(id);
+    if (req.method !== 'POST') {
+      return res.status(405).json({ error: "Method Not Allowed" });
+    }
 
-        if (!task) {
-          return res.status(404).json({ message: 'Task not found.' });
-        }
+    try {
+      const { id } = req.query; // Ensure taskId is in the query parameters
+      const task = await Task.findById(id);
 
-        // Clear the assigned volunteers
-        task.assignedVolunteers = [];
-        await task.save();
-
-        res.status(200).json({ message: 'All assignees cleared successfully.' });
-      } catch (error) {
-        console.error('Error clearing assignees:', error);
-        res.status(500).json({ message: 'Error clearing assignees.' });
+      if (!task) {
+        return res.status(404).json({ message: 'Task not found.' });
       }
-    } else {
-      res.status(405).json({ message: 'Method Not Allowed' });
+
+      task.assignedVolunteers = [];
+      await task.save();
+
+      res.json({ message: 'All assignees cleared successfully.' });
+    } catch (error) {
+      console.error('Error clearing assignees:', error);
+      res.status(500).json({ message: 'Error clearing assignees.' });
     }
   });
-}
+};

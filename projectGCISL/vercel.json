@@ -1,7 +1,10 @@
 {
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" },  
-    { "source": "/(.*)", "destination": "/" }             
+    { "source": "/api/tasks/:id/clear", "destination": "/api/tasks/[id]/clear" },
+    { "source": "/api/tasks/:id", "destination": "/api/tasks/[id]/index" },
+    { "source": "/api/tasks/assign", "destination": "/api/tasks/assign" },
+    { "source": "/api/tasks/remove", "destination": "/api/tasks/remove" },
+    { "source": "/api/tasks", "destination": "/api/tasks/index" }
   ],
   "headers": [
     {
