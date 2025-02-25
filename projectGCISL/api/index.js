@@ -37,7 +37,7 @@ const logsRouter = require('./logs');
 const taskDetailsRouter = require('./tasks/[id]'); 
 const assignRouter = require('./tasks/assign');
 const removeRouter = require('./tasks/remove'); 
-const clearAssigneesRouter = require('./tasks/clear'); 
+const clearAssigneesRouter = require('./tasks/[id]/clear'); 
 
 // Use routes
 app.use('/api/register', registerRouter);
