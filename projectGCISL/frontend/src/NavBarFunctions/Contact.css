@@ -304,7 +304,25 @@ li {
     text-align: center; /* Center-align text for better readability on smaller screens */
   }
 }
+@media screen and (max-width: 768px) {
+  .contact__wrapper {
+    flex-direction: column; /* Keep stacking vertically */
+    height: auto; /* Adjust height to fit content */
+  }
 
+  .contact__half {
+    padding: 15px; /* Further reduce padding for very small screens */
+  }
+
+  .contact__title {
+    font-size: 24px; /* Adjust font size for smaller screens */
+    margin-top: 100px;
+  }
+
+  .contact__para {
+    font-size: 16px; /* Smaller text for mobile */
+  }
+}
 /* Even smaller screens (e.g., mobile) */
 @media screen and (max-width: 550px) {
   .contact__wrapper {
@@ -318,6 +336,7 @@ li {
 
   .contact__title {
     font-size: 24px; /* Adjust font size for smaller screens */
+    margin-top: 100px;
   }
 
   .contact__para {

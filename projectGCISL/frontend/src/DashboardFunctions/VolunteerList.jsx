@@ -117,6 +117,7 @@ const VolunteerList = () => {
 
 const dashboardStyle = {
   display: 'flex',
+  minWidth: '100%' ,
 };
 
 const contentStyle = {
@@ -131,6 +132,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    
   },
   volunteerCard: {
     backgroundColor: '#fff',
