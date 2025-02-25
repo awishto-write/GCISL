@@ -26,6 +26,12 @@ module.exports = async (req, res) => {
       return res.status(403).json({ error: 'You are not authorized to register as an admin.' });
     }
 
+      // Check if a user with the same email already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+        return res.status(400).json({ error: 'Email is already in use.' });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({
       firstName,

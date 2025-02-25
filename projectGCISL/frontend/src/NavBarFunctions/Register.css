@@ -132,11 +132,6 @@ html, body {
   transform: scale(0.95);
 }
 
-/* .p-register { 
-  text-align: center; 
-  margin-top: 20px; 
-} */
-
 .p-register { /* Unique class for login paragraph */
   text-align: center; /* Center the paragraph text */
   margin-top: 20px; /* Margin on top */
