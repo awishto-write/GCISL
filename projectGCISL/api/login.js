@@ -1,13 +1,10 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const connectDB = require('./db'); // Import the shared DB connection
 require('dotenv').config();
 
-if (mongoose.connection.readyState === 0) {
-  mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log("Connected to MongoDB for login"))
-    .catch((err) => console.error("MongoDB connection error:", err));
-}
+connectDB(); // Use the shared DB connection
 
 const userSchema = new mongoose.Schema({
   firstName: String,

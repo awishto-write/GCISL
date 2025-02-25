@@ -1,15 +1,15 @@
-const mongoose = require('mongoose');
 const Task = require('../models/Task');
 const authenticateJWT = require('../middleware/authenticateJWT');
-require('dotenv').config();
+const connectDB = require('../db');
 
-if (mongoose.connection.readyState === 0) {
-  mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log("Connected to MongoDB for removing volunteers"))
-    .catch((err) => console.error("MongoDB connection error:", err));
-}
+connectDB();
 
 module.exports = async (req, res) => {
+  if (req.method === 'OPTIONS') {
+    res.setHeader("Allow", "GET, POST, PUT, DELETE, OPTIONS");
+    return res.status(204).end();
+  }
+
   await authenticateJWT(req, res, async () => {
     if (req.method !== 'POST') {
       return res.status(405).json({ error: "Method Not Allowed" });

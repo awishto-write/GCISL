@@ -1,13 +1,9 @@
-const mongoose = require('mongoose');
+const connectDB = require('./db'); // Import the shared DB connection
 const Log = require('./models/Log');
 const authenticateJWT = require('./middleware/authenticateJWT');
 require('dotenv').config();
 
-if (mongoose.connection.readyState === 0) {
-  mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log("Connected to MongoDB for logs"))
-    .catch((err) => console.error("MongoDB connection error:", err));
-}
+connectDB(); // Use the shared DB connection
 
 module.exports = async (req, res) => {
   await authenticateJWT(req, res, async () => {
