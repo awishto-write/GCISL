@@ -25,6 +25,11 @@ module.exports = async (req, res) => {
       const { title, creationDate, dueDate, status, description, assignedVolunteers } = req.body;
       try {
         const user = await User.findById(req.userId);
+        // Check if a task with the same title already exists
+        const duplicateTask = await Task.findOne({ title: title });
+        if (duplicateTask) {
+            return res.status(400).json({ message: 'Task with the title "TASK" already exists! Please edit the title of existing task' });
+        }
         const newTask = new Task({ title, creationDate, dueDate, status, description, createdBy: `${user.firstName} ${user.lastName}`, assignedVolunteers });
         await newTask.save();
 
