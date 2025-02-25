@@ -48,10 +48,10 @@ app.use('/api/users', usersRouter);
 app.use('/api/volunteer-tasks', volunteerTasksRouter);
 app.use('/api/volunteer-task-count', volunteerTaskCountRouter);
 app.use('/api/logs', logsRouter);
-app.use('/api/tasks', taskDetailsRouter); 
+app.use('/api/tasks/[id]', taskDetailsRouter); 
 app.use('/api/tasks/assign', assignRouter); 
 app.use('/api/tasks/remove', removeRouter); 
-app.use('/api/tasks', clearAssigneesRouter); 
+app.use('/api/tasks/[id]/clear', clearAssigneesRouter); 
 
 // Test endpoint
 app.get('/test', (_req, res) => {
