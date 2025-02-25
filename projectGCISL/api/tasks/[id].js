@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const Task = require('../models/Task');
 const User = require('../models/UserModel');
 const Log = require('../models/Log');
@@ -9,7 +8,7 @@ require('dotenv').config();
 
 connectDB();
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   if (req.method === 'OPTIONS') {
     res.setHeader("Allow", "GET, POST, PUT, DELETE, OPTIONS");
     return res.status(204).end();
