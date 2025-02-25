@@ -1,13 +1,8 @@
-const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
+const connectDB = require('./db'); // Import the shared DB connection
 require('dotenv').config();
 
-// MongoDB connection
-if (mongoose.connection.readyState === 0) {
-  mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log("Connected to MongoDB for /api/user"))
-    .catch((err) => console.error("MongoDB connection error:", err));
-}
+connectDB(); // Use the shared DB connection
 
 const User = mongoose.models.User || mongoose.model('User', new mongoose.Schema({
   firstName: String,
@@ -36,4 +31,4 @@ module.exports = async (req, res) => {
     console.error('Error fetching user:', error);
     res.status(500).json({ message: 'Error fetching user.' });
   }
-}
+};
