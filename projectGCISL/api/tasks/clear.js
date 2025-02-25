@@ -1,17 +1,19 @@
-const Task = require('../models/Task');
-const authenticateJWT = require('../middleware/authenticateJWT');
-const connectDB = require('../db');
+import Task from '../models/Task';
+import authenticateJWT from '../middleware/authenticateJWT';
+import connectDB from '../db';
 
 connectDB();
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   if (req.method === 'OPTIONS') {
     res.setHeader("Allow", "GET, POST, PUT, DELETE, OPTIONS");
     return res.status(204).end();
   }
 
   await authenticateJWT(req, res, async () => {
-    if (req.method !== 'POST') return res.status(405).json({ error: "Method Not Allowed" });
+    if (req.method !== 'POST') {
+      return res.status(405).json({ error: "Method Not Allowed" });
+    }
 
     try {
       const task = await Task.findById(req.query.taskId);
@@ -25,4 +27,4 @@ module.exports = async (req, res) => {
       res.status(500).json({ message: 'Error clearing assignees.' });
     }
   });
-};
+}
