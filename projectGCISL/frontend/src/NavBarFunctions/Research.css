@@ -136,36 +136,6 @@ html {
     }
 }
 
-@media screen and (max-width: 580px) {
-    .research h1 {
-        margin-top: 120px; /* More space for smaller screens */
-    }
-
-    .research-table {
-        width: 100%;
-    }
-
-    .research-table td {
-        padding: 10px; /* Slightly reduces padding */
-    }
-
-    .research-image-cell {
-        /* Adjust image size */
-        height: 140px;
-        width: 160px;
-    }
-
-    .research-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-    .research-title-cell {
-       
-        width: 100px;
-    }
-}
-
 @media screen and (max-width: 550px) {
     .research h1 {
         margin-top: 120px; /* More space for smaller screens */
@@ -176,7 +146,7 @@ html {
     }
 
     .research-table td {
-        padding: 10px; /* Slightly reduces padding */
+        padding: 5px; /* Slightly reduces padding */
     }
 
     .research-image-cell {
@@ -202,6 +172,48 @@ html {
         overflow-wrap: break-word; 
         white-space: normal; /* Allows text to wrap instead of staying on one line */
         max-width: 100%; /* Prevents content from overflowing */
+    }
+}
+
+@media screen and (max-width: 390px) {
+    .research h1 {
+        margin-top: 190px; /* More space for smaller screens */
+    }
+
+    .research-table {
+        width: 100%;
+    }
+
+    .research-table td {
+        padding: 2px; /* Slightly reduces padding */
+    }
+
+    .research-image-cell {
+        height: 220px;
+        width: 220px;
+    }
+
+    .research-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .research-title-cell {
+        size: 11px;
+        width: auto; /* Allows it to scale dynamically */
+        max-width: 110px; /* Prevents it from shrinking too much */
+        word-break: normal;
+    }
+
+    .research-title {
+        font-size: 11px;
+        word-wrap: break-word; 
+        overflow-wrap: break-word; 
+        white-space: normal; /* Allows text to wrap instead of staying on one line */
+        max-width: 100%; /* Prevents content from overflowing */
+    }
+    .research-info-cell {
+        font-size: 12px;
     }
 }
 

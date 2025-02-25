@@ -32,6 +32,13 @@ const Tasks = () => {
     }, 3000);
   };
 
+  const showNotificationExistingTask = (message) => {
+    setNotification(message); // Set the message
+    setTimeout(() => {
+      setNotification(''); // Clear the message after 10 seconds
+    }, 10000);
+  };
+
   useEffect(() => {
     // Fetch the current user data
     const fetchUserData = async () => {
@@ -132,14 +139,15 @@ const Tasks = () => {
         body: JSON.stringify(newTask),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to add task");
-      }
-
       const addedTask = await response.json();
+      if (!response.ok) {
+        showNotificationExistingTask(addedTask.message || "Failed to add task");
+        return;
+      }
       setTasks([...tasks, addedTask]);
-      showNotification('Task successfully created!'); // Show notification
-    } catch (error) {
+      showNotificationExistingTask('Task successfully created! Please edit the title of the created task'); // Show notification
+    } 
+    catch (error) {
       console.error("Error adding task:", error);
     }
   };
@@ -167,16 +175,17 @@ const Tasks = () => {
         body: JSON.stringify(editTask),
       });
 
+      const updatedTask = await response.json();
       if (!response.ok) {
-        throw new Error("Failed to update task");
+        //throw new Error("Failed to update task");
+        showNotification(updatedTask.message || "Failed to update task");
+        return;
       }
 
-      const updatedTask = await response.json();
-      setTasks(
-        tasks.map((task) => (task._id === editingTaskId ? updatedTask : task))
-      );
+      setTasks( tasks.map((task) => (task._id === editingTaskId ? updatedTask : task)));
       setEditingTaskId(null);
-    } catch (error) {
+    } 
+    catch (error) {
       console.error("Error updating task:", error);
     }
   };

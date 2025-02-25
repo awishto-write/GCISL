@@ -87,6 +87,11 @@ app.post('/api/register', async (req, res) => {
     if (statusType === 'admin' && !allowedAdminNames.includes(fullName)) {
       return res.status(403).json({ error: 'You are not authorized to register as an admin.' });
     }
+      // Check if a user with the same email already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+       return res.status(400).json({ error: 'Email is already in use.' });
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({
@@ -236,6 +241,12 @@ app.post('/api/tasks', authenticateJWT, async (req, res) => {
   try {
     // Get the authenticated user
     const user = await User.findById(req.userId);
+
+   // Check if a task with the same title already exists
+    const duplicateTask = await Task.findOne({ title: title });
+    if (duplicateTask) {
+      return res.status(400).json({ message: 'Task with the title "TASK" already exists! Please edit the title of existing task' });
+    }
 
     // Create the new task
     const newTask = new Task({
@@ -401,6 +412,12 @@ app.put('/api/tasks/:id', authenticateJWT, async (req, res) => {
     if (!existingTask) {
       return res.status(404).json({ message: 'Task not found.' });
     }
+
+    // Check if another task with the same title exists
+    const duplicateTask = await Task.findOne({ title: title, _id: { $ne: req.params.id } });
+    if (duplicateTask) {
+        return res.status(400).json({ message: 'Task with this title already exists. ' });
+   }
 
     // Update the task with new values
     const updatedTask = await Task.findByIdAndUpdate(

@@ -74,14 +74,30 @@
   .navbar {
     flex-direction: column; /* Stack the items vertically on small screens */
     height: auto; /* Let the height adjust */
+
+    padding: 0.5rem;
   }
   .nav-links {
     flex-direction: column; /* Stack the nav links */
+
+    align-items: center; /* Center items */
+    gap: 11px; /* Ensure spacing between nav options */
   }
   .logo {
     height: 40px; /* Adjust the logo size for smaller screens */
   }
   .nav-links a {
     font-size: 1rem; /* Reduce font size for mobile views */
+
+    padding: 8px 12px; /* Adjust padding */
+  }
+  /* Just Added */
+  .nav-links a.active {
+    border-radius: 10px; /* Reduce rounded effect */
+    padding: 6px 10px; /* Reduce padding to make it smaller */
+  }
+
+  .brand-logo {
+    margin-bottom: 10px;
   }
 }

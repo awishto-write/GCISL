@@ -89,6 +89,8 @@ const Register = () => {
             value={formData.phoneNumber}
             onChange={handleChange}
             required
+            pattern="^\+?[0-9]+$"
+            title="Please enter a valid phone number (digits only, optional leading +)"
           />
           <label>Phone Number</label>
         </div>
@@ -99,6 +101,8 @@ const Register = () => {
             value={formData.password}
             onChange={handleChange}
             required
+            pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}"
+            title="Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character."
           />
           <label>Password</label>
         </div>
@@ -109,16 +113,27 @@ const Register = () => {
             value={formData.confirmPassword}
             onChange={handleChange}
             required
+            onInput={(e) => {
+              if (e.target.value !== formData.password) {
+                e.target.setCustomValidity("Passwords do not match");
+              } else {
+                e.target.setCustomValidity("");
+              }
+            }}
           />
           <label>Confirm Password</label>
         </div>
+
         <div className="field">
           <select
             name="statusType"
             value={formData.statusType}
             onChange={handleChange}
-            required>
-            <option value="" disabled>Select Status</option>
+            required
+          >
+            <option value="" disabled>
+              Select Status
+            </option>
             <option value="admin">Admin</option>
             <option value="volunteer">Volunteer</option>
           </select>
