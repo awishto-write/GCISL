@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const connectDB = require('../db'); // Import the shared DB connection
+const connectDB = require('./db'); // Import the shared DB connection
 require('dotenv').config();
 
 connectDB(); // Use the shared DB connection
