@@ -1,8 +1,12 @@
+const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-const connectDB = require('./db'); // Import the shared DB connection
 require('dotenv').config();
 
-connectDB(); // Use the shared DB connection
+if (mongoose.connection.readyState === 0) {
+  mongoose.connect(process.env.MONGODB_URI)
+    .then(() => console.log("Connected to MongoDB for users by role"))
+    .catch((err) => console.error("MongoDB connection error:", err));
+}
 
 const userSchema = new mongoose.Schema({
   firstName: String,

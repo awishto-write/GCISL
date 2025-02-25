@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const User = require('./models/UserModel');
-const connectDB = require('./db'); // Import the shared DB connection
+const connectDB = require('../db'); // Import the shared DB connection
 require('dotenv').config();
 
 connectDB(); // Use the shared DB connection
