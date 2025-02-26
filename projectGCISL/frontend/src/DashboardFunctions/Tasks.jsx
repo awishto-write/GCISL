@@ -11,7 +11,7 @@ const Tasks = () => {
   const [user, setUser] = useState({ firstName: "", lastName: "", email: "" });
   const [isLoading, setIsLoading] = useState(true); // Loading state added
   //const [editingTaskId, setEditingTaskId] = useState(null);
-  const [taskId, setEditingTaskId] = useState(null);
+  const [taskID, setEditingTaskId] = useState(null);
   const [filter, setFilter] = useState('All'); // Ensure filter options remain the same
   const currentDate = new Date();
   const [editTask, setEditTask] = useState({
@@ -165,7 +165,7 @@ const Tasks = () => {
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
     /// const response = await fetch(`${apiUrl}/api/tasks/${editingTaskId}`, {
-       const response = await fetch(`${apiUrl}/api/tasks/${taskId}`, {
+       const response = await fetch(`${apiUrl}/api/tasks/${taskID}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -185,7 +185,7 @@ const Tasks = () => {
       }
 
      // setTasks( tasks.map((task) => (task._id === editingTaskId ? updatedTask : task)));
-      setTasks( tasks.map((task) => (task._id === taskId ? updatedTask : task)));
+      setTasks( tasks.map((task) => (task._id === taskID ? updatedTask : task)));
       setEditingTaskId(null);
     } 
     catch (error) {
@@ -218,7 +218,7 @@ const Tasks = () => {
   }
 };
 
-  const handleClearAssignees = async (taskId) => {
+  const handleClearAssignees = async (taskID) => {
     setIsClearing(true); // Indicate that the clearing process has started
 
     const token = localStorage.getItem("token");
@@ -230,7 +230,7 @@ const Tasks = () => {
 
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
-      const response = await fetch(`${apiUrl}/api/tasks/${taskId}/clear`, {
+      const response = await fetch(`${apiUrl}/api/tasks/${taskID}/clear`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -340,7 +340,7 @@ const Tasks = () => {
                 key={task._id}
                 task={task}
                // isEditing={editingngTaskId === task._id}
-                isEditing={taskId === task._id}
+                isEditing={taskID === task._id}
                 editTask={editTask}
                 setEditTask={setEditTask}
                 onEdit={() => handleEditTask(task)}
