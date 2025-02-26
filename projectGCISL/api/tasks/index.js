@@ -1,8 +1,8 @@
-import Task from '../../models/Task';
-import User from '../../models/UserModel';
-import Log from '../../models/Log';
-import authenticateJWT from '../../middleware/authenticateJWT';
-import connectDB from '../../db';
+import Task from '../models/Task';
+import User from '../models/UserModel';
+import Log from '../models/Log';
+import authenticateJWT from '../middleware/authenticateJWT';
+import connectDB from '../db';
 
 connectDB();
 
