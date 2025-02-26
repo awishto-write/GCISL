@@ -7,9 +7,9 @@ import connectDB from '../../db';
 connectDB();
 
 export default async function handler(req, res) {
-  const { taskId } = req.query; // Fix: Use taskId from query params
+  const { taskID } = req.query; // Fix: Use taskID from query params
 
-  if (!taskId) {
+  if (!taskID) {
     return res.status(400).json({ message: 'Task ID is required.' });
   }
 
@@ -23,13 +23,13 @@ export default async function handler(req, res) {
       const { title, creationDate, dueDate, status, description, assignedVolunteers } = req.body;
 
       try {
-        const duplicateTask = await Task.findOne({ title, _id: { $ne: taskId } });
+        const duplicateTask = await Task.findOne({ title, _id: { $ne: taskID } });
         if (duplicateTask) {
           return res.status(400).json({ message: 'Task with this title already exists.' });
         }
 
         const updatedTask = await Task.findByIdAndUpdate(
-          taskId,
+          taskID,
           { title, creationDate, dueDate, status, description, assignedVolunteers },
           { new: true }
         );
@@ -53,7 +53,7 @@ export default async function handler(req, res) {
       }
     } else if (req.method === 'DELETE') {
       try {
-        const task = await Task.findByIdAndDelete(taskId);
+        const task = await Task.findByIdAndDelete(taskID);
         if (!task) {
           return res.status(404).json({ message: 'Task not found.' });
         }
