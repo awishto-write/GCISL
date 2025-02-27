@@ -187,12 +187,12 @@
   }
   @media (max-width: 1300px) {
     .wrapper-login {
-      margin-top: 250px;
-      padding-bottom: 120px;
+      margin-top: 0px;
+      padding-bottom: 0px;
     }
   
     .form-login {
-      max-width: 80%;
+      max-width: 150%;
       padding: 30px;
     }
   
@@ -217,8 +217,8 @@
   }
   @media (max-width: 1024px) {
     .wrapper-login {
-      margin-top: 250px;
-      padding-bottom: 120px;
+      margin-top: 0px;
+      padding-bottom: 0px;
     }
   
     .form-login {
@@ -247,8 +247,8 @@
   }
   @media (max-width: 768px) {
     .wrapper-login {
-      margin-top: 250px;
-      padding-bottom: 120px;
+      margin-top: 70px;
+      padding-bottom: 0px;
     }
   
     .form-login {
@@ -279,9 +279,9 @@
   /* Small Screens (Phones, ≤550px) */
   @media (max-width: 550px) {
     .wrapper-login {
-      margin-top: 270px;
+      margin-top: 60px;
       padding: 10px;
-      padding-bottom: 140px;
+      padding-bottom: 0px;
     }
   
     .form-login {

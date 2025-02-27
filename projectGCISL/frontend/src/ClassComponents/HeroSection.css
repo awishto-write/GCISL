@@ -108,9 +108,10 @@ body {
 @media (max-width: 1024px) {
   .hero {
     padding: 1.8rem;
-    margin-top: 85px;
-    margin-bottom: 110px;
-    min-height: calc(100vh - 190px);
+    margin-top: 55px;
+    margin-bottom: 0px;
+    min-height: calc(120vh - 190px);
+    width: 100%;
   }
 
   .hero h1 {
@@ -135,7 +136,7 @@ body {
   .hero {
     flex-direction: column;
     text-align: center;
-    margin-top: 170px;
+    margin-top: 180px;
     margin-bottom: 160px;
     min-height: calc(100vh - 200px);
     padding: 1.5rem;
@@ -148,6 +149,7 @@ body {
 
   .hero h1 {
     font-size: 36px;
+    text-align: center;
   }
 
   .hero p {
@@ -166,7 +168,7 @@ body {
   .hero {
     flex-direction: column;
     text-align: center;
-    margin-top: 170px;
+    margin-top: 180px;
     margin-bottom: 160px;
     min-height: calc(100vh - 200px);
     padding: 1.5rem;
@@ -194,38 +196,14 @@ body {
   }
 }
 /* Small Phones (480px and below) */
-@media (max-width: 480px) {
-  .hero {
-    padding: 1rem;
-    margin-top: 150px;
-    margin-bottom: 120px;
-    min-height: calc(100vh - 220px);
-  }
-
-  .hero h1 {
-    font-size: 28px;
-  }
-
-  .hero p {
-    font-size: 14px;
-  }
-
-  .slideshow-text {
-    font-size: 16px;
-  }
-
-  .hero-image img {
-    max-width: 300px;
-  }
-}
 
 /* Extra Small Phones (360px and below) */
 @media (max-width: 360px) {
   .hero {
     padding: 0.8rem;
-    margin-top: 110px;
-    margin-bottom: 130px;
-    min-height: calc(100vh - 240px);
+    margin-top: 200px;
+    margin-bottom: 20px;
+    min-height: calc(110vh - 240px);
   }
 
   .hero h1 {

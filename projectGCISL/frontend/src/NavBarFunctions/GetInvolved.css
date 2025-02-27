@@ -122,12 +122,12 @@ html {
 @media screen and (max-width: 1024px) {
   .get-involved h1 {
     font-size: 36px;
-    margin-bottom: 150px;
-    margin-top: 150px;
+   
   }
 
   .get-involved p {
     font-size: 18px;
+  
   }
 
   .involvement-card {
@@ -159,16 +159,17 @@ html {
 @media screen and (max-width: 768px) {
   .get-involved h1 {
     font-size: 32px;
-    margin-bottom: 150px;
+  margin-top: 200px;
   }
 
   .get-involved p {
     font-size: 16px;
+  
   }
 
   .involvement-card {
-    width: 60%; /* Adjust card width for smaller screens */
-    margin-top: 50px; /* Reduce top margin for smaller screens */
+    width: 30%; /* Adjust card width for smaller screens */
+    margin-top: 100px; /* Reduce top margin for smaller screens */
   }
 
   .involvement-card img {
@@ -196,7 +197,7 @@ html {
 @media screen and (max-width: 550px) {
   .get-involved h1 {
     font-size: 28px;
-    margin-bottom: 150px;
+   
   }
  
   .involvement-card {
