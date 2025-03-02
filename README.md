@@ -99,7 +99,7 @@ List which add-ons are included in the project, and the purpose each add-on serv
   - **Delete Log**: Admins can delete a log by clicking on a row.
   - **Filter Log**: Admins can flter a log by due date (upcoming, overdue, no due date, all).
 
-4. **View all the volunteetrs and their emails**
+4. **View all the volunteers and their emails**
 
 ### Volunteer View
 
@@ -112,7 +112,7 @@ List which add-ons are included in the project, and the purpose each add-on serv
   - **Task Updates**: Volunteers can update the status of tasks they’re working on, marking them as in progress or completed.
   - **View Completed Tasks**: Volunteers can review completed tasks and leave notes or updates if additional follow-up is needed.
 
-3. **View all the volunteetrs and their emails**
+3. **View all the volunteers and their emails**
 
 ### Contact Page
 
