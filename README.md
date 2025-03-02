@@ -4,20 +4,17 @@
 - Improve the user-friendliness of the existing application for GCISL staff, faculty, and student
 - Improve the capability of the administrators to manage the system by improving the administrative capabilities.
 - Train GCISL staff and faculty so that they can use and manage the system.
-- Connect senior residents who are interested in taking part in community projects.
 
 ### One-sentence description of the project
 Our goal for this project is to enhance an existing senior living resident volunteer report tracking system for future research projects.
 
 ### Additional information about the project  
 - Report Tracking System
-- Track existing research projects
-- Add new research projects
+- Display of existing research projects avaialable to every visitor
 - Make sure there is no duplicate projects
-- Have a group of related projects and ability to search them by topic
 - Have a system administrative portal that has APM 
-- A portal for the volunteers to have access to the projects
-- A portal for users
+- A portal for the volunteers to have access to their tasks
+- A portal for the adminitrators to assign tasks and see the logs
 
 ## Installation   
 
@@ -93,8 +90,16 @@ List which add-ons are included in the project, and the purpose each add-on serv
 
 2. **Task Management**:
   - **Create Tasks**: Admins can create new tasks that are visible to all volunteers. Each task includes details such as title, description, due date, and status.
-  - **Edit Tasks**: Admins can edit existing tasks to update information or change status (e.g., to mark them as in progress or completed).
+  - **Edit Tasks**: Admins can edit existing tasks to update information or change status (e.g., to mark them as in progress, to redo or completed).
   - **Assign Tasks**: Admins can assign tasks directly to volunteers, ensuring clear distribution of responsibilities.
+  - **Filter Tasks**: Admins can filter the tasks by status (all, none, in progress, to redo, completed).
+
+3. **Log Management**:
+  - **Create Log**: The system automatically create logs when an admin create a task, when the volunteer changes the status of a task to "completed" and when a task get deleted
+  - **Delete Log**: Admins can delete a log by clicking on a row.
+  - **Filter Log**: Admins can flter a log by due date (upcoming, overdue, no due date, all).
+
+4. **View all the volunteetrs and their emails**
 
 ### Volunteer View
 
@@ -107,6 +112,7 @@ List which add-ons are included in the project, and the purpose each add-on serv
   - **Task Updates**: Volunteers can update the status of tasks they’re working on, marking them as in progress or completed.
   - **View Completed Tasks**: Volunteers can review completed tasks and leave notes or updates if additional follow-up is needed.
 
+3. **View all the volunteetrs and their emails**
 
 ### Contact Page
 
@@ -134,6 +140,7 @@ Currently, there are no known problems.
    - [Sprint 1](https://github.com/awishto-write/GCISL/blob/main/Sprints/Sprint1)
    - [Sprint 2](https://github.com/awishto-write/GCISL/blob/main/Sprints/Sprint2)
    - [Sprint 3](https://github.com/awishto-write/GCISL/blob/main/Sprints/Sprint3)
+   - [Sprint 4](https://github.com/awishto-write/GCISL/blob/main/Sprints/Sprint4)
 * [Documentations](https://github.com/awishto-write/GCISL/blob/main/ProjectDocumentations)
 * [Meetings Minutes](https://github.com/awishto-write/GCISL/blob/main/MeetingsMinutes)
 * [Skill Trainings](https://github.com/awishto-write/GCISL/blob/main/SkillTraining)
