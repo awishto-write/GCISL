@@ -16,7 +16,7 @@ Here are links to the issues that we completed in this sprint:
 * [Research Involvement Page](https://github.com/awishto-write/GCISL/issues/84)
 * [Testing All the Endpoints](https://github.com/awishto-write/GCISL/issues/88)
 ## Incomplete Issues/User Stories  
-None - Because we completed all our issues for the time being.
+* [Backend Issues - API Endpoints] (https://github.com/awishto-write/GCISL/issues/79)
 ## Code Files for Review   
 N/A
 ## Retrospective Summary - Teni
