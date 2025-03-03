@@ -106,18 +106,25 @@ const Volunteers = () => {
       console.error('No token found');
       return;
     }
-  
+    
     const task = tasks.find(t => t._id === taskId);
     if (!task) {
       console.error(`Task with ID ${taskId} not found`);
       return;
     }
-  
-    const isAssigned = task.assignedVolunteers.some(vol => vol._id === volunteerId);
-  
+    
+    // Check if volunteer is already assigned (careful with types!)
+    const isAssigned = task.assignedVolunteers && 
+      task.assignedVolunteers.some(vol => 
+        (typeof vol === 'string' ? vol : vol._id) === volunteerId
+      );
+    
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
       const endpoint = `${apiUrl}/api/tasks/${isAssigned ? 'remove' : 'assign'}`;
+      
+      console.log(`Attempting to ${isAssigned ? 'remove' : 'assign'} volunteer ${volunteerId} ${isAssigned ? 'from' : 'to'} task ${taskId}`);
+      
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
@@ -126,17 +133,15 @@ const Volunteers = () => {
         },
         body: JSON.stringify({ volunteerId, taskId }),
       });
-  
-      console.log('Request URL:', endpoint);
-      console.log('Request body:', { volunteerId, taskId });
-  
+      
       if (response.ok) {
         await refreshTasks();
         setSelectedVolunteer(null);
         setHoveredTaskId(null);
       } else {
-        const errorMessage = await response.json();
-        console.error('Error assigning/removing task:', errorMessage);
+        const errorData = await response.json();
+        console.error('Error assigning/removing task:', errorData);
+        // Add user-friendly error notification here
       }
     } catch (error) {
       console.error('Error assigning/removing task:', error);

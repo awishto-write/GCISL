@@ -1,20 +1,20 @@
 const jwt = require('jsonwebtoken');
 
-const authenticateJWT = (req, res, next) => {
+const authenticateJWT = async (req, res) => {
   const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
 
   if (!token) {
-    return res.status(401).json({ message: 'Access token is missing or invalid.' });
+    return { success: false };
   }
 
-  jwt.verify(token, process.env.JWT_SECRET || 'yourSecretKey', (err, decoded) => {
-    if (err) {
-      return res.status(403).json({ message: 'Invalid token.' });
-    }
-
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'yourSecretKey');
     req.userId = decoded.userId;
-    next();
-  });
+    return { success: true, userId: decoded.userId };
+  } catch (err) {
+    console.error('Authentication error:', err);
+    return { success: false };
+  }
 };
 
 module.exports = authenticateJWT;

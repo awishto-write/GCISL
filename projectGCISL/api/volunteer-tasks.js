@@ -1,31 +1,33 @@
-const mongoose = require('mongoose');
 const Task = require('./models/Task');
+const authenticateJWT = require('./middleware/authenticateJWT');
+const connectDB = require('./utils/db');
 require('dotenv').config();
-
-if (mongoose.connection.readyState === 0) {
-  mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-    .then(() => console.log('Connected to MongoDB'))
-    .catch((err) => console.error('MongoDB connection error:', err));
-}
 
 module.exports = async (req, res) => {
   if (req.method !== 'GET') {
     return res.status(405).json({ message: 'Method Not Allowed' });
   }
 
+  // Connect to database
+  await connectDB();
+
+  // Authenticate the user
+  const authResult = await authenticateJWT(req, res);
+  if (!authResult.success) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+
   try {
-    const tasks = await Task.find({ assignedVolunteers: req.userId }).populate('assignedVolunteers', 'firstName lastName');
+    // Find tasks where the authenticated user is in the assignedVolunteers array
+    const tasks = await Task.find({ assignedVolunteers: authResult.userId }).populate('assignedVolunteers', 'firstName lastName');
 
     if (tasks.length === 0) {
       return res.status(404).json({ message: 'No tasks assigned to you.' });
     }
 
-    res.status(200).json(tasks);
+    return res.status(200).json(tasks);
   } catch (error) {
     console.error('Error fetching volunteer tasks:', error);
-    res.status(500).json({ message: 'Error fetching volunteer tasks.' });
+    return res.status(500).json({ message: 'Error fetching volunteer tasks.' });
   }
 };

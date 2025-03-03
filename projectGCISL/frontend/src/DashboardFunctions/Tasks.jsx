@@ -157,43 +157,42 @@ const Tasks = () => {
   };
 
   const handleSaveEdit = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      console.error("No token found");
+  const token = localStorage.getItem("token");
+  if (!token) {
+    console.error("No token found");
+    return;
+  }
+  try {
+    const apiUrl = process.env.REACT_APP_API_URL;
+    // Fix: Use the proper taskID variable
+    const response = await fetch(`${apiUrl}/api/tasks/${taskID}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(editTask),
+    });
+    
+    const updatedTask = await response.json();
+    
+    if (!response.ok) {
+      showNotification(updatedTask.message || "Failed to update task");
       return;
     }
-    try {
-      const apiUrl = process.env.REACT_APP_API_URL;
-    /// const response = await fetch(`${apiUrl}/api/tasks/${editingTaskId}`, {
-       const response = await fetch(`${apiUrl}/api/tasks/${taskID}`, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(editTask),
-      });
-      if (!response.ok) {
-        throw new Error("Failed to update task");
-      }
+    
+    setTasks(tasks.map((task) => (task._id === taskID ? updatedTask : task)));
+    setEditingTaskId(null);
+    showNotification('Task successfully updated!');
+  } 
+  catch (error) {
+    console.error("Error updating task:", error);
+    showNotification("Error updating task");
+  }
+};
 
-      const updatedTask = await response.json();
-      if (!response.ok) {
-        //throw new Error("Failed to update task");
-        showNotification(updatedTask.message || "Failed to update task");
-        return;
-      }
-
-     // setTasks( tasks.map((task) => (task._id === editingTaskId ? updatedTask : task)));
-      setTasks( tasks.map((task) => (task._id === taskID ? updatedTask : task)));
-      setEditingTaskId(null);
-    } 
-    catch (error) {
-      console.error("Error updating task:", error);
-    }
-  }; 
-
-  const handleDeleteTask = async (id) => {
+// Fixed handleDeleteTask function
+const handleDeleteTask = async (id) => {
   const token = localStorage.getItem("token");
   if (!token) {
     console.error("No token found");
@@ -205,68 +204,76 @@ const Tasks = () => {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
       },
     });
+    
+    const result = await response.json();
+    
     if (response.ok) {
       setTasks(tasks.filter((task) => task._id !== id));
       showNotification('Task successfully deleted!');
     } else {
       console.error("Error deleting task:", response.statusText);
+      showNotification(result.message || "Error deleting task");
     }
   } catch (error) {
     console.error("Error deleting task:", error);
+    showNotification("Error deleting task");
   }
 };
 
-  const handleClearAssignees = async (taskID) => {
-    setIsClearing(true); // Indicate that the clearing process has started
-
-    const token = localStorage.getItem("token");
-    if (!token) {
-      console.error("No token found");
-      setIsClearing(false); // Reset the state if there's an error
-      return;
+// Fixed handleClearAssignees function
+const handleClearAssignees = async (taskID) => {
+  setIsClearing(true);
+  const token = localStorage.getItem("token");
+  if (!token) {
+    console.error("No token found");
+    setIsClearing(false);
+    return;
+  }
+  try {
+    const apiUrl = process.env.REACT_APP_API_URL;
+    const response = await fetch(`${apiUrl}/api/tasks/${taskID}/clear`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to clear assignees");
     }
-
-    try {
-      const apiUrl = process.env.REACT_APP_API_URL;
-      const response = await fetch(`${apiUrl}/api/tasks/${taskID}/clear`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to clear assignees");
-      }
-
-      const result = await response.json();
-      console.log(result.message);
-
-      // Refresh the tasks list to reflect changes
-      const apiUrlTask = process.env.REACT_APP_API_URL;
-      const tasksResponse = await fetch(`${apiUrlTask}/api/tasks`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (tasksResponse.ok) {
-        const tasksData = await tasksResponse.json();
-        setTasks(tasksData);
-      } else {
-        console.error("Error fetching tasks data:", tasksResponse.statusText);
-      }
-    } catch (error) {
-      console.error("Error clearing assignees:", error);
-    } finally {
-      setIsClearing(false); // Reset the state after the process is complete
+    
+    const result = await response.json();
+    console.log(result.message);
+    showNotification('Assignees cleared successfully!');
+    
+    // Refresh the tasks list to reflect changes
+    const apiUrlTask = process.env.REACT_APP_API_URL;
+    const tasksResponse = await fetch(`${apiUrlTask}/api/tasks`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    
+    if (tasksResponse.ok) {
+      const tasksData = await tasksResponse.json();
+      setTasks(tasksData);
+    } else {
+      console.error("Error fetching tasks data:", tasksResponse.statusText);
     }
-  };
+  } catch (error) {
+    console.error("Error clearing assignees:", error);
+    showNotification(error.message || "Error clearing assignees");
+  } finally {
+    setIsClearing(false);
+  }
+};
 
   const handleCancelEdit = () => {
     setEditingTaskId(null);

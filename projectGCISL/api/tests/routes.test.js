@@ -1,8 +1,8 @@
 const request = require('supertest');
 const mongoose = require('mongoose');
-const app = require('../index'); // Your index.js file for API
-const Log = require('../models/Log'); // Import the Log model
-const Task = require('../models/Task'); // Import the Task model
+const app = require('../index'); 
+const Log = require('../models/Log'); 
+const Task = require('../models/Task'); 
 
 let token; // Will store the JWT token for authenticated requests
 let createdTaskId; // Will store a task ID for testing

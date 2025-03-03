@@ -1,26 +1,16 @@
-const mongoose = require('mongoose');
+const User = require('./models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const connectDB = require('./db'); // Import the shared DB connection
+const connectDB = require('./utils/db');
 require('dotenv').config();
-
-connectDB(); // Use the shared DB connection
-
-const userSchema = new mongoose.Schema({
-  firstName: String,
-  lastName: String,
-  email: { type: String, unique: true },
-  phoneNumber: String,
-  password: String,
-  statusType: String,
-});
-
-const User = mongoose.models.User || mongoose.model('User', userSchema);
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: "Method Not Allowed" });
   }
+
+  // Connect to database
+  await connectDB();
 
   const { email, password } = req.body;
 
@@ -47,7 +37,7 @@ module.exports = async (req, res) => {
 
     console.log('Token generated for user:', email);
 
-    res.json({
+    return res.status(200).json({
       message: 'Login successful',
       token,
       statusType: user.statusType,
@@ -55,6 +45,6 @@ module.exports = async (req, res) => {
     });
   } catch (error) {
     console.error('Login error:', error);
-    res.status(500).json({ error: 'Login failed.' });
+    return res.status(500).json({ error: 'Login failed.' });
   }
 };
