@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AdminNavBar from '../ClassComponents/AdminNavBar'; 
 import VolunteerSidebar from '../ClassComponents/VolunteerSidebar'; 
+import './VolunteerList.css';
 
 const VolunteerList = () => {
   const [user, setUser] = useState({ firstName: '', lastName: '' });
@@ -93,16 +94,16 @@ const VolunteerList = () => {
   return (
     <div>
       <AdminNavBar role="VOLUNTEER" firstName={user.firstName} lastInitial={user.lastName.charAt(0)} />
-      <div style={dashboardStyle}>
-        <VolunteerSidebar taskCount={taskCount}  />
-        <div style={contentStyle}>
+      <div className="dashboard">
+        <VolunteerSidebar taskCount={taskCount} />
+        <div className="content">
           <h2>Volunteers List</h2>
-          <div style={styles.volunteersList}>
+          <div className="volunteers-list">
             {volunteers.length > 0 ? (
               volunteers.map((volunteer) => (
-                <div key={volunteer._id} style={styles.volunteerCard}>
-                  <h3 style={styles.volunteerName}>{volunteer.firstName} {volunteer.lastName}</h3>
-                  <p style={styles.volunteerEmail}>{volunteer.email}</p>
+                <div key={volunteer._id} className="volunteer-card">
+                  <h3 className="volunteer-name">{volunteer.firstName} {volunteer.lastName}</h3>
+                  <p className="volunteer-email">{volunteer.email}</p>
                 </div>
               ))
             ) : (
@@ -113,44 +114,6 @@ const VolunteerList = () => {
       </div>
     </div>
   );
-};
 
-const dashboardStyle = {
-  display: 'flex',
-  minWidth: '100%' ,
-};
-
-const contentStyle = {
-  flex: 1,
-  marginLeft: '200px',
-  padding: '1rem',
-  marginTop: '70px',
-};
-
-const styles = {
-  volunteersList: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    
-  },
-  volunteerCard: {
-    backgroundColor: '#fff',
-    border: '1px solid #ddd',
-    borderRadius: '5px',
-    padding: '1rem',
-    margin: '0.5rem',
-    boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
-    width: '600px', // Matches the design you want
-    textAlign: 'center', // Center the text inside the box
-  },
-  volunteerName: {
-    margin: 0,
-    fontSize: '1.2rem',
-  },
-  volunteerEmail: {
-    color: '#666',
-  },
-};
-
+}
 export default VolunteerList;
