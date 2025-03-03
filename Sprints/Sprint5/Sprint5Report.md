@@ -17,9 +17,10 @@ Here are links to the issues that we completed in this sprint:
 * [Testing All the Endpoints](https://github.com/awishto-write/GCISL/issues/88)
 ## Incomplete Issues/User Stories  
 * [Backend Issues - API Endpoints] (https://github.com/awishto-write/GCISL/issues/79)
+Because we encountered some deployment issues with Vercel, we need to keep working on this issue because we ran out of time.
 ## Code Files for Review   
 N/A
-## Retrospective Summary - Teni
+## Retrospective Summary 
 Here's what went well: 
  * Fixed window sizing for smaller screens and mobile devices
  * Added the research involvement page
