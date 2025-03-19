@@ -1,0 +1,89 @@
+/* Dashboard Layout */
+.dashboard {
+    display: flex;
+    flex-wrap: wrap; /* Allows content to wrap on small screens */
+  }
+  
+  /* Content Area */
+  .content {
+    flex: 1;
+    margin-left: 150px; /* Leave space for the sidebar */
+    padding: 1rem;
+    margin-top: 70px;
+    box-sizing: border-box;
+  }
+  
+  /* Volunteers List */
+  .volunteers-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  
+  /* Volunteer Card */
+  .volunteer-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 1rem;
+    margin: 0.5rem;
+    width: 600px;
+    max-width: 100%; /* Prevents overflow */
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+  }
+  
+  .volunteer-name {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+  
+  .volunteer-email {
+    color: #666;
+    font-size: 1rem;
+  }
+  
+  /* Responsive Design */
+  
+  /* Medium Screens (Tablets, up to 768px) */
+  @media screen and (max-width: 768px) {
+    .content {
+      margin-left: 0; /* Remove sidebar offset */
+      width: 100%;
+      padding: 0.5rem;
+    }
+  
+    .volunteer-card {
+      width: 90%; /* Cards expand to nearly full width */
+    }
+  
+    .volunteer-name {
+      font-size: 1rem;
+    }
+  
+    .volunteer-email {
+      font-size: 0.9rem;
+    }
+  }
+  
+  /* Small Screens (Phones, up to 480px) */
+  @media screen and (max-width: 480px) {
+    .content {
+      padding: 0.3rem;
+    }
+  
+    .volunteer-card {
+      width: 100%;
+      padding: 0.8rem;
+    }
+  
+    .volunteer-name {
+      font-size: 0.9rem;
+    }
+  
+    .volunteer-email {
+      font-size: 0.85rem;
+    }
+  }

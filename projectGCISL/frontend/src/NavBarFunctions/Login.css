@@ -126,4 +126,57 @@
   .p-login a:hover { /* Hover effect for login links */
     text-decoration: underline; /* Underline on hover */
   }
-  
+  @media (max-width: 768px) {
+    .form-login {
+        max-width: 600px; /* Reduce form width for tablets */
+        padding: 30px; /* Adjust padding */
+        margin-top: 100px
+    }
+
+    .form-login::before {
+        font-size: 22px; /* Adjust title size */
+        height: 80px; /* Reduce the height of the title section */
+        line-height: 80px;
+    }
+
+    .field-login input {
+        padding: 15px; /* Reduce padding inside input fields */
+        font-size: 14px; /* Reduce font size */
+        height: 45px; /* Adjust height */
+    }
+
+    .auth-btn-login {
+        font-size: 14px; /* Reduce button font size */
+        padding: 12px; /* Adjust padding */
+    }
+}
+
+/* Small Screens */
+@media (max-width: 550px) {
+    .form-login {
+        max-width: 90%; /* Full width for small screens */
+        padding: 20px; /* Reduce padding */
+        margin-top: 100px;
+    }
+
+    .form-login::before {
+        font-size: 20px; /* Adjust title font size */
+        height: 70px; /* Reduce height */
+        line-height: 70px;
+    }
+
+    .field-login input {
+        padding: 12px; /* Smaller padding for input */
+        font-size: 12px; /* Adjust font size */
+        height: 40px; /* Adjust height */
+    }
+
+    .auth-btn-login {
+        font-size: 12px; /* Smaller font size for button */
+        padding: 10px; /* Adjust button padding */
+    }
+
+    .p-login {
+        font-size: 12px; /* Reduce paragraph font size */
+    }
+}

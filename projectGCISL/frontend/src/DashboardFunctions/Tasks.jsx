@@ -5,6 +5,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FormatDate } from '../ClassComponents/FormatDate';
 import DateInputWithIcon from '../ClassComponents/DateInputWithIcon';
+import './Tasks.css'
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);
@@ -580,6 +581,7 @@ const styles = {
     color: isActive ? 'white' : 'black',
     cursor: 'pointer',
   }),
+  
 };
 
 export default Tasks;
