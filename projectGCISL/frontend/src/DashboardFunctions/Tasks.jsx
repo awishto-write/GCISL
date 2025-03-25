@@ -570,6 +570,7 @@ const styles = {
     color: isActive ? 'white' : 'black',
     cursor: 'pointer',
   }),
+  
 };
 
 export default Tasks;

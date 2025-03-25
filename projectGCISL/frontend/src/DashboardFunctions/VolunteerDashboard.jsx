@@ -124,11 +124,56 @@ const VolunteerDashboard = () => {
 
 const dashboardStyle = {
   display: 'flex',
+  flexDirection: 'row',
+  flexWrap: 'wrap',
 };
 
 const contentStyle = {
   marginLeft: '200px',
   padding: '1rem',
+  width: '100%',
 };
+
+/* Add the following CSS to your global stylesheet or create a new one */
+
+/* Responsive styles */
+const responsiveStyles = `
+  @media screen and (max-width: 768px) {
+    .dashboard {
+      flex-direction: column;
+    }
+
+    .sidebar {
+      width: 100%;
+      margin: 0;
+    }
+
+    .content {
+      margin-left: 0;
+      padding: 0.5rem;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 20px;
+      text-align: center;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    h1 {
+      font-size: 18px;
+    }
+
+    .content {
+      padding: 0.3rem;
+    }
+  }
+`;
+
+// Inject styles into the document
+const styleTag = document.createElement('style');
+styleTag.innerHTML = responsiveStyles;
+document.head.appendChild(styleTag);
 
 export default VolunteerDashboard;

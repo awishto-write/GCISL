@@ -12,12 +12,15 @@
   top: 0; /* Stick to the top */
   left: 0; /* Stick to the left */
   z-index: 1000; /* Ensure it's above other elements */
+  text-wrap : wrap;
+  flex-wrap: wrap;
 }
 
 /* Logo and Brand */
 .brand-logo-container {
   display: flex;
   align-items: center; /* Aligns the logo and text vertically */
+  flex: 1 1 auto;
 }
 
 .brand-logo {
@@ -39,15 +42,19 @@
   display: flex;
   align-items: center; /* Ensures the links are aligned vertically */
   margin: 0;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  flex-grow: 1;
 }
 
 .nav-links li {
+  flex: 1 1 auto;
   margin: 0 15px;
 }
 
 .nav-links a {
   text-decoration: none;
-  font-size: 27px; /* Set the same size as gciConnect */
+  font-size: 20px; /* Set the same size as gciConnect */
   color: #000;
   font-weight: bold;
   transition: color 0.3s ease;
@@ -58,14 +65,14 @@
 }
 
 .nav-links a.active {
-  background-color: #a32436; /* Red background color */
+ /* background-color: #a32436; /* Red background color */
   color: white;
-  border-radius: 15px; /* Increased border-radius for more rounded corners */
+  border-radius: 10px; /* Increased border-radius for more rounded corners */
 }
 
 .nav-links a.active:hover {
   background-color: #a32436; /* Keep the background red on hover */
-  color: black; /* Change text color to black on hover */
+  /*color: black; /* Change text color to black on hover */
 }
 
 /* Responsive Design */
