@@ -90,6 +90,7 @@ body {
 }
 
 /* Responsive design for smaller screens */
+<<<<<<< HEAD
 @media (max-width: 768px) {
   
   .hero {
@@ -137,4 +138,164 @@ body::-webkit-scrollbar-thumb {
 
 body::-webkit-scrollbar-track {
   background: #f9f9f9;
+=======
+@media (max-width: 1200px) {
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero p {
+    font-size: 1.1rem;
+  }
+
+  .hero-image img {
+    max-width: 400px;
+  }
+}
+
+/* Tablets (1024px and below) */
+@media (max-width: 1024px) {
+  .hero {
+    padding: 1.8rem;
+    margin-top: 85px;
+    margin-bottom: 110px;
+    min-height: calc(100vh - 190px);
+  }
+
+  .hero h1 {
+    font-size: 42px;
+  }
+
+  .hero p {
+    font-size: 17px;
+  }
+
+  .slideshow-text {
+    font-size: 18px;
+  }
+
+  .hero-image img {
+    max-width: 500px;
+  }
+}
+
+/* Tablets (768px and below) */
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    margin-top: 170px;
+    margin-bottom: 160px;
+    min-height: calc(100vh - 200px);
+    padding: 1.5rem;
+  }
+
+  .hero-text {
+    min-width: 100%;
+    padding-right: 0;
+  }
+
+  .hero h1 {
+    font-size: 36px;
+  }
+
+  .hero p {
+    font-size: 16px;
+  }
+
+  .slideshow-text {
+    font-size: 17px;
+  }
+
+  .hero-image img {
+    max-width: 400px;
+  }
+}
+@media (max-width: 550px) {
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    margin-top: 170px;
+    margin-bottom: 160px;
+    min-height: calc(100vh - 200px);
+    padding: 1.5rem;
+  }
+
+  .hero-text {
+    min-width: 100%;
+    padding-right: 0;
+  }
+
+  .hero h1 {
+    font-size: 36px;
+  }
+
+  .hero p {
+    font-size: 16px;
+  }
+
+  .slideshow-text {
+    font-size: 17px;
+  }
+
+  .hero-image img {
+    max-width: 400px;
+  }
+}
+/* Small Phones (480px and below) */
+@media (max-width: 480px) {
+  .hero {
+    padding: 1rem;
+    margin-top: 150px;
+    margin-bottom: 120px;
+    min-height: calc(100vh - 220px);
+  }
+
+  .hero h1 {
+    font-size: 28px;
+  }
+
+  .hero p {
+    font-size: 14px;
+  }
+
+  .slideshow-text {
+    font-size: 16px;
+  }
+
+  .hero-image img {
+    max-width: 300px;
+  }
+}
+
+/* Extra Small Phones (360px and below) */
+@media (max-width: 360px) {
+  .hero {
+    padding: 0.8rem;
+    margin-top: 110px;
+    margin-bottom: 130px;
+    min-height: calc(100vh - 240px);
+  }
+
+  .hero h1 {
+    font-size: 24px;
+  }
+
+  .hero p {
+    font-size: 13px;
+  }
+
+  .slideshow-text {
+    font-size: 14px;
+  }
+
+  .hero-image img {
+    max-width: 260px;
+  }
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+>>>>>>> 78199dd0089634e53c988229c6d6222d624f2698
 }
