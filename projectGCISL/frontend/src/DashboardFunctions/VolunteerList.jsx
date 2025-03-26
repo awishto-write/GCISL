@@ -118,11 +118,7 @@ const VolunteerList = () => {
 
 const dashboardStyle = {
   display: 'flex',
-<<<<<<< HEAD
   flexWrap: 'wrap',
-=======
-  minWidth: '100%' ,
->>>>>>> 78199dd0089634e53c988229c6d6222d624f2698
 };
 
 const contentStyle = {
@@ -165,7 +161,6 @@ const responsiveStyles = `
       padding: 0.5rem;
     }
 
-<<<<<<< HEAD
     .volunteer-card {
       width: 90%; /* Cards take full width on small screens */
       display: flex;
@@ -193,6 +188,3 @@ const styleTag = document.createElement('style');
 styleTag.innerHTML = responsiveStyles;
 document.head.appendChild(styleTag);
 export default VolunteerList;
-=======
-export default VolunteerList;
->>>>>>> 78199dd0089634e53c988229c6d6222d624f2698

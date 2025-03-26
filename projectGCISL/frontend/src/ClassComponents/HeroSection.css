@@ -90,55 +90,6 @@ body {
 }
 
 /* Responsive design for smaller screens */
-<<<<<<< HEAD
-@media (max-width: 768px) {
-  
-  .hero {
-    flex-direction: column; /* Stack text and image vertically */
-    min-height: calc(100vh - 100px); /* Let content height adjust dynamically */
-    align-items: center;
-    padding: 1rem;
-    margin-top: 170px;
-  }
-
-  .hero-text,
-  .hero-image {
-    min-width: 100%; /* Ensure full width for text and image */
-    text-align: center; /* Center-align content for smaller screens */
-  }
-
-  .hero h1 {
-    font-size: 0.9rem; /* Reduce heading size */
-  }
-
-  .hero p {
-    font-size: 1rem; /* Reduce paragraph size */
-  }
-
-  .slideshow-text {
-    font-size: 18px; /* Adjust font size for slides */
-  }
-}
-
-/* Optional: Smooth scrolling for a better user experience */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Optional: Customize scrollbar appearance */
-body::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-body::-webkit-scrollbar-thumb {
-  background: #a32436;
-  border-radius: 5px;
-}
-
-body::-webkit-scrollbar-track {
-  background: #f9f9f9;
-=======
 @media (max-width: 1200px) {
   .hero h1 {
     font-size: 2.5rem;
@@ -157,9 +108,10 @@ body::-webkit-scrollbar-track {
 @media (max-width: 1024px) {
   .hero {
     padding: 1.8rem;
-    margin-top: 85px;
-    margin-bottom: 110px;
-    min-height: calc(100vh - 190px);
+    margin-top: 5px;
+    margin-bottom: 0px;
+    
+    flex: auto;
   }
 
   .hero h1 {
@@ -184,8 +136,8 @@ body::-webkit-scrollbar-track {
   .hero {
     flex-direction: column;
     text-align: center;
-    margin-top: 170px;
-    margin-bottom: 160px;
+    margin-top: 200px;
+    margin-bottom: 20px;
     min-height: calc(100vh - 200px);
     padding: 1.5rem;
   }
@@ -215,8 +167,8 @@ body::-webkit-scrollbar-track {
   .hero {
     flex-direction: column;
     text-align: center;
-    margin-top: 170px;
-    margin-bottom: 160px;
+    margin-top: 190px;
+    margin-bottom: 10px;
     min-height: calc(100vh - 200px);
     padding: 1.5rem;
   }
@@ -246,8 +198,8 @@ body::-webkit-scrollbar-track {
 @media (max-width: 480px) {
   .hero {
     padding: 1rem;
-    margin-top: 150px;
-    margin-bottom: 120px;
+    margin-top: 200px;
+    margin-bottom: 10px;
     min-height: calc(100vh - 220px);
   }
 
@@ -269,33 +221,9 @@ body::-webkit-scrollbar-track {
 }
 
 /* Extra Small Phones (360px and below) */
-@media (max-width: 360px) {
-  .hero {
-    padding: 0.8rem;
-    margin-top: 110px;
-    margin-bottom: 130px;
-    min-height: calc(100vh - 240px);
-  }
 
-  .hero h1 {
-    font-size: 24px;
-  }
-
-  .hero p {
-    font-size: 13px;
-  }
-
-  .slideshow-text {
-    font-size: 14px;
-  }
-
-  .hero-image img {
-    max-width: 260px;
-  }
-}
 
 /* Smooth Scrolling */
 html {
   scroll-behavior: smooth;
->>>>>>> 78199dd0089634e53c988229c6d6222d624f2698
 }

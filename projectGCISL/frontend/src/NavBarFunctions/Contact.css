@@ -291,6 +291,7 @@ li {
     flex-direction: column; /* Stack the halves vertically on smaller screens */
     height: auto;
     max-width: 100%;
+    margin-top: 40px
   }
 
   .contact__half {
@@ -308,6 +309,7 @@ li {
   .contact__wrapper {
     flex-direction: column; /* Keep stacking vertically */
     height: auto; /* Adjust height to fit content */
+    margin-top: 70px;
   }
 
   .contact__half {
@@ -328,6 +330,27 @@ li {
   .contact__wrapper {
     flex-direction: column; /* Keep stacking vertically */
     height: auto; /* Adjust height to fit content */
+    margin-top: 50px
+  }
+
+  .contact__half {
+    padding: 15px; /* Further reduce padding for very small screens */
+  }
+
+  .contact__title {
+    font-size: 24px; /* Adjust font size for smaller screens */
+    margin-top: 100px;
+  }
+
+  .contact__para {
+    font-size: 16px; /* Smaller text for mobile */
+  }
+}
+@media screen and (max-width: 480px) {
+  .contact__wrapper {
+    flex-direction: column; /* Keep stacking vertically */
+    height: auto; /* Adjust height to fit content */
+    margin-top: 70px;
   }
 
   .contact__half {

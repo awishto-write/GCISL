@@ -7,11 +7,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-left">
         <div className="brand-logo-container">
-          <img 
-            src="/GCISL_logo_fullcolor.png" 
-            alt="Granger Cobb Institute Logo"
-            className="logo"
-          />
+          
           <h1 className="brand-logo">gciConnect</h1>
         </div>
       </div>

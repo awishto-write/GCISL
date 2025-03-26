@@ -4,7 +4,11 @@ import './Footer.css';
 const Footer = () => {
   return (
     <footer className="footer">
-      <p>© gciConnect</p>
+      <img 
+            src="/GCISL_logo_fullcolor.png" 
+            alt="Granger Cobb Institute Logo"
+            className="logo"
+          />
     </footer>
   );
 };
