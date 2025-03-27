@@ -11,7 +11,8 @@ const Tasks = () => {
   const [tasks, setTasks] = useState([]);
   const [user, setUser] = useState({ firstName: "", lastName: "", email: "" });
   const [isLoading, setIsLoading] = useState(true); // Loading state added
-  const [editingTaskId, setEditingTaskId] = useState(null);
+  //const [editingTaskId, setEditingTaskId] = useState(null);
+  const [taskID, setEditingTaskId] = useState(null);
   const [filter, setFilter] = useState('All'); // Ensure filter options remain the same
   const currentDate = new Date();
   const [editTask, setEditTask] = useState({
@@ -31,6 +32,13 @@ const Tasks = () => {
     setTimeout(() => {
       setNotification(''); // Clear the message after 3 seconds
     }, 3000);
+  };
+
+  const showNotificationExistingTask = (message) => {
+    setNotification(message); // Set the message
+    setTimeout(() => {
+      setNotification(''); // Clear the message after 10 seconds
+    }, 10000);
   };
 
   useEffect(() => {
@@ -130,13 +138,16 @@ const Tasks = () => {
         },
         body: JSON.stringify(newTask),
       });
-      if (!response.ok) {
-        throw new Error("Failed to add task");
-      }
+
       const addedTask = await response.json();
+      if (!response.ok) {
+        showNotificationExistingTask(addedTask.message || "Failed to add task");
+        return;
+      }
       setTasks([...tasks, addedTask]);
-      showNotification('Task successfully created!');
-    } catch (error) {
+      showNotificationExistingTask('Task successfully created! Please edit the title of the created task'); // Show notification
+    } 
+    catch (error) {
       console.error("Error adding task:", error);
     }
   };
@@ -154,7 +165,8 @@ const Tasks = () => {
     }
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
-      const response = await fetch(`${apiUrl}/api/tasks/${editingTaskId}`, {
+    /// const response = await fetch(`${apiUrl}/api/tasks/${editingTaskId}`, {
+       const response = await fetch(`${apiUrl}/api/tasks/${taskID}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -165,11 +177,19 @@ const Tasks = () => {
       if (!response.ok) {
         throw new Error("Failed to update task");
       }
+
       const updatedTask = await response.json();
-      setTasks(tasks.map((task) => (task._id === editingTaskId ? updatedTask : task)));
+      if (!response.ok) {
+        //throw new Error("Failed to update task");
+        showNotification(updatedTask.message || "Failed to update task");
+        return;
+      }
+
+     // setTasks( tasks.map((task) => (task._id === editingTaskId ? updatedTask : task)));
+      setTasks( tasks.map((task) => (task._id === taskID ? updatedTask : task)));
       setEditingTaskId(null);
-      showNotification('Task successfully updated!');
-    } catch (error) {
+    } 
+    catch (error) {
       console.error("Error updating task:", error);
     }
   }; 
@@ -199,7 +219,7 @@ const Tasks = () => {
   }
 };
 
-  const handleClearAssignees = async (taskId) => {
+  const handleClearAssignees = async (taskID) => {
     setIsClearing(true); // Indicate that the clearing process has started
 
     const token = localStorage.getItem("token");
@@ -211,7 +231,7 @@ const Tasks = () => {
 
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
-      const response = await fetch(`${apiUrl}/api/tasks/clear`, {
+      const response = await fetch(`${apiUrl}/api/tasks/${taskID}/clear`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -320,7 +340,8 @@ const Tasks = () => {
               <TaskCard
                 key={task._id}
                 task={task}
-                isEditing={editingTaskId === task._id}
+               // isEditing={editingngTaskId === task._id}
+                isEditing={taskID === task._id}
                 editTask={editTask}
                 setEditTask={setEditTask}
                 onEdit={() => handleEditTask(task)}

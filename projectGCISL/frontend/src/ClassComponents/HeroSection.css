@@ -150,48 +150,6 @@ body {
 }
 
 /* Responsive design for smaller screens */
-@media (max-width: 1200px) {
-  .hero h1 {
-    font-size: 2.5rem;
-  }
-
-  .hero p {
-    font-size: 1.1rem;
-  }
-
-  .hero-image img {
-    max-width: 400px;
-  }
-}
-
-/* Tablets (1024px and below) */
-@media (max-width: 1024px) {
-  .hero {
-    padding: 1.8rem;
-    margin-top: 55px;
-    margin-bottom: 0px;
-    min-height: calc(120vh - 190px);
-    width: 100%;
-  }
-
-  .hero h1 {
-    font-size: 42px;
-  }
-
-  .hero p {
-    font-size: 17px;
-  }
-
-  .slideshow-text {
-    font-size: 18px;
-  }
-
-  .hero-image img {
-    max-width: 500px;
-  }
-}
-
-/* Tablets (768px and below) */
 @media (max-width: 768px) {
   .hero {
     flex-direction: column;
@@ -286,4 +244,19 @@ body {
 /* Smooth Scrolling */
 html {
   scroll-behavior: smooth;
+}
+
+/* Optional: Customize scrollbar appearance */
+body::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: #a32436;
+  border-radius: 5px;
+}
+
+body::-webkit-scrollbar-track {
+  background: #f9f9f9;
 }

@@ -115,5 +115,87 @@ const VolunteerList = () => {
     </div>
   );
 
+<<<<<<< HEAD
 }
+=======
+const dashboardStyle = {
+  display: 'flex',
+<<<<<<< HEAD
+  flexWrap: 'wrap',
+=======
+  minWidth: '100%' ,
+>>>>>>> 78199dd0089634e53c988229c6d6222d624f2698
+};
+
+const contentStyle = {
+  flex: 1,
+  marginLeft: '200px',
+  padding: '1rem',
+  marginTop: '70px',
+};
+
+const styles = {
+  volunteersList: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    
+  },
+  volunteerCard: {
+    backgroundColor: '#fff',
+    border: '1px solid #ddd',
+    borderRadius: '5px',
+    padding: '1rem',
+    margin: '0.5rem',
+    boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+    width: '600px', // Matches the design you want
+    textAlign: 'center', // Center the text inside the box
+  },
+  volunteerName: {
+    margin: 0,
+    fontSize: '1.2rem',
+  },
+  volunteerEmail: {
+    color: '#666',
+  },
+};
+const responsiveStyles = `
+  @media screen and (max-width: 768px) {
+    .content {
+      margin-left: 0; /* Remove sidebar offset on small screens */
+      width: 100%;
+      padding: 0.5rem;
+    }
+
+<<<<<<< HEAD
+    .volunteer-card {
+      width: 90%; /* Cards take full width on small screens */
+      display: flex;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .volunteer-card {
+      width: 100%;
+      padding: 0.8rem;
+    }
+
+    .volunteer-name {
+      font-size: 1rem;
+    }
+
+    .volunteer-email {
+      font-size: 0.9rem;
+    }
+  }
+`;
+
+// Inject responsive styles into the document
+const styleTag = document.createElement('style');
+styleTag.innerHTML = responsiveStyles;
+document.head.appendChild(styleTag);
+>>>>>>> 2ac372c651c57e2194e4d5f58a604173a03d89cf
 export default VolunteerList;
+=======
+export default VolunteerList;
+>>>>>>> 78199dd0089634e53c988229c6d6222d624f2698

@@ -1,183 +1,336 @@
 .body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4; /* Background color for the whole page */
-  }
-  
-  input[type="email"],
-  input[type="password"] {
-    margin-bottom: -60px; /* Adjust this value as needed */
-    padding: 10px; /* Adjust for any spacing inside the input */
-  }
-  
-  
-  .wrapper-login { /* Unique class for login wrapper */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 130vh; /* Full height of the viewport */
-    padding: 20px; /* Padding around the wrapper */
-    margin-top: 50px;
-  }
-  
-  .title-login { /* Unique class for login title */
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333; /* Text color for the title */
-    text-align: center;
-  }
-  
-  .form-login { /* Unique class for login form */
-    width: 100%; /* Ensure full width */
-    max-width: 800px; /* Increase the max width for the form */
-    background: white; /* Background color for the form */
-    border-radius: 15px; /* Increased border-radius for rounder corners */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    padding: 40px; /* Increased padding inside the form */
-    position: relative; /* Ensures the pseudo element is positioned correctly */
-  }
-  
-  .form-login::before {
-    content: "Login Form"; /* Updated title content */
-    display: block;
-    width: 100%; /* Set to full width */
-    height: 100px; /* Increase height for the red section */
-    background-color: #a32436; /* Red background color */
-    position: absolute;
-    top: -70px; /* Adjust this value to move it up or down */
-    left: 0; /* Ensure it starts from the left edge */
-    border-radius: 15px 15px 0 0; /* Rounded top corners */
-    color: white; /* Text color */
-    font-size: 26px; /* Increase font size for the title */
-    line-height: 100px; /* Center the text vertically */
-    text-align: center; /* Center the text horizontally */
-    font-weight: bold; /* Make the title bold */
-  }
-  
-  .field-login { /* Unique class for login fields */
-    position: relative;
-    margin-bottom: 20px; /* Space between fields */
-    margin-top: 50px; /* Ensure space below the title */
-  }
-  
-  .field-login input {
-    width: 100%;
-    padding: 20px; /* Increased padding for taller input */
-    border: 2px solid lightgrey; /* Border color */
-    border-radius: 15px; /* Increased border-radius for rounder corners */
-    font-size: 16px; /* Font size for input */
-    background-color: white; /* Ensure input fields have a white background */
-    color: black; /* Ensure text is visible */
-    height: 50px; /* Adjust height to fit your design */
-  }
-  
-  .field-login input:focus {
-    border-color: #a32436; /* Border color on focus */
-    outline: none; /* Remove outline */
-  }
-  
-  .field-login label {
-    position: absolute;
-    left: 10px; /* Label position */
-    top: 10px; /* Label position */
-    transition: 0.2s; /* Smooth transition */
-    font-size: 16px; /* Font size for labels */
-    color: #999; /* Color for labels */
-  }
-  
-  .field-login input:focus + label,
-  .field-login input:not(:placeholder-shown) + label {
-    top: -20px; /* Move the label up */
-    left: 5px; /* Move the label left */
-    font-size: 15px; /* Smaller font size for active label */
-    color: #a32436; /* Color for active label */
-  }
-  
-  .auth-btn-login { /* Unique class for login button */
-    width: 100%; /* Full width for button */
-    padding: 15px; /* Increased padding for taller button */
-    border: none; /* No border */
-    border-radius: 15px; /* Increased border-radius for rounder corners */
-    background-color: #a32436; /* Button background color */
-    color: white; /* Button text color */
-    font-size: 16px; /* Font size for button */
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: background-color 0.2s; /* Transition for hover effect */
-    margin-top: 15px;
-    line-height: 0;
-    font-weight: bold; /* Make the button text bold */
-  }
-  
-  .auth-btn-login:hover { /* Hover effect for login button */
-    background-color: #a72639; /* Button background color on hover */
-  }
-  
-  .p-login { /* Unique class for login paragraph */
-    text-align: center; /* Center the paragraph text */
-    margin-top: 20px; /* Margin on top */
-  }
-  
-  .p-login a { /* Unique class for login links */
-    color: #007bff; /* Link color */
-    text-decoration: none; /* Remove underline */
-  }
-  
-  .p-login a:hover { /* Hover effect for login links */
-    text-decoration: underline; /* Underline on hover */
-    
-  }
-  @media (max-width: 768px) {
-    .form-login {
-        max-width: 600px; /* Reduce form width for tablets */
-        padding: 30px; /* Adjust padding */
-        margin-top: 100px
-    }
-
-    .form-login::before {
-        font-size: 22px; /* Adjust title size */
-        height: 80px; /* Reduce the height of the title section */
-        line-height: 80px;
-    }
-
-    .field-login input {
-        padding: 15px; /* Reduce padding inside input fields */
-        font-size: 14px; /* Reduce font size */
-        height: 45px; /* Adjust height */
-    }
-
-    .auth-btn-login {
-        font-size: 14px; /* Reduce button font size */
-        padding: 12px; /* Adjust padding */
-    }
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4; /* Background color for the whole page */
 }
 
-/* Small Screens */
+input[type="email"],
+input[type="password"] {
+  margin-bottom: -60px; /* Adjust this value as needed */
+  padding: 10px; /* Adjust for any spacing inside the input */
+}
+
+
+.wrapper-login { /* Unique class for login wrapper */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 130vh; /* Full height of the viewport */
+  padding: 20px; /* Padding around the wrapper */
+  margin-top: 50px;
+}
+
+.title-login { /* Unique class for login title */
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333; /* Text color for the title */
+  text-align: center;
+}
+
+.form-login { /* Unique class for login form */
+  width: 100%; /* Ensure full width */
+  max-width: 800px; /* Increase the max width for the form */
+  background: white; /* Background color for the form */
+  border-radius: 15px; /* Increased border-radius for rounder corners */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  padding: 40px; /* Increased padding inside the form */
+  position: relative; /* Ensures the pseudo element is positioned correctly */
+}
+
+.form-login::before {
+  content: "Login Form"; /* Updated title content */
+  display: block;
+  width: 100%; /* Set to full width */
+  height: 100px; /* Increase height for the red section */
+  background-color: #a32436; /* Red background color */
+  position: absolute;
+  top: -70px; /* Adjust this value to move it up or down */
+  left: 0; /* Ensure it starts from the left edge */
+  border-radius: 15px 15px 0 0; /* Rounded top corners */
+  color: white; /* Text color */
+  font-size: 26px; /* Increase font size for the title */
+  line-height: 100px; /* Center the text vertically */
+  text-align: center; /* Center the text horizontally */
+  font-weight: bold; /* Make the title bold */
+}
+
+.field-login { /* Unique class for login fields */
+  position: relative;
+  margin-bottom: 20px; /* Space between fields */
+  margin-top: 50px; /* Ensure space below the title */
+}
+
+.field-login input {
+  width: 100%;
+  padding: 20px; /* Increased padding for taller input */
+  border: 2px solid lightgrey; /* Border color */
+  border-radius: 15px; /* Increased border-radius for rounder corners */
+  font-size: 16px; /* Font size for input */
+  background-color: white; /* Ensure input fields have a white background */
+  color: black; /* Ensure text is visible */
+  height: 50px; /* Adjust height to fit your design */
+}
+
+.field-login input:focus {
+  border-color: #a32436; /* Border color on focus */
+  outline: none; /* Remove outline */
+}
+
+.field-login label {
+  position: absolute;
+  left: 10px; /* Label position */
+  top: 10px; /* Label position */
+  transition: 0.2s; /* Smooth transition */
+  font-size: 16px; /* Font size for labels */
+  color: #999; /* Color for labels */
+}
+
+.field-login input:focus + label,
+.field-login input:not(:placeholder-shown) + label {
+  top: -20px; /* Move the label up */
+  left: 5px; /* Move the label left */
+  font-size: 15px; /* Smaller font size for active label */
+  color: #a32436; /* Color for active label */
+}
+
+.auth-btn-login { /* Unique class for login button */
+  width: 100%; /* Full width for button */
+  padding: 15px; /* Increased padding for taller button */
+  border: none; /* No border */
+  border-radius: 15px; /* Increased border-radius for rounder corners */
+  background-color: #a32436; /* Button background color */
+  color: white; /* Button text color */
+  font-size: 16px; /* Font size for button */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.2s; /* Transition for hover effect */
+  margin-top: 15px;
+  line-height: 0;
+  font-weight: bold; /* Make the button text bold */
+}
+
+.auth-btn-login:hover { /* Hover effect for login button */
+  background-color: #a72639; /* Button background color on hover */
+}
+
+.p-login { /* Unique class for login paragraph */
+  text-align: center; /* Center the paragraph text */
+  margin-top: 20px; /* Margin on top */
+}
+
+.p-login a { /* Unique class for login links */
+  color: #007bff; /* Link color */
+  text-decoration: none; /* Remove underline */
+}
+
+.p-login a:hover { /* Hover effect for login links */
+  text-decoration: underline; /* Underline on hover */
+  
+}
+.forgot-password-container {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.forgot-password-form {
+  background-color: #fff;
+  padding: 1.2rem;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.forgot-password-form h3 {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.forgot-password-form input {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.auth-btn-login,
+.cancel-btn {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+.auth-btn-login {
+  background-color: #a32436;
+  color: white;
+}
+
+.auth-btn-login:hover {
+  background-color: #8f1f2c;
+}
+
+.cancel-btn {
+  background-color: #ccc;
+  color: #333;
+}
+
+.cancel-btn:hover {
+  background-color: #b3b3b3;
+}
+@media (max-width: 1300px) {
+  .wrapper-login {
+    margin-top: 250px;
+    padding-bottom: 120px;
+  }
+
+  .form-login {
+    max-width: 80%;
+    padding: 30px;
+  }
+
+  .form-login::before {
+    font-size: 24px;
+    height: 70px;
+    line-height: 70px;
+  }
+
+  .field-login input {
+    font-size: 15px;
+  }
+
+  .auth-btn-login {
+    font-size: 16px;
+    padding: 12px;
+  }
+
+  .p-login {
+    font-size: 13px;
+  }
+}
+@media (max-width: 1024px) {
+  .wrapper-login {
+    margin-top: 250px;
+    padding-bottom: 120px;
+  }
+
+  .form-login {
+    max-width: 90%;
+    padding: 30px;
+  }
+
+  .form-login::before {
+    font-size: 24px;
+    height: 70px;
+    line-height: 70px;
+  }
+
+  .field-login input {
+    font-size: 15px;
+  }
+
+  .auth-btn-login {
+    font-size: 16px;
+    padding: 12px;
+  }
+
+  .p-login {
+    font-size: 13px;
+  }
+}
+@media (max-width: 768px) {
+  .wrapper-login {
+    margin-top: 250px;
+    padding-bottom: 120px;
+  }
+
+  .form-login {
+    max-width: 90%;
+    padding: 30px;
+  }
+
+  .form-login::before {
+    font-size: 24px;
+    height: 70px;
+    line-height: 70px;
+  }
+
+  .field-login input {
+    font-size: 15px;
+  }
+
+  .auth-btn-login {
+    font-size: 16px;
+    padding: 12px;
+  }
+
+  .p-login {
+    font-size: 13px;
+  }
+}
+
+/* Small Screens (Phones, ≤550px) */
 @media (max-width: 550px) {
-    .form-login {
-        max-width: 90%; /* Full width for small screens */
-        padding: 20px; /* Reduce padding */
-        margin-top: 100px;
-    }
+  .wrapper-login {
+    margin-top: 270px;
+    padding: 10px;
+    padding-bottom: 140px;
+  }
 
-    .form-login::before {
-        font-size: 20px; /* Adjust title font size */
-        height: 70px; /* Reduce height */
-        line-height: 70px;
-    }
+  .form-login {
+    padding: 20px;
+  }
 
-    .field-login input {
-        padding: 12px; /* Smaller padding for input */
-        font-size: 12px; /* Adjust font size */
-        height: 40px; /* Adjust height */
-    }
+  .form-login::before {
+    font-size: 20px;
+    height: 60px;
+    line-height: 60px;
+  }
 
-    .auth-btn-login {
-        font-size: 12px; /* Smaller font size for button */
-        padding: 10px; /* Adjust button padding */
-    }
+  .field-login input {
+    font-size: 14px;
+    padding: 12px;
+  }
 
-    .p-login {
-        font-size: 12px; /* Reduce paragraph font size */
-    }
+  .field-login label {
+    font-size: 14px;
+  }
+
+  .auth-btn-login {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .p-login {
+    font-size: 12px;
+  }
+}
+
+/* Extra Small Screens (Phones ≤360px) */
+@media (max-width: 360px) {
+  .form-login::before {
+    font-size: 18px;
+    height: 50px;
+    line-height: 50px;
+  }
+
+  .field-login input {
+    font-size: 13px;
+  }
+
+  .auth-btn-login {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  .p-login {
+    font-size: 11px;
+  }
 }
