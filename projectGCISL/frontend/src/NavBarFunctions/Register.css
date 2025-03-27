@@ -147,12 +147,6 @@ html, body {
 .p-register a:hover { /* Hover effect for login links */
   text-decoration: underline; /* Underline on hover */
 }
-<<<<<<< HEAD
-@media (max-width: 768px) {
-  .wrapper-register { /* Unique class for register wrapper */
-    
-    margin-top: 200px;
-=======
 @media (max-width: 1200px) {
   .wrapper-register {
     max-width: 90%;
@@ -222,7 +216,7 @@ html, body {
   .wrapper-register {
     max-width: 90%;
     padding: 50px 30px 30px;
-    margin-top: 150px;
+    margin-top: 250px;
     margin-bottom: 110px;
   }
 
@@ -252,7 +246,7 @@ html, body {
 @media (max-width: 550px) {
   .wrapper-register {
     padding: 30px 15px;
-    margin-top: 180px;
+    margin-top: 250px;
     margin-bottom: 90px;
   }
 
@@ -350,6 +344,5 @@ html, body {
 
   .p-register {
     font-size: 12px;
->>>>>>> 2ac372c651c57e2194e4d5f58a604173a03d89cf
   }
 }

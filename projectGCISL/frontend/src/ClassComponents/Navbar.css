@@ -134,15 +134,6 @@
   .navbar {
     flex-direction: column; /* Stack the items vertically on small screens */
     height: auto; /* Let the height adjust */
-<<<<<<< HEAD
-    padding: 1rem;
-  }
-  .nav-links {
-    flex-direction: column; /* Stack the nav links */
-    width: 100%;
-    text-align: center;
-    padding: 0;
-=======
 
     padding: 0.5rem;
   }
@@ -151,16 +142,12 @@
 
     align-items: center; /* Center items */
     gap: 11px; /* Ensure spacing between nav options */
->>>>>>> 78199dd0089634e53c988229c6d6222d624f2698
   }
   .logo {
     height: 40px; /* Adjust the logo size for smaller screens */
   }
   .nav-links a {
     font-size: 1rem; /* Reduce font size for mobile views */
-<<<<<<< HEAD
-    padding: 0.5rem;
-=======
 
     padding: 8px 12px; /* Adjust padding */
   }
@@ -172,6 +159,5 @@
 
   .brand-logo {
     margin-bottom: 10px;
->>>>>>> 78199dd0089634e53c988229c6d6222d624f2698
   }
 }

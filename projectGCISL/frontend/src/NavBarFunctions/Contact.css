@@ -317,10 +317,6 @@ li {
   .contact__wrapper {
     flex-direction: column; /* Keep stacking vertically */
     height: auto; /* Adjust height to fit content */
-<<<<<<< HEAD
-    margin-top: 150px;
-=======
->>>>>>> 2ac372c651c57e2194e4d5f58a604173a03d89cf
   }
 
   .contact__half {
