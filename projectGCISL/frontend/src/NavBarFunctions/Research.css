@@ -116,7 +116,7 @@ html {
 
 @media screen and (max-width: 768px) {
     .research h1 {
-        margin-top: 130px; /* More space for smaller screens */
+        margin-top: 180px; /* More space for smaller screens */
     }
 
     .research-table {

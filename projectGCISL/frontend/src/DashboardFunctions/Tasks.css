@@ -1,103 +1,17 @@
-@media screen and (max-width: 768px) {
+@media (max-width: 768px) {
     .tasksPage {
       padding: 1rem;
-      padding-top: 70px;
-      width: 100%;
-      margin-left: 0;
     }
-  
     .tasksHeader {
       flex-direction: column;
-      align-items: flex-start;
-      gap: 1rem;
     }
-  
-    .filterStyle {
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-  
     .taskCard {
       flex-direction: column;
-      align-items: flex-start;
-      padding: 0.8rem;
-    }
-  
-    .icon {
-      width: 40px;
-      height: 40px;
-      margin-bottom: 0.5rem;
-    }
-  
-    .actions {
-      width: 100%;
-      justify-content: space-around;
-      margin-top: 0.5rem;
-    }
-  
-    .defaultButton {
-      font-size: 0.9rem;
-      padding: 0.4rem 0.8rem;
-    }
-  
-    .addTaskButton {
-      font-size: 0.9rem;
-      padding: 0.4rem 0.8rem;
-    }
-  }
-  
-  /* Small Screens (Phones, up to 480px) */
-  @media screen and (max-width: 480px) {
-    .tasksPage {
-      padding: 0.5rem;
-      width: 100%;
-    }
-  
-    .tasksHeader h2 {
-      font-size: 1.5rem;
+      align-items: center;
       text-align: center;
     }
-  
-    .filterStyle {
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-  
-    .addTaskButton {
-      width: 100%;
-      font-size: 0.8rem;
-      padding: 0.5rem;
-    }
-  
-    .taskCard {
-      width: 100%;
-      flex-direction: column;
-      padding: 0.5rem;
-    }
-  
-    .taskTitle {
-      font-size: 1rem;
-    }
-  
-    .taskDetails {
-      font-size: 0.9rem;
-    }
-  
-    .input {
-      font-size: 0.85rem;
-      padding: 0.4rem;
-    }
-  
-    .defaultButton,
-    .clearButton {
-      width: 100%;
-      font-size: 0.85rem;
-      padding: 0.5rem;
-    }
-  
     .actions {
       flex-direction: column;
-      gap: 0.3rem;
+      gap: 10px;
     }
   }

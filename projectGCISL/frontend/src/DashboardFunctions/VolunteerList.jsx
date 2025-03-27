@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AdminNavBar from '../ClassComponents/AdminNavBar'; 
 import VolunteerSidebar from '../ClassComponents/VolunteerSidebar'; 
-
+import './VolunteerList.css';
 
 const VolunteerList = () => {
   const [user, setUser] = useState({ firstName: '', lastName: '' });
@@ -94,16 +94,16 @@ const VolunteerList = () => {
   return (
     <div>
       <AdminNavBar role="VOLUNTEER" firstName={user.firstName} lastInitial={user.lastName.charAt(0)} />
-      <div style={dashboardStyle}>
-        <VolunteerSidebar taskCount={taskCount}  />
-        <div style={contentStyle}>
+      <div className="dashboard">
+        <VolunteerSidebar taskCount={taskCount} />
+        <div className="content">
           <h2>Volunteers List</h2>
-          <div style={styles.volunteersList}>
+          <div className="volunteers-list">
             {volunteers.length > 0 ? (
               volunteers.map((volunteer) => (
-                <div key={volunteer._id} style={styles.volunteerCard}>
-                  <h3 style={styles.volunteerName}>{volunteer.firstName} {volunteer.lastName}</h3>
-                  <p style={styles.volunteerEmail}>{volunteer.email}</p>
+                <div key={volunteer._id} className="volunteer-card">
+                  <h3 className="volunteer-name">{volunteer.firstName} {volunteer.lastName}</h3>
+                  <p className="volunteer-email">{volunteer.email}</p>
                 </div>
               ))
             ) : (
@@ -114,11 +114,13 @@ const VolunteerList = () => {
       </div>
     </div>
   );
-};
+
+
+}
 
 const dashboardStyle = {
   display: 'flex',
-  flexWrap: 'wrap',
+  minWidth: '100%' ,
 };
 
 const contentStyle = {
@@ -188,3 +190,5 @@ const styleTag = document.createElement('style');
 styleTag.innerHTML = responsiveStyles;
 document.head.appendChild(styleTag);
 export default VolunteerList;
+
+

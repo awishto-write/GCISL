@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const Task = require('./models/Task');
 require('dotenv').config();
 
 if (mongoose.connection.readyState === 0) {
@@ -10,6 +9,17 @@ if (mongoose.connection.readyState === 0) {
     .then(() => console.log('Connected to MongoDB'))
     .catch((err) => console.error('MongoDB connection error:', err));
 }
+
+const Task = mongoose.models.Task || mongoose.model('Task', new mongoose.Schema({
+  title: String,
+  //duration: String,
+  creationDate: { type: Date, required: true, default: Date.now },
+  dueDate: { type: Date, required: false },
+  document: String,
+  color: String,
+  status: { type: String, enum: ['None', 'In Progress', 'Completed', 'To Redo'], default: 'None' },
+  assignedVolunteers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
+}));
 
 module.exports = async (req, res) => {
   if (req.method !== 'GET') {

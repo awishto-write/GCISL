@@ -123,6 +123,7 @@ const Register = () => {
           />
           <label>Confirm Password</label>
         </div>
+
         <div className="field">
           <select
             name="statusType"

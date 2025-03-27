@@ -284,6 +284,14 @@ li {
   color: #ca1237;
 }
 
+@media screen and (max-width: 1300px) {
+  .contact__wrapper {
+   
+    margin-top: 40px;
+  }
+  
+
+}
 
 /* Adjust the layout on smaller screens */
 @media screen and (max-width: 1024px) {
@@ -291,7 +299,7 @@ li {
     flex-direction: column; /* Stack the halves vertically on smaller screens */
     height: auto;
     max-width: 100%;
-    margin-top: 40px
+    margin-top: 50px;
   }
 
   .contact__half {

@@ -9,6 +9,17 @@ body {
 }
 
 /* Hero section */
+/* Base styles for the body */
+body {
+  margin: 0;
+  padding: 0;
+  overflow: auto; /* Scrollbars only appear when content overflows */
+  height: 100vh; /* Sets height to match the viewport */
+  box-sizing: border-box; /* Ensures padding is included in width/height */
+  font-family: Arial, sans-serif; /* Optional: sets a clean font */
+}
+
+/* Hero section */
 .hero {
   display: flex;
   justify-content: space-between;
@@ -23,8 +34,13 @@ body {
   box-sizing: border-box; /* Includes padding in the height/width calculations */
 }
 
+
+
 /* Hero text container */
 .hero-text {
+  flex: 1;
+  min-width: 300px; /* Ensures text does not shrink too small */
+  padding-right: 1rem; /* Adds space between text and image */
   flex: 1;
   min-width: 300px; /* Ensures text does not shrink too small */
   padding-right: 1rem; /* Adds space between text and image */
@@ -35,9 +51,13 @@ body {
   font-weight: bold;
   text-align: left;
   color: #fff;
+  font-weight: bold;
+  text-align: left;
+  color: #fff;
 }
 
 .hero h1 span {
+  color: #ffe066; /* Highlight color */
   color: #ffe066; /* Highlight color */
 }
 
@@ -46,6 +66,9 @@ body {
   margin-bottom: 1rem;
   color: #f1f1f1;
 }
+
+
+
 
 /* Slideshow container */
 .slideshow {
@@ -69,13 +92,18 @@ body {
   transition: opacity 1s ease, transform 1s ease; /* Smooth fade and slide */
 }
 
+ /* Slide into view */
 .slideshow-text.active {
   opacity: 1;
   transform: translateY(0); /* Slide into view */
 }
 
 /* Hero image container */
+/* Hero image container */
 .hero-image {
+  flex: 1;
+  min-width: 300px; /* Prevent image from shrinking */
+  text-align: center;
   flex: 1;
   min-width: 300px; /* Prevent image from shrinking */
   text-align: center;
@@ -85,59 +113,19 @@ body {
   width: 100%;
   max-width: 600px;
   height: auto;
+  max-width: 600px;
+  height: auto;
   border-radius: 10px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); /* Add subtle shadow */
 }
 
 /* Responsive design for smaller screens */
-@media (max-width: 1200px) {
-  .hero h1 {
-    font-size: 2.5rem;
-  }
-
-  .hero p {
-    font-size: 1.1rem;
-  }
-
-  .hero-image img {
-    max-width: 400px;
-  }
-}
-
-/* Tablets (1024px and below) */
-@media (max-width: 1024px) {
-  .hero {
-    padding: 1.8rem;
-    margin-top: 5px;
-    margin-bottom: 0px;
-    
-    flex: auto;
-  }
-
-  .hero h1 {
-    font-size: 42px;
-  }
-
-  .hero p {
-    font-size: 17px;
-  }
-
-  .slideshow-text {
-    font-size: 18px;
-  }
-
-  .hero-image img {
-    max-width: 500px;
-  }
-}
-
-/* Tablets (768px and below) */
 @media (max-width: 768px) {
   .hero {
     flex-direction: column;
     text-align: center;
-    margin-top: 200px;
-    margin-bottom: 20px;
+    margin-top: 180px;
+    margin-bottom: 160px;
     min-height: calc(100vh - 200px);
     padding: 1.5rem;
   }
@@ -149,6 +137,7 @@ body {
 
   .hero h1 {
     font-size: 36px;
+    text-align: center;
   }
 
   .hero p {
@@ -167,8 +156,8 @@ body {
   .hero {
     flex-direction: column;
     text-align: center;
-    margin-top: 190px;
-    margin-bottom: 10px;
+    margin-top: 180px;
+    margin-bottom: 160px;
     min-height: calc(100vh - 200px);
     padding: 1.5rem;
   }
@@ -195,35 +184,49 @@ body {
   }
 }
 /* Small Phones (480px and below) */
-@media (max-width: 480px) {
+
+/* Extra Small Phones (360px and below) */
+@media (max-width: 360px) {
   .hero {
-    padding: 1rem;
+    padding: 0.8rem;
     margin-top: 200px;
-    margin-bottom: 10px;
-    min-height: calc(100vh - 220px);
+    margin-bottom: 20px;
+    min-height: calc(110vh - 240px);
   }
 
   .hero h1 {
-    font-size: 28px;
+    font-size: 24px;
   }
 
   .hero p {
-    font-size: 14px;
+    font-size: 13px;
   }
 
   .slideshow-text {
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .hero-image img {
-    max-width: 300px;
+    max-width: 260px;
   }
 }
-
-/* Extra Small Phones (360px and below) */
-
 
 /* Smooth Scrolling */
 html {
   scroll-behavior: smooth;
+}
+
+/* Optional: Customize scrollbar appearance */
+body::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: #a32436;
+  border-radius: 5px;
+}
+
+body::-webkit-scrollbar-track {
+  background: #f9f9f9;
 }

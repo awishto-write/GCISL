@@ -128,6 +128,7 @@ html {
 
   .get-involved p {
     font-size: 18px;
+  
   }
 
   .involvement-card {
@@ -165,11 +166,12 @@ html {
 
   .get-involved p {
     font-size: 16px;
+  
   }
 
   .involvement-card {
-    width: 60%; /* Adjust card width for smaller screens */
-    margin-top: 50px; /* Reduce top margin for smaller screens */
+    width: 30%; /* Adjust card width for smaller screens */
+    margin-top: 100px; /* Reduce top margin for smaller screens */
   }
 
   .involvement-card img {
@@ -198,6 +200,7 @@ html {
   .get-involved h1 {
     font-size: 28px;
     margin-bottom: 150px;
+    margin-top: 250px;
   }
  
   .involvement-card {
