@@ -16,7 +16,7 @@ app.get('/test', (req, res) => {
 // Configure CORS to allow requests from specific origins
 const allowedOrigins = [
   'http://localhost:3000', // Local frontend URL for testing
-   // Production frontend URL
+  'https://gciconnect-sk7j.onrender.com/'// Production frontend URL
 ];
 
 const corsOptions = {
