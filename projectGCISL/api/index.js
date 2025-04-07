@@ -1216,7 +1216,7 @@ const Log = mongoose.model('Log', logSchema);
 // Public route (no authentication needed)
 app.post('/api/index', async (req, res, next) => {
   const { action } = req.body;
-
+  console.log('POST /api/index - Body:', req.body);
   try {
     if (action === 'register') {
       const { firstName, lastName, email, phoneNumber, password, statusType } = req.body;
