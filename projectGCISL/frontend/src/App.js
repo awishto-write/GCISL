@@ -44,6 +44,7 @@ const AppContent = () => {
 
         let response;
         if (process.env.NODE_ENV === 'production') {
+          console.log('API URL:', apiUrl);
           // Production: POST with action to /api/index
           response = await fetch(`${apiUrl}/api/index`, {
             method: 'POST',
