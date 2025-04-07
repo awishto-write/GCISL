@@ -23,11 +23,24 @@ const Login = () => {
 
     try {
     //  const response = await fetch(`${apiUrl}/api/login`, {  
-        const response = await fetch(`${apiUrl}/api/index/login`, {  
+      //   const response = await fetch(`${apiUrl}/api/index/login`, {  
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ action: 'login', email, password }),
+      //  });
+
+       const response = await fetch(`${apiUrl}/api/index`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          action: 'login',
+          email,
+          password
+        })
       });
+      
 
       const data = await response.json();
       if (response.ok) {
