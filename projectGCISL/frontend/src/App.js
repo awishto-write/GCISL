@@ -41,20 +41,34 @@ const AppContent = () => {
 
       try {
         const apiUrl = process.env.REACT_APP_API_URL;
-       // const response = await fetch(`${apiUrl}/api/user`, { 
-          const response = await fetch(`${apiUrl}/api/index/user`, { 
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
 
+        let response;
+        if (process.env.NODE_ENV === 'production') {
+          // Production: POST with action to /api/index
+          response = await fetch(`${apiUrl}/api/index`, {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ action: 'get-user' }),
+          });
+        } else {
+          // Local: direct GET to /api/user
+          response = await fetch(`${apiUrl}/api/index/user`, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
+        }
+
+        const data = await response.json();
         if (response.ok) {
-          const data = await response.json();
           setUser({ firstName: data.firstName, lastName: data.lastName });
         } else {
-          console.error('Error fetching user data:', response.statusText);
+          console.error('Error fetching user data:', data?.error || response.statusText);
         }
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -74,21 +88,35 @@ const AppContent = () => {
 
       try {
         const apiUrl = process.env.REACT_APP_API_URL;
-       // const response = await fetch(`${apiUrl}/api/volunteer-task-count`, {
-        const response = await fetch(`${apiUrl}/api/index/volunteer-task-count`, {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
 
+        let response;
+        if (process.env.NODE_ENV === 'production') {
+          // Production: POST with action
+          response = await fetch(`${apiUrl}/api/index`, {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ action: 'volunteer-task-count' }),
+          });
+        } else {
+          // Local: direct GET
+          response = await fetch(`${apiUrl}/api/index/volunteer-task-count`, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
+        }
+
+        const data = await response.json();
         if (response.ok) {
-          const data = await response.json();
           setTaskCount(data.count);
           localStorage.setItem('taskCount', data.count);
         } else {
-          console.error('Error fetching task count:', response.statusText);
+          console.error('Error fetching task count:', data?.error || response.statusText);
         }
       } catch (error) {
         console.error('Error fetching task count:', error);
@@ -97,6 +125,75 @@ const AppContent = () => {
 
     fetchTaskCount();
   }, []);
+
+
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     const token = localStorage.getItem('token');
+  //     if (!token) {
+  //       console.error('No token found');
+  //       return;
+  //     }
+
+  //     try {
+  //       const apiUrl = process.env.REACT_APP_API_URL;
+  //      // const response = await fetch(`${apiUrl}/api/user`, { 
+  //         const response = await fetch(`${apiUrl}/api/index/user`, { 
+  //         method: 'GET',
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           'Content-Type': 'application/json',
+  //         },
+  //       });
+
+  //       if (response.ok) {
+  //         const data = await response.json();
+  //         setUser({ firstName: data.firstName, lastName: data.lastName });
+  //       } else {
+  //         console.error('Error fetching user data:', response.statusText);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching user data:', error);
+  //     }
+  //   };
+
+  //   fetchUserData();
+  // }, []);
+
+  // useEffect(() => {
+  //   const fetchTaskCount = async () => {
+  //     const token = localStorage.getItem('token');
+  //     if (!token) {
+  //       console.error('No token found');
+  //       return;
+  //     }
+
+  //     try {
+  //       const apiUrl = process.env.REACT_APP_API_URL;
+  //      // const response = await fetch(`${apiUrl}/api/volunteer-task-count`, {
+  //       const response = await fetch(`${apiUrl}/api/index/volunteer-task-count`, {
+  //         method: 'GET',
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify({ action: 'volunteer-task-count' }),
+  //       });
+
+  //       if (response.ok) {
+  //         const data = await response.json();
+  //         setTaskCount(data.count);
+  //         localStorage.setItem('taskCount', data.count);
+  //       } else {
+  //         console.error('Error fetching task count:', response.statusText);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching task count:', error);
+  //     }
+  //   };
+
+  //   fetchTaskCount();
+  // }, []);
 
   const isAdminPage = location.pathname === '/admin-dashboard' || location.pathname.startsWith('/dashboard');
   const isVolunteerPage = location.pathname === '/volunteer-dashboard' || location.pathname.startsWith('/vdashboard');

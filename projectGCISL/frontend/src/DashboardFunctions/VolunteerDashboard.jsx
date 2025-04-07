@@ -6,24 +6,34 @@ const VolunteerDashboard = () => {
   const [user, setUser] = useState({ firstName: '', lastName: '' });
   const [taskCount, setTaskCount] = useState(0); // Added state for task count
 
+
   useEffect(() => {
     const fetchUserData = async () => {
       const token = localStorage.getItem('token');
-      if (!token) {
-        console.error('No token found');
-        return;
-      }
+      if (!token) return;
 
       try {
         const apiUrl = process.env.REACT_APP_API_URL;
-       // const response = await fetch(`${apiUrl}/api/user`, { 
-        const response = await fetch(`${apiUrl}/api/index/user`, { 
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
+        let response;
+
+        if (process.env.NODE_ENV === 'production') {
+          response = await fetch(`${apiUrl}/api/index`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ action: 'get-user' }),
+          });
+        } else {
+          response = await fetch(`${apiUrl}/api/index/user`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          });
+        }
 
         if (response.ok) {
           const data = await response.json();
@@ -39,77 +49,194 @@ const VolunteerDashboard = () => {
     fetchUserData();
   }, []);
 
+  // Fetch volunteer's task list
   useEffect(() => {
     const fetchTasks = async () => {
       const token = localStorage.getItem('token');
-      if (!token) {
-        console.error('No token found');
-        return;
-      }
+      if (!token) return;
 
       try {
         const apiUrl = process.env.REACT_APP_API_URL;
-       // const response = await fetch(`${apiUrl}/api/volunteer-tasks`, {
-        const response = await fetch(`${apiUrl}/api/index/volunteer-tasks`, {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
+        let response;
 
-        if (response.ok) {
-          await response.json();
-         // const tasks = await response.json();
-         // const count = tasks.length;
-
-         
+        if (process.env.NODE_ENV === 'production') {
+          response = await fetch(`${apiUrl}/api/index`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ action: 'volunteer-tasks' }),
+          });
         } else {
-          console.error('Error fetching tasks:', response.statusText);
+          response = await fetch(`${apiUrl}/api/index/volunteer-tasks`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          });
         }
 
-        
+        if (!response.ok) {
+          console.error('Error fetching tasks:', response.statusText);
+        }
       } catch (error) {
         console.error('Error fetching tasks:', error);
       }
     };
 
     fetchTasks();
-  }, [user]); // Ensure this effect re-runs when the user data changes
+  }, [user]);
 
-
+  // Fetch task count
   useEffect(() => {
     const fetchTaskCount = async () => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            console.error('No token found');
-            return;
+      const token = localStorage.getItem('token');
+      if (!token) return;
+
+      try {
+        const apiUrl = process.env.REACT_APP_API_URL;
+        let response;
+
+        if (process.env.NODE_ENV === 'production') {
+          response = await fetch(`${apiUrl}/api/index`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ action: 'volunteer-task-count' }),
+          });
+        } else {
+          response = await fetch(`${apiUrl}/api/index/volunteer-task-count`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          });
         }
 
-        try {
-            const apiUrl = process.env.REACT_APP_API_URL;
-            //const response = await fetch(`${apiUrl}/api/volunteer-task-count`, {
-              const response = await fetch(`${apiUrl}/api/index/volunteer-task-count`, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                },
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                setTaskCount(data.count); // Update the task count state
-            } else {
-                console.error('Error fetching task count:', response.statusText);
-            }
-        } catch (error) {
-            console.error('Error fetching task count:', error);
+        if (response.ok) {
+          const data = await response.json();
+          setTaskCount(data.count);
+        } else {
+          console.error('Error fetching task count:', response.statusText);
         }
+      } catch (error) {
+        console.error('Error fetching task count:', error);
+      }
     };
 
     fetchTaskCount();
-}, []);
+  }, []);
+
+//   useEffect(() => {
+//     const fetchUserData = async () => {
+//       const token = localStorage.getItem('token');
+//       if (!token) {
+//         console.error('No token found');
+//         return;
+//       }
+
+//       try {
+//         const apiUrl = process.env.REACT_APP_API_URL;
+//        // const response = await fetch(`${apiUrl}/api/user`, { 
+//         const response = await fetch(`${apiUrl}/api/index/user`, { 
+//           method: 'GET',
+//           headers: {
+//             Authorization: `Bearer ${token}`,
+//             'Content-Type': 'application/json',
+//           },
+//         });
+
+//         if (response.ok) {
+//           const data = await response.json();
+//           setUser({ firstName: data.firstName, lastName: data.lastName });
+//         } else {
+//           console.error('Error fetching user data:', response.statusText);
+//         }
+//       } catch (error) {
+//         console.error('Error fetching user data:', error);
+//       }
+//     };
+
+//     fetchUserData();
+//   }, []);
+
+//   useEffect(() => {
+//     const fetchTasks = async () => {
+//       const token = localStorage.getItem('token');
+//       if (!token) {
+//         console.error('No token found');
+//         return;
+//       }
+
+//       try {
+//         const apiUrl = process.env.REACT_APP_API_URL;
+//        // const response = await fetch(`${apiUrl}/api/volunteer-tasks`, {
+//         const response = await fetch(`${apiUrl}/api/index/volunteer-tasks`, {
+//           method: 'GET',
+//           headers: {
+//             Authorization: `Bearer ${token}`,
+//             'Content-Type': 'application/json',
+//           },
+//         });
+
+//         if (response.ok) {
+//           await response.json();
+//          // const tasks = await response.json();
+//          // const count = tasks.length;
+
+         
+//         } else {
+//           console.error('Error fetching tasks:', response.statusText);
+//         }
+
+        
+//       } catch (error) {
+//         console.error('Error fetching tasks:', error);
+//       }
+//     };
+
+//     fetchTasks();
+//   }, [user]); // Ensure this effect re-runs when the user data changes
+
+
+//   useEffect(() => {
+//     const fetchTaskCount = async () => {
+//         const token = localStorage.getItem('token');
+//         if (!token) {
+//             console.error('No token found');
+//             return;
+//         }
+
+//         try {
+//             const apiUrl = process.env.REACT_APP_API_URL;
+//             //const response = await fetch(`${apiUrl}/api/volunteer-task-count`, {
+//               const response = await fetch(`${apiUrl}/api/index/volunteer-task-count`, {
+//                 method: 'GET',
+//                 headers: {
+//                     Authorization: `Bearer ${token}`,
+//                     'Content-Type': 'application/json',
+//                 },
+//             });
+
+//             if (response.ok) {
+//                 const data = await response.json();
+//                 setTaskCount(data.count); // Update the task count state
+//             } else {
+//                 console.error('Error fetching task count:', response.statusText);
+//             }
+//         } catch (error) {
+//             console.error('Error fetching task count:', error);
+//         }
+//     };
+
+//     fetchTaskCount();
+// }, []);
+
 
   return (
     <div>

@@ -20,33 +20,36 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    //const apiUrl = process.env.REACT_APP_API_URL;
+  
     try {
-    //  const response = await fetch(`${apiUrl}/api/login`, {  
-      //   const response = await fetch(`${apiUrl}/api/index/login`, {  
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ action: 'login', email, password }),
-      //  });
-
-       const response = await fetch(`${apiUrl}/api/index`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          action: 'login',
-          email,
-          password
-        })
-      });
-      
-
+      let response;
+  
+      if (process.env.NODE_ENV === 'production') {
+        response = await fetch(`${apiUrl}/api/index`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            action: 'login',
+            email,
+            password
+          })
+        });
+      } else {
+        response = await fetch(`${apiUrl}/api/index/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, password })
+        });
+      }
+  
       const data = await response.json();
       if (response.ok) {
-        localStorage.setItem('token', data.token); // Store token for authentication
-
-        // Redirect based on user status
+        localStorage.setItem('token', data.token);
         if (data.statusType === 'admin') {
           navigate('/admin-dashboard');
         } else if (data.statusType === 'volunteer') {
@@ -60,6 +63,37 @@ const Login = () => {
       alert('Something went wrong. Please try again.');
     }
   };
+  
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   try {
+  //    //const response = await fetch(`${apiUrl}/api/login`, {  
+  //       const response = await fetch(`${apiUrl}/api/index/login`, {  
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({ action: 'login', email, password }),
+  //     });
+  
+  //     const data = await response.json();
+  //     if (response.ok) {
+  //       localStorage.setItem('token', data.token); // Store token for authentication
+
+  //       // Redirect based on user status
+  //       if (data.statusType === 'admin') {
+  //         navigate('/admin-dashboard');
+  //       } else if (data.statusType === 'volunteer') {
+  //         navigate('/volunteer-dashboard');
+  //       }
+  //     } else {
+  //       alert(data.error);
+  //     }
+  //   } catch (error) {
+  //     console.error('Login failed:', error);
+  //     alert('Something went wrong. Please try again.');
+  //   }
+  // };
 
   return (
     <div className="wrapper-login">

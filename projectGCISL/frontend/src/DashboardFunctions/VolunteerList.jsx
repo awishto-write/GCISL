@@ -12,87 +12,179 @@ const VolunteerList = () => {
     return savedCount ? parseInt(savedCount, 10) : 0;
   });
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        console.error('No token found');
-        return;
-      }
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     const token = localStorage.getItem('token');
+  //     if (!token) {
+  //       console.error('No token found');
+  //       return;
+  //     }
 
+  //     try {
+  //       const apiUrl = process.env.REACT_APP_API_URL;
+
+  //      // const userResponse = await fetch(`${apiUrl}/api/user`, {
+  //       const userResponse = await fetch(`${apiUrl}/api/index/user`, {
+  //         method: 'GET',
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           'Content-Type': 'application/json',
+  //         },
+  //       });
+
+  //       if (userResponse.ok) {
+  //         const userData = await userResponse.json();
+  //         setUser({ firstName: userData.firstName, lastName: userData.lastName });
+
+  //         //const volunteersResponse = await fetch(`${apiUrl}/api/users?role=volunteer`, {
+  //         const volunteersResponse = await fetch(`${apiUrl}/api/index/users?role=volunteer`, {
+  //           method: 'GET',
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //             'Content-Type': 'application/json',
+  //           },
+  //         });
+
+  //         if (volunteersResponse.ok) {
+  //           const volunteersData = await volunteersResponse.json();
+  //           setVolunteers(volunteersData);
+  //         } else {
+  //           console.error('Error fetching volunteers:', volunteersResponse.statusText);
+  //         }
+  //       } else {
+  //         console.error('Error fetching user data:', userResponse.statusText);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //     }
+  //   };
+
+  //   // Fetch task count
+  //   const fetchTaskCount = async () => {
+  //       const token = localStorage.getItem('token');
+  //       if (!token) {
+  //         console.error('No token found');
+  //         return;
+  //       }
+  
+  //       try {
+  //         const apiUrl = process.env.REACT_APP_API_URL;
+  //        // const response = await fetch(`${apiUrl}/api/volunteer-task-count`, {
+  //         const response = await fetch(`${apiUrl}/api/index/volunteer-task-count`, {
+  //           method: 'GET',
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //             'Content-Type': 'application/json',
+  //           },
+  //         });
+  
+  //         if (response.ok) {
+  //           const data = await response.json();
+  //           setTaskCount(data.count);
+  //           localStorage.setItem('taskCount', data.count); // Save to localStorage
+  //         } else {
+  //           console.error('Error fetching task count:', response.statusText);
+  //         }
+  //       } catch (error) {
+  //         console.error('Error fetching task count:', error);
+  //       }
+  //   };
+  
+  //   fetchUserData();
+  //   fetchTaskCount();
+  // }, []);
+
+
+
+  useEffect(() => {
+    const fetchUserDataAndVolunteers = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+  
       try {
         const apiUrl = process.env.REACT_APP_API_URL;
-
-       // const userResponse = await fetch(`${apiUrl}/api/user`, {
-        const userResponse = await fetch(`${apiUrl}/api/index/user`, {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
-
+  
+        // Fetch user
+        const userResponse = await fetch(
+          process.env.NODE_ENV === 'production'
+            ? `${apiUrl}/api/index`
+            : `${apiUrl}/api/index/user`,
+          {
+            method: process.env.NODE_ENV === 'production' ? 'POST' : 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+            ...(process.env.NODE_ENV === 'production' && {
+              body: JSON.stringify({ action: 'get-user' }),
+            }),
+          }
+        );
+  
         if (userResponse.ok) {
           const userData = await userResponse.json();
           setUser({ firstName: userData.firstName, lastName: userData.lastName });
-
-          //const volunteersResponse = await fetch(`${apiUrl}/api/users?role=volunteer`, {
-          const volunteersResponse = await fetch(`${apiUrl}/api/index/users?role=volunteer`, {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-          });
-
-          if (volunteersResponse.ok) {
-            const volunteersData = await volunteersResponse.json();
-            setVolunteers(volunteersData);
-          } else {
-            console.error('Error fetching volunteers:', volunteersResponse.statusText);
+  
+          // Fetch volunteers
+          const volunteerResponse = await fetch(
+            process.env.NODE_ENV === 'production'
+              ? `${apiUrl}/api/index/users?role=volunteer`
+              : `${apiUrl}/api/index/users?role=volunteer`,
+            {
+              method: 'GET',
+              headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+              },
+            }
+          );
+  
+          if (volunteerResponse.ok) {
+            const data = await volunteerResponse.json();
+            setVolunteers(data);
           }
-        } else {
-          console.error('Error fetching user data:', userResponse.statusText);
         }
-      } catch (error) {
-        console.error('Error fetching data:', error);
+      } catch (err) {
+        console.error('Error fetching user or volunteers:', err);
       }
     };
-
-    // Fetch task count
-    const fetchTaskCount = async () => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-          console.error('No token found');
-          return;
-        }
   
-        try {
-          const apiUrl = process.env.REACT_APP_API_URL;
-         // const response = await fetch(`${apiUrl}/api/volunteer-task-count`, {
-          const response = await fetch(`${apiUrl}/api/index/volunteer-task-count`, {
-            method: 'GET',
+    const fetchTaskCount = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+  
+      try {
+        const apiUrl = process.env.REACT_APP_API_URL;
+        const response = await fetch(
+          process.env.NODE_ENV === 'production'
+            ? `${apiUrl}/api/index`
+            : `${apiUrl}/api/index/volunteer-task-count`,
+          {
+            method: process.env.NODE_ENV === 'production' ? 'POST' : 'GET',
             headers: {
               Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json',
             },
-          });
-  
-          if (response.ok) {
-            const data = await response.json();
-            setTaskCount(data.count);
-            localStorage.setItem('taskCount', data.count); // Save to localStorage
-          } else {
-            console.error('Error fetching task count:', response.statusText);
+            ...(process.env.NODE_ENV === 'production' && {
+              body: JSON.stringify({ action: 'volunteer-task-count' }),
+            }),
           }
-        } catch (error) {
-          console.error('Error fetching task count:', error);
+        );
+  
+        if (response.ok) {
+          const data = await response.json();
+          setTaskCount(data.count);
+          localStorage.setItem('taskCount', data.count);
         }
+      } catch (err) {
+        console.error('Error fetching task count:', err);
+      }
     };
   
-    fetchUserData();
+    fetchUserDataAndVolunteers();
     fetchTaskCount();
   }, []);
+  
 
   return (
     <div>

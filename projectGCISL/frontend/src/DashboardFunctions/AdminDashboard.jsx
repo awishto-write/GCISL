@@ -5,38 +5,73 @@ import Sidebar from '../ClassComponents/SideBar';
 const AdminDashboard = () => {
   const [user, setUser] = useState({ firstName: '', lastName: '' });
 
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     const token = localStorage.getItem('token');
+  //     if (!token) {
+  //       console.error('No token found');
+  //       return;
+  //     }
+
+  //     try {
+  //       const apiUrl = process.env.REACT_APP_API_URL;
+  //      // const response = await fetch(`${apiUrl}/api/user`, { 
+  //         const response = await fetch(`${apiUrl}/api/index/user`, { 
+  //         method: 'GET',
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           'Content-Type': 'application/json',
+  //         },
+  //       });
+
+  //       if (response.ok) {
+  //         const data = await response.json();
+  //         setUser({ firstName: data.firstName, lastName: data.lastName });
+  //       } else {
+  //         console.error('Error fetching user data:', response.statusText);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching user data:', error);
+  //     }
+  //   };
+
+  //   fetchUserData();
+  // }, []);
+
   useEffect(() => {
     const fetchUserData = async () => {
       const token = localStorage.getItem('token');
-      if (!token) {
-        console.error('No token found');
-        return;
-      }
-
+      if (!token) return;
+  
       try {
         const apiUrl = process.env.REACT_APP_API_URL;
-       // const response = await fetch(`${apiUrl}/api/user`, { 
-          const response = await fetch(`${apiUrl}/api/index/user`, { 
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
-
+        const response = await fetch(
+          process.env.NODE_ENV === 'production'
+            ? `${apiUrl}/api/index`
+            : `${apiUrl}/api/index/user`,
+          {
+            method: process.env.NODE_ENV === 'production' ? 'POST' : 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+            ...(process.env.NODE_ENV === 'production' && {
+              body: JSON.stringify({ action: 'get-user' }),
+            }),
+          }
+        );
+  
         if (response.ok) {
           const data = await response.json();
           setUser({ firstName: data.firstName, lastName: data.lastName });
-        } else {
-          console.error('Error fetching user data:', response.statusText);
         }
-      } catch (error) {
-        console.error('Error fetching user data:', error);
+      } catch (err) {
+        console.error('Error fetching user data:', err);
       }
     };
-
+  
     fetchUserData();
-  }, []);
+  }, []);  
 
   return (
     <div>
