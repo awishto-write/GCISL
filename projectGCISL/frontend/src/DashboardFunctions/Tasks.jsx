@@ -5,12 +5,14 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FormatDate } from '../ClassComponents/FormatDate';
 import DateInputWithIcon from '../ClassComponents/DateInputWithIcon';
+import './Tasks.css';
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);
   const [user, setUser] = useState({ firstName: "", lastName: "", email: "" });
   const [isLoading, setIsLoading] = useState(true); // Loading state added
-  const [editingTaskId, setEditingTaskId] = useState(null);
+  //const [editingTaskId, setEditingTaskId] = useState(null);
+  const [taskID, setEditingTaskId] = useState(null);
   const [filter, setFilter] = useState('All'); // Ensure filter options remain the same
   const currentDate = new Date();
   const [editTask, setEditTask] = useState({
@@ -117,19 +119,17 @@ const Tasks = () => {
   const handleAddTestTask = async () => {
     const newTask = {
       title: "TASK",
-      creationDate: new Date(), // Set current date for creation
-      dueDate: null, // Leave due date empty
+      creationDate: new Date(),
+      dueDate: null,
       status: "None",
       description: "",
-      createdBy: `${user.firstName} ${user.lastName}`, // Use logged-in user details
+      createdBy: `${user.firstName} ${user.lastName}`,
     };
-
     const token = localStorage.getItem("token");
     if (!token) {
       console.error("No token found");
       return;
     }
-
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
      // const response = await fetch(`${apiUrl}/api/tasks`, {
@@ -346,7 +346,8 @@ const Tasks = () => {
               <TaskCard
                 key={task._id}
                 task={task}
-                isEditing={editingTaskId === task._id}
+               // isEditing={editingngTaskId === task._id}
+                isEditing={taskID === task._id}
                 editTask={editTask}
                 setEditTask={setEditTask}
                 onEdit={() => handleEditTask(task)}
@@ -596,6 +597,7 @@ const styles = {
     color: isActive ? 'white' : 'black',
     cursor: 'pointer',
   }),
+  
 };
 
 export default Tasks;

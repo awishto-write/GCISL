@@ -33,7 +33,7 @@ Here are links to the issues that we completed in this sprint:
 * [Fix issue with status – when multiples assignees have the same task] (https://github.com/awishto-write/GCISL/issues/77)
 
 
-## Incomplete Issues/User Stories  #Naomi
+## Incomplete Issues/User Stories 
 Here are links to issues we worked on but did not complete in this sprint:
 * [Fix Window Sizing](https://github.com/awishto-write/GCISL/issues/51) - We did not get to this issue because we did not have enough time.
 * [Research Involvement Page] (https://github.com/awishto-write/GCISL/issues/84)- We did not get to this issue because we did not have enough time.

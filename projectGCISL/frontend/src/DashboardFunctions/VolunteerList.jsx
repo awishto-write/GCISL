@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AdminNavBar from '../ClassComponents/AdminNavBar'; 
 import VolunteerSidebar from '../ClassComponents/VolunteerSidebar'; 
+import './VolunteerList.css';
 
 const VolunteerList = () => {
   const [user, setUser] = useState({ firstName: '', lastName: '' });
@@ -96,16 +97,16 @@ const VolunteerList = () => {
   return (
     <div>
       <AdminNavBar role="VOLUNTEER" firstName={user.firstName} lastInitial={user.lastName.charAt(0)} />
-      <div style={dashboardStyle}>
-        <VolunteerSidebar taskCount={taskCount}  />
-        <div style={contentStyle}>
+      <div className="dashboard">
+        <VolunteerSidebar taskCount={taskCount} />
+        <div className="content">
           <h2>Volunteers List</h2>
-          <div style={styles.volunteersList}>
+          <div className="volunteers-list">
             {volunteers.length > 0 ? (
               volunteers.map((volunteer) => (
-                <div key={volunteer._id} style={styles.volunteerCard}>
-                  <h3 style={styles.volunteerName}>{volunteer.firstName} {volunteer.lastName}</h3>
-                  <p style={styles.volunteerEmail}>{volunteer.email}</p>
+                <div key={volunteer._id} className="volunteer-card">
+                  <h3 className="volunteer-name">{volunteer.firstName} {volunteer.lastName}</h3>
+                  <p className="volunteer-email">{volunteer.email}</p>
                 </div>
               ))
             ) : (
@@ -116,10 +117,13 @@ const VolunteerList = () => {
       </div>
     </div>
   );
-};
+
+
+}
 
 const dashboardStyle = {
   display: 'flex',
+  minWidth: '100%' ,
 };
 
 const contentStyle = {
@@ -134,6 +138,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    
   },
   volunteerCard: {
     backgroundColor: '#fff',
@@ -153,5 +158,40 @@ const styles = {
     color: '#666',
   },
 };
+const responsiveStyles = `
+  @media screen and (max-width: 768px) {
+    .content {
+      margin-left: 0; /* Remove sidebar offset on small screens */
+      width: 100%;
+      padding: 0.5rem;
+    }
 
+    .volunteer-card {
+      width: 90%; /* Cards take full width on small screens */
+      display: flex;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .volunteer-card {
+      width: 100%;
+      padding: 0.8rem;
+    }
+
+    .volunteer-name {
+      font-size: 1rem;
+    }
+
+    .volunteer-email {
+      font-size: 0.9rem;
+    }
+  }
+`;
+
+// Inject responsive styles into the document
+const styleTag = document.createElement('style');
+styleTag.innerHTML = responsiveStyles;
+document.head.appendChild(styleTag);
 export default VolunteerList;
+
+

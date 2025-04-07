@@ -147,3 +147,157 @@ html, body {
 .p-register a:hover { /* Hover effect for login links */
   text-decoration: underline; /* Underline on hover */
 }
+@media (max-width: 1200px) {
+  .wrapper-register {
+    max-width: 90%;
+    padding: 50px 30px 30px;
+    margin-top: 150px;
+    margin-bottom: 110px;
+  }
+
+  .form-register .title-register {
+    font-size: 32px;
+  }
+
+  .form-register .field {
+    width: 47%;
+    margin-top: 35px;
+  }
+
+  .form-register .field input,
+  .form-register .field select {
+    font-size: 16px;
+    height: 50px;
+  }
+
+  .form-register .field label {
+    font-size: 16px;
+  }
+
+  .form-register .field .auth-btn {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .wrapper-register {
+    max-width: 90%;
+    padding: 50px 30px 30px;
+    margin-top: 150px;
+    margin-bottom: 110px;
+  }
+
+  .form-register .title-register {
+    font-size: 32px;
+  }
+
+  .form-register .field {
+    width: 47%;
+    margin-top: 35px;
+  }
+
+  .form-register .field input,
+  .form-register .field select {
+    font-size: 16px;
+    height: 50px;
+  }
+
+  .form-register .field label {
+    font-size: 16px;
+  }
+
+  .form-register .field .auth-btn {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .wrapper-register {
+    max-width: 90%;
+    padding: 50px 30px 30px;
+    margin-top: 250px;
+    margin-bottom: 110px;
+  }
+  .form-register .field {
+    width: 47%;
+    margin-top: 35px;
+  }
+
+  .form-register .field input,
+  .form-register .field select {
+    font-size: 16px;
+    height: 50px;
+  }
+
+  .form-register .field label {
+    font-size: 16px;
+  }
+
+  .form-register .field .auth-btn {
+    font-size: 18px;
+  }
+}
+@media (max-width: 550px) {
+  .wrapper-register {
+    padding: 30px 15px;
+    margin-top: 250px;
+    margin-bottom: 90px;
+  }
+
+  .form-register .title-register {
+    font-size: 24px;
+  }
+
+  .form-register .field {
+    width: 100%;
+    margin-top: 25px;
+  }
+
+  .form-register .field input,
+  .form-register .field select {
+    font-size: 15px;
+    height: 45px;
+  }
+
+  .form-register .field .auth-btn {
+    font-size: 17px;
+  }
+
+  
+}
+
+@media (max-width: 480px) {
+  .wrapper-register {
+    max-width: 95%;
+    padding: 35px 20px 20px;
+    margin-top: 250px;
+    margin-bottom: 0;
+  }
+
+  .form-register .title-register {
+    font-size: 24px;
+    height: 50px;
+    line-height: 50px;
+  }
+
+  .form-register .field input,
+  .form-register .field select {
+    font-size: 14px;
+    height: 42px;
+  }
+
+  .form-register .field label {
+    font-size: 14px;
+  }
+
+  .form-register .field .auth-btn {
+    font-size: 16px;
+  }
+
+  .p-register {
+    flex-direction: column;
+    gap: 2px;
+    font-size: 14px;
+  }
+}
+

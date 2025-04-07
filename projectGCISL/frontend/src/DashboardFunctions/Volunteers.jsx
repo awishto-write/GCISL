@@ -133,17 +133,21 @@ const Volunteers = () => {
         body: JSON.stringify({ volunteerId, taskId }),
       });
   
+      console.log('Request URL:', endpoint);
+      console.log('Request body:', { volunteerId, taskId });
+  
       if (response.ok) {
         await refreshTasks();
         setSelectedVolunteer(null);
         setHoveredTaskId(null);
       } else {
-        console.error('Error assigning/removing task:', response.statusText);
+        const errorMessage = await response.json();
+        console.error('Error assigning/removing task:', errorMessage);
       }
     } catch (error) {
       console.error('Error assigning/removing task:', error);
     }
-  };  
+  };   
   
 
   return (
