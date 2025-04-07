@@ -1215,10 +1215,17 @@ const Log = mongoose.model('Log', logSchema);
 
 // Public route (no authentication needed)
 app.post('/api/index', async (req, res, next) => {
-  console.log('BODY:', req.body); // TEMP
+  console.log('BODY RECEIVED:', req.body); 
+  //console.log('BODY:', req.body); // TEMP
   console.log('ENV:', process.env.NODE_ENV); // TEMP
-  const { action } = req.body;
+  //const { action } = req.body;
   console.log('POST /api/index - Body:', req.body);
+
+  const action = req.body?.action;
+  if (!action) {
+    return res.status(400).json({ error: 'Missing action in body' });
+  }
+
   try {
     if (action === 'register') {
       const { firstName, lastName, email, phoneNumber, password, statusType } = req.body;
@@ -1237,6 +1244,7 @@ app.post('/api/index', async (req, res, next) => {
       return res.status(201).json({ message: 'User registered successfully!' });
 
     } else if (action === 'login') {
+      console.log('Handling login');
       const { email, password } = req.body;
       const user = await User.findOne({ email });
       if (!user) return res.status(400).json({ error: 'Invalid email or password.' });
@@ -1250,7 +1258,7 @@ app.post('/api/index', async (req, res, next) => {
 
     return next(); // Pass to the next route for authenticated actions
   } catch (error) {
-    console.error('Public action error:', error);
+    //console.error('Public action error:', error);
     console.error('SERVER ERROR:', error); // Important!
     return res.status(500).json({ error: 'Server error' });
   }
