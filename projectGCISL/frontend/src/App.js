@@ -43,27 +43,40 @@ const AppContent = () => {
         const apiUrl = process.env.REACT_APP_API_URL;
 
         let response;
-        if (process.env.NODE_ENV === 'production') {
-          console.log('API URL:', apiUrl);
+        // if (process.env.NODE_ENV === 'production') {
+        //   console.log('API URL:', apiUrl);
+        //   // Production: POST with action to /api/index
+        //   response = await fetch(`${apiUrl}/api/index`, {
+        //     method: 'POST',
+        //     headers: {
+        //       Authorization: `Bearer ${token}`,
+        //       'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify({ action: 'get-user' }),
+        //   });
+        // } 
+        // else {
+        //   // Local: direct GET to /api/user
+        //   response = await fetch(`${apiUrl}/api/index/user`, {
+        //     method: 'GET',
+        //     headers: {
+        //       Authorization: `Bearer ${token}`,
+        //       'Content-Type': 'application/json',
+        //     },
+        //   });
+        // }
+
+
+        console.log('API URL:', apiUrl);
           // Production: POST with action to /api/index
-          response = await fetch(`${apiUrl}/api/index`, {
+        response = await fetch(`${apiUrl}/api/index`, {
             method: 'POST',
             headers: {
               Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({ action: 'get-user' }),
-          });
-        } else {
-          // Local: direct GET to /api/user
-          response = await fetch(`${apiUrl}/api/index/user`, {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-          });
-        }
+        });
 
         const data = await response.json();
         if (response.ok) {
@@ -71,7 +84,8 @@ const AppContent = () => {
         } else {
           console.error('Error fetching user data:', data?.error || response.statusText);
         }
-      } catch (error) {
+      } 
+      catch (error) {
         console.error('Error fetching user data:', error);
       }
     };
@@ -91,26 +105,41 @@ const AppContent = () => {
         const apiUrl = process.env.REACT_APP_API_URL;
 
         let response;
-        if (process.env.NODE_ENV === 'production') {
-          // Production: POST with action
-          response = await fetch(`${apiUrl}/api/index`, {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ action: 'volunteer-task-count' }),
-          });
-        } else {
-          // Local: direct GET
-          response = await fetch(`${apiUrl}/api/index/volunteer-task-count`, {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-          });
-        }
+        // if (process.env.NODE_ENV === 'production') {
+        //   // Production: POST with action
+        //   response = await fetch(`${apiUrl}/api/index`, {
+        //     method: 'POST',
+        //     headers: {
+        //       Authorization: `Bearer ${token}`,
+        //       'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify({ action: 'volunteer-task-count' }),
+        //   });
+        // } 
+        
+        // else {
+        //   // Local: direct GET
+        //   response = await fetch(`${apiUrl}/api/index/volunteer-task-count`, {
+        //     method: 'GET',
+        //     headers: {
+        //       Authorization: `Bearer ${token}`,
+        //       'Content-Type': 'application/json',
+        //     },
+        //   });
+        // }
+
+
+
+        response = await fetch(`${apiUrl}/api/index`, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ action: 'volunteer-task-count' }),
+        });
+
+
 
         const data = await response.json();
         if (response.ok) {

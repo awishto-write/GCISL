@@ -25,8 +25,31 @@ const Login = () => {
     try {
       let response;
   
-      if (process.env.NODE_ENV === 'production') {
-        console.log('API URL:', apiUrl);
+      // if (process.env.NODE_ENV === 'production') {
+      //   console.log('API URL:', apiUrl);
+      //   response = await fetch(`${apiUrl}/api/index`, {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json'
+      //     },
+      //     body: JSON.stringify({
+      //       action: 'login',
+      //       email,
+      //       password
+      //     })
+      //   });
+      // } else {
+      //   response = await fetch(`${apiUrl}/api/index/login`, {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json'
+      //     },
+      //     body: JSON.stringify({ email, password })
+      //   });
+      // }
+
+
+      console.log('API URL:', apiUrl);
         response = await fetch(`${apiUrl}/api/index`, {
           method: 'POST',
           headers: {
@@ -37,17 +60,10 @@ const Login = () => {
             email,
             password
           })
-        });
-      } else {
-        response = await fetch(`${apiUrl}/api/index/login`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ email, password })
-        });
-      }
-  
+      });
+
+
+
       const data = await response.json();
       if (response.ok) {
         localStorage.setItem('token', data.token);

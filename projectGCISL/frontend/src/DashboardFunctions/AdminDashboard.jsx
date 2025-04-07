@@ -45,21 +45,38 @@ const AdminDashboard = () => {
   
       try {
         const apiUrl = process.env.REACT_APP_API_URL;
-        const response = await fetch(
-          process.env.NODE_ENV === 'production'
-            ? `${apiUrl}/api/index`
-            : `${apiUrl}/api/index/user`,
+
+        // const response = await fetch(
+        //   process.env.NODE_ENV === 'production'
+        //     ? `${apiUrl}/api/index`
+        //     : `${apiUrl}/api/index/user`,
+        //   {
+        //     method: process.env.NODE_ENV === 'production' ? 'POST' : 'GET',
+        //     headers: {
+        //       Authorization: `Bearer ${token}`,
+        //       'Content-Type': 'application/json',
+        //     },
+        //     ...(process.env.NODE_ENV === 'production' && {
+        //       body: JSON.stringify({ action: 'get-user' }),
+        //     }),
+        //   }
+        // );
+
+
+
+        const response = await fetch(`${apiUrl}/api/index`,
           {
-            method: process.env.NODE_ENV === 'production' ? 'POST' : 'GET',
+            method: 'POST',
             headers: {
               Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json',
             },
-            ...(process.env.NODE_ENV === 'production' && {
-              body: JSON.stringify({ action: 'get-user' }),
-            }),
+            
+            body: JSON.stringify({ action: 'get-user' }),
           }
         );
+
+
   
         if (response.ok) {
           const data = await response.json();
