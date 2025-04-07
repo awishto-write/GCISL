@@ -1215,6 +1215,8 @@ const Log = mongoose.model('Log', logSchema);
 
 // Public route (no authentication needed)
 app.post('/api/index', async (req, res, next) => {
+  console.log('BODY:', req.body); // TEMP
+  console.log('ENV:', process.env.NODE_ENV); // TEMP
   const { action } = req.body;
   console.log('POST /api/index - Body:', req.body);
   try {
@@ -1249,6 +1251,7 @@ app.post('/api/index', async (req, res, next) => {
     return next(); // Pass to the next route for authenticated actions
   } catch (error) {
     console.error('Public action error:', error);
+    console.error('SERVER ERROR:', error); // Important!
     return res.status(500).json({ error: 'Server error' });
   }
 });
