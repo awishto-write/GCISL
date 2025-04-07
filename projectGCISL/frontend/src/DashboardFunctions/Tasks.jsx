@@ -52,7 +52,8 @@ const Tasks = () => {
 
       try {
         const apiUrl = process.env.REACT_APP_API_URL;
-        const response = await fetch(`${apiUrl}/api/user`, {
+       // const response = await fetch(`${apiUrl}/api/user`, {
+        const response = await fetch(`${apiUrl}/api/index/user`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -90,7 +91,8 @@ const Tasks = () => {
 
       try {
         const apiUrl = process.env.REACT_APP_API_URL;
-        const response = await fetch(`${apiUrl}/api/tasks`, {
+       // const response = await fetch(`${apiUrl}/api/tasks`, {
+        const response = await fetch(`${apiUrl}/api/index/tasks`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -130,7 +132,8 @@ const Tasks = () => {
     }
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
-      const response = await fetch(`${apiUrl}/api/tasks`, {
+     // const response = await fetch(`${apiUrl}/api/tasks`, {
+      const response = await fetch(`${apiUrl}/api/index/tasks`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -163,10 +166,11 @@ const Tasks = () => {
       console.error("No token found");
       return;
     }
+
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
-    /// const response = await fetch(`${apiUrl}/api/tasks/${editingTaskId}`, {
-       const response = await fetch(`${apiUrl}/api/tasks/${taskID}`, {
+     // const response = await fetch(`${apiUrl}/api/tasks/${editingTaskId}`, {
+      const response = await fetch(`${apiUrl}/api/index/tasks/${editingTaskId}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -174,9 +178,6 @@ const Tasks = () => {
         },
         body: JSON.stringify(editTask),
       });
-      if (!response.ok) {
-        throw new Error("Failed to update task");
-      }
 
       const updatedTask = await response.json();
       if (!response.ok) {
@@ -185,41 +186,44 @@ const Tasks = () => {
         return;
       }
 
-     // setTasks( tasks.map((task) => (task._id === editingTaskId ? updatedTask : task)));
-      setTasks( tasks.map((task) => (task._id === taskID ? updatedTask : task)));
+      setTasks( tasks.map((task) => (task._id === editingTaskId ? updatedTask : task)));
       setEditingTaskId(null);
     } 
     catch (error) {
       console.error("Error updating task:", error);
     }
-  }; 
+  };
 
   const handleDeleteTask = async (id) => {
-  const token = localStorage.getItem("token");
-  if (!token) {
-    console.error("No token found");
-    return;
-  }
-  try {
-    const apiUrl = process.env.REACT_APP_API_URL;
-    const response = await fetch(`${apiUrl}/api/tasks/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (response.ok) {
-      setTasks(tasks.filter((task) => task._id !== id));
-      showNotification('Task successfully deleted!');
-    } else {
-      console.error("Error deleting task:", response.statusText);
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("No token found");
+      return;
     }
-  } catch (error) {
-    console.error("Error deleting task:", error);
-  }
-};
 
-  const handleClearAssignees = async (taskID) => {
+    try {
+      const apiUrl = process.env.REACT_APP_API_URL;
+     // const response = await fetch(`${apiUrl}/api/tasks/${id}`, {
+      const response = await fetch(`${apiUrl}/api/index/tasks/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        setTasks(tasks.filter((task) => task._id !== id));
+        showNotification('Task successfully deleted!'); 
+      } 
+      else {
+        console.error("Error deleting task:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    }
+  };
+
+  const handleClearAssignees = async (taskId) => {
     setIsClearing(true); // Indicate that the clearing process has started
 
     const token = localStorage.getItem("token");
@@ -231,7 +235,8 @@ const Tasks = () => {
 
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
-      const response = await fetch(`${apiUrl}/api/tasks/${taskID}/clear`, {
+      //const response = await fetch(`${apiUrl}/api/tasks/${taskId}/clear`, {
+      const response = await fetch(`${apiUrl}/api/index/tasks/${taskId}/clear`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -248,7 +253,8 @@ const Tasks = () => {
 
       // Refresh the tasks list to reflect changes
       const apiUrlTask = process.env.REACT_APP_API_URL;
-      const tasksResponse = await fetch(`${apiUrlTask}/api/tasks`, {
+     // const tasksResponse = await fetch(`${apiUrlTask}/api/tasks`, {
+      const tasksResponse = await fetch(`${apiUrlTask}/api/index/tasks`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,

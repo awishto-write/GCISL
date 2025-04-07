@@ -26,7 +26,8 @@ const Logs = () => {
 
       try {
         const apiUrl = process.env.REACT_APP_API_URL;
-        const response = await fetch(`${apiUrl}/api/user`, {
+       // const response = await fetch(`${apiUrl}/api/user`, {
+        const response = await fetch(`${apiUrl}/api/index/user`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -54,7 +55,8 @@ const Logs = () => {
 
       try {
         const apiUrl = process.env.REACT_APP_API_URL;
-        const response = await fetch(`${apiUrl}/api/logs`, {
+       // const response = await fetch(`${apiUrl}/api/logs`, {
+        const response = await fetch(`${apiUrl}/api/index/logs`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -90,7 +92,8 @@ const Logs = () => {
   
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
-      const response = await fetch(`${apiUrl}/api/logs/${logId}`, {
+      //const response = await fetch(`${apiUrl}/api/logs/${logId}`, {
+      const response = await fetch(`${apiUrl}/api/index/logs/${logId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

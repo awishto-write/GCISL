@@ -16,7 +16,8 @@ const VolunteerDashboard = () => {
 
       try {
         const apiUrl = process.env.REACT_APP_API_URL;
-        const response = await fetch(`${apiUrl}/api/user`, { 
+       // const response = await fetch(`${apiUrl}/api/user`, { 
+        const response = await fetch(`${apiUrl}/api/index/user`, { 
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -48,7 +49,8 @@ const VolunteerDashboard = () => {
 
       try {
         const apiUrl = process.env.REACT_APP_API_URL;
-        const response = await fetch(`${apiUrl}/api/volunteer-tasks`, {
+       // const response = await fetch(`${apiUrl}/api/volunteer-tasks`, {
+        const response = await fetch(`${apiUrl}/api/index/volunteer-tasks`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -86,7 +88,8 @@ const VolunteerDashboard = () => {
 
         try {
             const apiUrl = process.env.REACT_APP_API_URL;
-            const response = await fetch(`${apiUrl}/api/volunteer-task-count`, {
+            //const response = await fetch(`${apiUrl}/api/volunteer-task-count`, {
+              const response = await fetch(`${apiUrl}/api/index/volunteer-task-count`, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,
