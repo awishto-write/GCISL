@@ -26,6 +26,7 @@ const Login = () => {
       let response;
   
       if (process.env.NODE_ENV === 'production') {
+        console.log('API URL:', apiUrl);
         response = await fetch(`${apiUrl}/api/index`, {
           method: 'POST',
           headers: {
