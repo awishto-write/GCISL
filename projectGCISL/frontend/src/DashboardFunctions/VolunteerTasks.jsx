@@ -21,7 +21,8 @@ const VolunteerTasks = () => {
 
       try {
         const apiUrl = process.env.REACT_APP_API_URL;
-        const response = await fetch(`${apiUrl}/api/user`, {
+       // const response = await fetch(`${apiUrl}/api/user`, {
+        const response = await fetch(`${apiUrl}/api/index/user`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -57,7 +58,8 @@ const VolunteerTasks = () => {
   
       try {
         const apiUrl = process.env.REACT_APP_API_URL;
-        const response = await fetch(`${apiUrl}/api/volunteer-tasks`, {
+       // const response = await fetch(`${apiUrl}/api/volunteer-tasks`, {
+        const response = await fetch(`${apiUrl}/api/index/volunteer-tasks`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -109,7 +111,8 @@ const VolunteerTasks = () => {
 
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
-      const response = await fetch(`${apiUrl}/api/tasks/${taskId}`, {
+     // const response = await fetch(`${apiUrl}/api/tasks/${taskId}`, {
+      const response = await fetch(`${apiUrl}/api/index/tasks/${taskId}`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,

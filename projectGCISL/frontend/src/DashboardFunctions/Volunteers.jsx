@@ -19,9 +19,13 @@ const Volunteers = () => {
 
       try {
         const env = process.env.REACT_APP_API_URL;
-        const apiUrl = `${env}/api/user`;
-        const volunteersApiUrl = `${env}/api/users?role=volunteer`;
-        const tasksApiUrl = `${env}/api/tasks`;
+        // const apiUrl = `${env}/api/user`;
+        // const volunteersApiUrl = `${env}/api/users?role=volunteer`;
+        // const tasksApiUrl = `${env}/api/tasks`;
+
+        const apiUrl = `${env}/api/index/user`;
+        const volunteersApiUrl = `${env}/api/index/users?role=volunteer`;
+        const tasksApiUrl = `${env}/api/index/tasks`;
 
         const userResponse = await fetch(apiUrl, {
           method: 'GET',
@@ -84,7 +88,8 @@ const Volunteers = () => {
 
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
-      const response = await fetch(`${apiUrl}/api/tasks`, {
+      //const response = await fetch(`${apiUrl}/api/tasks`, {
+      const response = await fetch(`${apiUrl}/api/index/tasks`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -117,7 +122,8 @@ const Volunteers = () => {
   
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
-      const endpoint = `${apiUrl}/api/tasks/${isAssigned ? 'remove' : 'assign'}`;
+      //const endpoint = `${apiUrl}/api/tasks/${isAssigned ? 'remove' : 'assign'}`;
+      const endpoint = `${apiUrl}/api/index/tasks/${isAssigned ? 'remove' : 'assign'}`;
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
