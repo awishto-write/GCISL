@@ -225,27 +225,65 @@ const Volunteers = () => {
     }
   };
 
+  // const handleAssignTask = async (volunteerId, taskId) => {
+  //   const token = localStorage.getItem('token');
+  //   if (!token) return;
+
+  //   const task = tasks.find(t => t._id === taskId);
+  //   if (!task) return;
+
+  //   const isAssigned = task.assignedVolunteers.some(vol => vol._id === volunteerId);
+
+  //   try {
+  //     const apiUrl = process.env.REACT_APP_API_URL;
+  //     const endpoint = `${apiUrl}/api/index/tasks/${isAssigned ? 'remove' : 'assign'}`;
+  //     const response = await fetch(endpoint, {
+  //       method: 'POST',
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ volunteerId, taskId }),
+  //     });
+
+  //     if (response.ok) {
+  //       await refreshTasks();
+  //       setSelectedVolunteer(null);
+  //       setHoveredTaskId(null);
+  //     } else {
+  //       const errorMessage = await response.json();
+  //       console.error('Error assigning/removing task:', errorMessage);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error assigning/removing task:', error);
+  //   }
+  // };
+
+
   const handleAssignTask = async (volunteerId, taskId) => {
     const token = localStorage.getItem('token');
     if (!token) return;
-
+  
     const task = tasks.find(t => t._id === taskId);
     if (!task) return;
-
+  
     const isAssigned = task.assignedVolunteers.some(vol => vol._id === volunteerId);
-
+  
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
-      const endpoint = `${apiUrl}/api/index/tasks/${isAssigned ? 'remove' : 'assign'}`;
-      const response = await fetch(endpoint, {
+      const response = await fetch(`${apiUrl}/api/index`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ volunteerId, taskId }),
+        body: JSON.stringify({
+          action: isAssigned ? 'remove-task-volunteer' : 'assign-task',
+          volunteerId,
+          taskId,
+        }),
       });
-
+  
       if (response.ok) {
         await refreshTasks();
         setSelectedVolunteer(null);
@@ -258,6 +296,7 @@ const Volunteers = () => {
       console.error('Error assigning/removing task:', error);
     }
   };
+  
 
   
   return (
