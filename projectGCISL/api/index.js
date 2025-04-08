@@ -1192,7 +1192,7 @@ const userSchema = new mongoose.Schema({
   statusType: String, // 'admin' or 'volunteer'
 });
 
-const User = mongoose.model('User', userSchema);
+//const User = mongoose.model('User', userSchema);
 
 // List of Allowed Admin Names
 const allowedAdminNames = [
@@ -1210,7 +1210,26 @@ const logSchema = new mongoose.Schema({
   creationDate: { type: Date, required: true }, // Task creation date
   dueDate: { type: Date }, // Task due date
 });
-const Log = mongoose.model('Log', logSchema);
+//const Log = mongoose.model('Log', logSchema);
+
+const taskSchema = new mongoose.Schema({
+  title: String,
+  creationDate: { type: Date, required: true, default: Date.now },
+  dueDate: { type: Date, required: false },
+  color: String,
+  status: { type: String, enum: ['None', 'In Progress', 'Completed', 'To Redo'], default: 'None' },
+  description: { type: String, default: '' }, // Add description
+  createdBy: { type: String, required: true }, // Add createdBy
+  assignedVolunteers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+});
+
+//const Task = mongoose.model('Task', taskSchema);
+
+
+const User = mongoose.models.User || mongoose.model('User', userSchema);
+const Log = mongoose.models.Log || mongoose.model('Log', logSchema);
+const Task = mongoose.models.Task || mongoose.model('Task', taskSchema);
+
 
 
 // Public route (no authentication needed)
