@@ -26,7 +26,7 @@ const researchData = [
 const Research = () => {
   return (
     <div className="research">
-      <h1>Welcome to the Current Active Researches</h1>
+      <h1>Welcome to the Current Active Research at WSU</h1>
 
       <table className="research-table">
         <tbody>
