@@ -202,10 +202,19 @@ app.post('/api/index/tasks/assign', authenticateJWT, async (req, res) => {
   try {
     const task = await Task.findById(taskId);
     if (!task) return res.status(404).json({ message: 'Task not found.' });
-    if (!task.assignedVolunteers.includes(volunteerId)) {
-      task.assignedVolunteers.push(volunteerId);
-      await task.save();
+
+    // if (!task.assignedVolunteers.includes(volunteerId)) {
+    //   task.assignedVolunteers.push(volunteerId);
+    //   await task.save();
+    // }
+
+     // ✅ FIX: Safely compare string volunteerId to ObjectId array
+    const isAlreadyAssigned = task.assignedVolunteers.map(id => id.toString()).includes(volunteerId);
+    if (!isAlreadyAssigned) {
+       task.assignedVolunteers.push(volunteerId);
+       await task.save();
     }
+
     res.json({ message: 'Volunteer assigned to task successfully.' });
   } catch (error) {
     res.status(500).json({ message: 'Error assigning volunteer.' });
