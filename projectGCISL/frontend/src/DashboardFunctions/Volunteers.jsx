@@ -9,147 +9,6 @@ const Volunteers = () => {
   const [selectedVolunteer, setSelectedVolunteer] = useState(null);
   const [hoveredTaskId, setHoveredTaskId] = useState(null);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const token = localStorage.getItem('token');
-  //     if (!token) {
-  //       console.error('No token found');
-  //       return;
-  //     }
-
-  //     try {
-  //       const env = process.env.REACT_APP_API_URL;
-  //       // const apiUrl = `${env}/api/user`;
-  //       // const volunteersApiUrl = `${env}/api/users?role=volunteer`;
-  //       // const tasksApiUrl = `${env}/api/tasks`;
-
-  //       const apiUrl = `${env}/api/index/user`;
-  //       const volunteersApiUrl = `${env}/api/index/users?role=volunteer`;
-  //       const tasksApiUrl = `${env}/api/index/tasks`;
-
-  //       const userResponse = await fetch(apiUrl, {
-  //         method: 'GET',
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //           'Content-Type': 'application/json',
-  //         },
-  //       });
-
-  //       if (userResponse.ok) {
-  //         const userData = await userResponse.json();
-  //         setUser({ firstName: userData.firstName, lastName: userData.lastName });
-
-  //         const volunteersResponse = await fetch(volunteersApiUrl, {
-  //           method: 'GET',
-  //           headers: {
-  //             Authorization: `Bearer ${token}`,
-  //             'Content-Type': 'application/json',
-  //           },
-  //         });
-
-  //         if (volunteersResponse.ok) {
-  //           const volunteersData = await volunteersResponse.json();
-  //           setVolunteers(volunteersData);
-  //         } else {
-  //           console.error('Error fetching volunteers data:', volunteersResponse.statusText);
-  //         }
-
-  //         const tasksResponse = await fetch(tasksApiUrl, {
-  //           method: 'GET',
-  //           headers: {
-  //             Authorization: `Bearer ${token}`,
-  //             'Content-Type': 'application/json',
-  //           },
-  //         });
-
-  //         if (tasksResponse.ok) {
-  //           const tasksData = await tasksResponse.json();
-  //           setTasks(tasksData);
-  //         } else {
-  //           console.error('Error fetching tasks data:', tasksResponse.statusText);
-  //         }
-  //       } else {
-  //         console.error('Error fetching user data:', userResponse.statusText);
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
-
-  // const refreshTasks = async () => {
-  //   const token = localStorage.getItem('token');
-  //   if (!token) {
-  //     console.error('No token found');
-  //     return;
-  //   }
-
-  //   try {
-  //     const apiUrl = process.env.REACT_APP_API_URL;
-  //     //const response = await fetch(`${apiUrl}/api/tasks`, {
-  //     const response = await fetch(`${apiUrl}/api/index/tasks`, {
-  //       method: 'GET',
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //         'Content-Type': 'application/json',
-  //       },
-  //     });
-
-  //     if (response.ok) {
-  //       setTasks(await response.json());
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching tasks:', error);
-  //   }
-  // };
-
-  // const handleAssignTask = async (volunteerId, taskId) => {
-  //   const token = localStorage.getItem('token');
-  //   if (!token) {
-  //     console.error('No token found');
-  //     return;
-  //   }
-  
-  //   const task = tasks.find(t => t._id === taskId);
-  //   if (!task) {
-  //     console.error(`Task with ID ${taskId} not found`);
-  //     return;
-  //   }
-  
-  //   const isAssigned = task.assignedVolunteers.some(vol => vol._id === volunteerId);
-  
-  //   try {
-  //     const apiUrl = process.env.REACT_APP_API_URL;
-  //     //const endpoint = `${apiUrl}/api/tasks/${isAssigned ? 'remove' : 'assign'}`;
-  //     const endpoint = `${apiUrl}/api/index/tasks/${isAssigned ? 'remove' : 'assign'}`;
-  //     const response = await fetch(endpoint, {
-  //       method: 'POST',
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({ volunteerId, taskId }),
-  //     });
-  
-  //     console.log('Request URL:', endpoint);
-  //     console.log('Request body:', { volunteerId, taskId });
-  
-  //     if (response.ok) {
-  //       await refreshTasks();
-  //       setSelectedVolunteer(null);
-  //       setHoveredTaskId(null);
-  //     } else {
-  //       const errorMessage = await response.json();
-  //       console.error('Error assigning/removing task:', errorMessage);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error assigning/removing task:', error);
-  //   }
-  // };  
-  
-  
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem('token');
@@ -182,16 +41,6 @@ const Volunteers = () => {
           });
         }
 
-
-        // const userResponse = await fetch(`${env}/api/index`, {
-        //   method: 'POST',
-        //   headers: {
-        //     Authorization: `Bearer ${token}`,
-        //     'Content-Type': 'application/json',
-        //   },
-        //   body: JSON.stringify({ action: 'get-user' }),
-        // });
-
         if (!userResponse.ok) throw new Error('User fetch failed');
         const userData = await userResponse.json();
         setUser({ firstName: userData.firstName, lastName: userData.lastName });
@@ -217,15 +66,6 @@ const Volunteers = () => {
           });
         }
 
-        // const volunteersResponse = await fetch(`${env}/api/index`, {
-        //   method: 'POST',
-        //   headers: {
-        //     Authorization: `Bearer ${token}`,
-        //     'Content-Type': 'application/json',
-        //   },
-        //   body: JSON.stringify({ action: 'get-users', role: 'volunteer' }),
-        // });
-
         if (!volunteersResponse.ok) throw new Error('Volunteer fetch failed');
         setVolunteers(await volunteersResponse.json());
         let tasksResponse;
@@ -249,17 +89,6 @@ const Volunteers = () => {
             body: JSON.stringify({ action: 'get-tasks' }),
           });
         }
-
-
-
-        // const tasksResponse = await fetch(`${env}/api/index`, {
-        //   method: 'POST',
-        //   headers: {
-        //     Authorization: `Bearer ${token}`,
-        //     'Content-Type': 'application/json',
-        //   },
-        //   body: JSON.stringify({ action: 'get-tasks' }),
-        // });
 
         if (!tasksResponse.ok) throw new Error('Tasks fetch failed');
         setTasks(await tasksResponse.json());
@@ -303,15 +132,6 @@ const Volunteers = () => {
         });
       }
 
-      // const response = await fetch(`${env}/api/index`, {
-      //   method: 'POST',
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({ action: 'get-tasks' }),
-      // });
-
       if (response.ok) {
         setTasks(await response.json());
       }
@@ -319,41 +139,6 @@ const Volunteers = () => {
       console.error('Error fetching tasks:', error);
     }
   };
-
-  // const handleAssignTask = async (volunteerId, taskId) => {
-  //   const token = localStorage.getItem('token');
-  //   if (!token) return;
-
-  //   const task = tasks.find(t => t._id === taskId);
-  //   if (!task) return;
-
-  //   const isAssigned = task.assignedVolunteers.some(vol => vol._id === volunteerId);
-
-  //   try {
-  //     const apiUrl = process.env.REACT_APP_API_URL;
-  //     const endpoint = `${apiUrl}/api/index/tasks/${isAssigned ? 'remove' : 'assign'}`;
-  //     const response = await fetch(endpoint, {
-  //       method: 'POST',
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({ volunteerId, taskId }),
-  //     });
-
-  //     if (response.ok) {
-  //       await refreshTasks();
-  //       setSelectedVolunteer(null);
-  //       setHoveredTaskId(null);
-  //     } else {
-  //       const errorMessage = await response.json();
-  //       console.error('Error assigning/removing task:', errorMessage);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error assigning/removing task:', error);
-  //   }
-  // };
-
 
   const handleAssignTask = async (volunteerId, taskId) => {
     const token = localStorage.getItem('token');
@@ -399,19 +184,6 @@ const Volunteers = () => {
           }),
         });
       }
-
-      // const response = await fetch(`${apiUrl}/api/index`, {
-      //   method: 'POST',
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({
-      //     action: isAssigned ? 'remove-task-volunteer' : 'assign-task',
-      //     volunteerId,
-      //     taskId,
-      //   }),
-      // });
   
       if (response.ok) {
         await refreshTasks();
@@ -425,7 +197,6 @@ const Volunteers = () => {
       console.error('Error assigning/removing task:', error);
     }
   };
-  
   
   return (
     <div>

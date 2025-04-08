@@ -16,106 +16,6 @@ const Logs = () => {
       }, 3000);
   };
 
-  // useEffect(() => {
-  //   const fetchUserData = async () => {
-  //     const token = localStorage.getItem('token');
-  //     if (!token) {
-  //       console.error('No token found');
-  //       return;
-  //     }
-
-  //     try {
-  //       const apiUrl = process.env.REACT_APP_API_URL;
-  //      // const response = await fetch(`${apiUrl}/api/user`, {
-  //       const response = await fetch(`${apiUrl}/api/index/user`, {
-  //         method: 'GET',
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //           'Content-Type': 'application/json',
-  //         },
-  //       });
-
-  //       if (response.ok) {
-  //         const data = await response.json();
-  //         setUser({ firstName: data.firstName, lastName: data.lastName });
-  //       } else {
-  //         console.error('Error fetching user data:', response.statusText);
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching user data:', error);
-  //     }
-  //   };
-
-  //   const fetchLogs = async () => {
-  //     const token = localStorage.getItem('token');
-  //     if (!token) {
-  //       console.error('No token found');
-  //       return;
-  //     }
-
-  //     try {
-  //       const apiUrl = process.env.REACT_APP_API_URL;
-  //      // const response = await fetch(`${apiUrl}/api/logs`, {
-  //       const response = await fetch(`${apiUrl}/api/index/logs`, {
-  //         method: 'GET',
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //           'Content-Type': 'application/json',
-  //         },
-  //       });
-
-  //       if (response.ok) {
-  //         const data = await response.json();
-  //         setLogs(data); // Save logs
-  //       } else {
-  //         console.error('Error fetching logs:', response.statusText);
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching logs:', error);
-  //     }
-  //   };
-
-  //   fetchUserData();
-  //   fetchLogs();
-  // }, []);
-
-  // const handleRowClick = (logId) => {
-  //   setSelectedLogId(logId === selectedLogId ? null : logId); // Toggle selection
-  // };
-  
-  // const handleDeleteLog = async (logId) => {
-  //   const token = localStorage.getItem("token");
-  //   if (!token) {
-  //     console.error("No token found");
-  //     return;
-  //   }
-  
-  //   try {
-  //     const apiUrl = process.env.REACT_APP_API_URL;
-  //     //const response = await fetch(`${apiUrl}/api/logs/${logId}`, {
-  //     const response = await fetch(`${apiUrl}/api/index/logs/${logId}`, {
-  //       method: "DELETE",
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-  
-  //     if (response.ok) {
-  //       setLogs(logs.filter((log) => log._id !== logId)); // Remove log from the list
-  //       setSelectedLogId(null); // Clear selected log
-  //       showNotification("Log successfully deleted!");
-  //     } else {
-  //       console.error("Error deleting log:", response.statusText);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error deleting log:", error);
-  //   }
-  // };
-
-
-
-
   useEffect(() => {
     const fetchUserData = async () => {
       const token = localStorage.getItem('token');
@@ -144,14 +44,6 @@ const Logs = () => {
             body: JSON.stringify({ action: 'get-user' }),
           });
         }
-        // const response = await fetch(`${apiUrl}/api/index`, {
-        //   method: 'POST',
-        //   headers: {
-        //     Authorization: `Bearer ${token}`,
-        //     'Content-Type': 'application/json',
-        //   },
-        //   body: JSON.stringify({ action: 'get-user' }),
-        // });
 
         if (response.ok) {
           const data = await response.json();
@@ -191,15 +83,6 @@ const Logs = () => {
             body: JSON.stringify({ action: 'get-logs' }),
           });
         }
-
-        // const response = await fetch(`${apiUrl}/api/index`, {
-        //   method: 'POST',
-        //   headers: {
-        //     Authorization: `Bearer ${token}`,
-        //     'Content-Type': 'application/json',
-        //   },
-        //   body: JSON.stringify({ action: 'get-logs' }),
-        // });
 
         if (response.ok) {
           const data = await response.json();
@@ -247,15 +130,7 @@ const Logs = () => {
           body: JSON.stringify({ action: 'delete-log', id: logId }),
         });
       }
-      // const response = await fetch(`${apiUrl}/api/index`, {
-      //   method: 'POST',
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({ action: 'delete-log', id: logId }),
-      // });
-
+    
       if (response.ok) {
         setLogs(logs.filter((log) => log._id !== logId));
         setSelectedLogId(null);
@@ -267,8 +142,6 @@ const Logs = () => {
       console.error('Error deleting log:', err);
     }
   };
-
-
 
   // Filter logs based on the due date
   const getFilteredLogs = () => {
