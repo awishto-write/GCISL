@@ -1236,7 +1236,17 @@ const User = mongoose.models.User || mongoose.model('User', userSchema);
 const Log = mongoose.models.Log || mongoose.model('Log', logSchema);
 const Task = mongoose.models.Task || mongoose.model('Task', taskSchema);
 
+const authenticateJWT = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(' ')[1];
+  if (!token) return res.status(401).json({ message: 'Missing token' });
 
+  jwt.verify(token, process.env.JWT_SECRET || 'yourSecretKey', (err, decoded) => {
+    if (err) return res.status(403).json({ message: 'Invalid token' });
+    req.userId = decoded.userId;
+    next();
+  });
+};
 
 // Public route (no authentication needed)
 app.post('/api/index', async (req, res, next) => {
