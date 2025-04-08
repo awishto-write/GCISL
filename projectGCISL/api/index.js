@@ -1132,6 +1132,12 @@
 
 
 
+process.on('uncaughtException', err => {
+  console.error('UNCAUGHT EXCEPTION:', err);
+});
+process.on('unhandledRejection', err => {
+  console.error('UNHANDLED PROMISE REJECTION:', err);
+});
 
 const express = require('express');
 const serverless = require('serverless-http'); // Required for Vercel serverless deployment
