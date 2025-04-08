@@ -800,38 +800,38 @@ app.post('/api/index', authenticateJWT, async (req, res) => {
     //   return res.json({ message: 'Volunteer removed from task.' });
     // }
 
-    else if (action === 'assign-task') {
-      // const { volunteerId, taskId } = req.body;
-      // const task = await Task.findById(taskId);
-      // if (!task) return res.status(404).json({ message: 'Task not found.' });
+    // else if (action === 'assign-task') {
+    //   // const { volunteerId, taskId } = req.body;
+    //   // const task = await Task.findById(taskId);
+    //   // if (!task) return res.status(404).json({ message: 'Task not found.' });
     
-      // const alreadyAssigned = task.assignedVolunteers.some(id => id.toString() === volunteerId);
-      // if (!alreadyAssigned) {
-      //   task.assignedVolunteers.push(volunteerId);
-      //   await task.save();
-      // }
+    //   // const alreadyAssigned = task.assignedVolunteers.some(id => id.toString() === volunteerId);
+    //   // if (!alreadyAssigned) {
+    //   //   task.assignedVolunteers.push(volunteerId);
+    //   //   await task.save();
+    //   // }
     
-      // return res.json({ message: 'Volunteer assigned to task successfully.' });
+    //   // return res.json({ message: 'Volunteer assigned to task successfully.' });
 
 
-      const { volunteerId, taskId } = req.body;
-      const task = await Task.findById(taskId);
-      if (!task) return res.status(404).json({ message: 'Task not found.' });
+    //   const { volunteerId, taskId } = req.body;
+    //   const task = await Task.findById(taskId);
+    //   if (!task) return res.status(404).json({ message: 'Task not found.' });
 
-      const volunteerObjectId = new mongoose.Types.ObjectId(volunteerId);
+    //   const volunteerObjectId = new mongoose.Types.ObjectId(volunteerId);
 
-      const alreadyAssigned = task.assignedVolunteers.some(id => id.equals(volunteerObjectId));
-      if (!alreadyAssigned) {
-        task.assignedVolunteers.push(volunteerObjectId);
-         await task.save();
-      }
+    //   const alreadyAssigned = task.assignedVolunteers.some(id => id.equals(volunteerObjectId));
+    //   if (!alreadyAssigned) {
+    //     task.assignedVolunteers.push(volunteerObjectId);
+    //      await task.save();
+    //   }
 
-      console.log('Assigning volunteer', volunteerId, 'to task', taskId);
-      console.log('Current volunteers:', task.assignedVolunteers.map(id => id.toString()));
+    //   console.log('Assigning volunteer', volunteerId, 'to task', taskId);
+    //   console.log('Current volunteers:', task.assignedVolunteers.map(id => id.toString()));
 
 
-      return res.json({ message: 'Volunteer assigned to task successfully.' });
-    }
+    //   return res.json({ message: 'Volunteer assigned to task successfully.' });
+    // }
     
     // else if (action === 'remove-task-volunteer') {
     //   const { volunteerId, taskId } = req.body;
@@ -844,22 +844,71 @@ app.post('/api/index', authenticateJWT, async (req, res) => {
     //   return res.json({ message: 'Volunteer removed from task.' });
     // }
 
-    else if (action === 'remove-task-volunteer') {
-      const { volunteerId, taskId } = req.body;
+    // else if (action === 'remove-task-volunteer') {
+    //   const { volunteerId, taskId } = req.body;
     
-      const task = await Task.findById(taskId);
-      if (!task) return res.status(404).json({ message: 'Task not found.' });
+    //   const task = await Task.findById(taskId);
+    //   if (!task) return res.status(404).json({ message: 'Task not found.' });
     
-      const volunteerObjectId = new mongoose.Types.ObjectId(volunteerId);
+    //   const volunteerObjectId = new mongoose.Types.ObjectId(volunteerId);
     
-      task.assignedVolunteers = task.assignedVolunteers.filter(
-        id => !id.equals(volunteerObjectId)
-      );
+    //   task.assignedVolunteers = task.assignedVolunteers.filter(
+    //     id => !id.equals(volunteerObjectId)
+    //   );
     
-      await task.save();
+    //   await task.save();
     
-      return res.json({ message: 'Volunteer removed from task.' });
+    //   return res.json({ message: 'Volunteer removed from task.' });
+    // }
+
+
+    else if (action === 'assign-task') {
+      try {
+        const { volunteerId, taskId } = req.body;
+        const task = await Task.findById(taskId);
+        if (!task) return res.status(404).json({ message: 'Task not found.' });
+    
+        // Handle both populated and raw ObjectId scenarios
+        const isAlreadyAssigned = task.assignedVolunteers.some(v =>
+          (v._id || v).toString() === volunteerId
+        );
+    
+        if (!isAlreadyAssigned) {
+          task.assignedVolunteers.push(new mongoose.Types.ObjectId(volunteerId));
+          await task.save();
+        }
+    
+        console.log('✅ Volunteer assigned:', volunteerId, '→ Task:', taskId);
+        return res.json({ message: 'Volunteer assigned to task successfully.' });
+      } catch (error) {
+        console.error('❌ Error in assign-task:', error);
+        return res.status(500).json({ error: 'Server error', details: error.message });
+      }
     }
+    
+
+    else if (action === 'remove-task-volunteer') {
+      try {
+        const { volunteerId, taskId } = req.body;
+    
+        console.log('Removing volunteer:', volunteerId, 'from task:', taskId);
+    
+        const task = await Task.findById(taskId);
+        if (!task) return res.status(404).json({ message: 'Task not found.' });
+    
+        task.assignedVolunteers = task.assignedVolunteers.filter(v =>
+          (v._id || v).toString() !== volunteerId
+        );
+    
+        await task.save();
+    
+        return res.json({ message: 'Volunteer removed from task.' });
+      } catch (error) {
+        console.error('Error removing volunteer from task:', error);
+        return res.status(500).json({ error: 'Server error', details: error.message });
+      }
+    }
+    
     
 
     else if (action === 'update-task') {
