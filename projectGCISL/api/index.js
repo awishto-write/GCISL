@@ -230,8 +230,16 @@ app.post('/api/index', authenticateJWT, async (req, res) => {
     else if (action === 'assign-task') {
       try {
         const { volunteerId, taskId } = req.body;
+        if (!volunteerId || !taskId) {
+          console.error('Missing volunteerId or taskId:', req.body);
+          return res.status(400).json({ message: 'Missing volunteerId or taskId' });
+        }
+
         const task = await Task.findById(taskId);
-        if (!task) return res.status(404).json({ message: 'Task not found.' });
+        if (!task) {
+          console.error('Task not found for ID:', taskId);
+          return res.status(404).json({ message: 'Task not found.' });
+        }
     
         // Handle both populated and raw ObjectId scenarios
         const isAlreadyAssigned = task.assignedVolunteers.some(v =>
