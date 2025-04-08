@@ -289,9 +289,13 @@ app.post('/api/index', authenticateJWT, async (req, res) => {
       const existing = await Task.findOne({ title, _id: { $ne: id } });
       if (existing) return res.status(400).json({ message: 'Task with this title already exists.' });
 
-      const updated = await Task.findByIdAndUpdate(id, {
-        title, creationDate, dueDate, color, status, description
-      }, { new: true });
+      // const updated = await Task.findByIdAndUpdate(id, {
+      //   title, creationDate, dueDate, color, status, description
+      // }, { new: true });
+      const updated = await Task.findByIdAndUpdate( id, { 
+        title, creationDate, dueDate, color, status, description },
+        { new: true }
+      ).populate('assignedVolunteers', 'firstName lastName');
       if (!updated) return res.status(404).json({ message: 'Task not found.' });
 
       const user = await User.findById(req.userId);

@@ -208,7 +208,7 @@ app.post('/api/index/tasks/assign', authenticateJWT, async (req, res) => {
     //   await task.save();
     // }
 
-     // ✅ FIX: Safely compare string volunteerId to ObjectId array
+     //FIX: Safely compare string volunteerId to ObjectId array
     const isAlreadyAssigned = task.assignedVolunteers.map(id => id.toString()).includes(volunteerId);
     if (!isAlreadyAssigned) {
        task.assignedVolunteers.push(volunteerId);
@@ -239,7 +239,14 @@ app.put('/api/index/tasks/:id', authenticateJWT, async (req, res) => {
   try {
     const existing = await Task.findOne({ title, _id: { $ne: req.params.id } });
     if (existing) return res.status(400).json({ message: 'Task with this title already exists.' });
-    const updated = await Task.findByIdAndUpdate(req.params.id, { title, creationDate, dueDate, color, status, description }, { new: true });
+
+    //const updated = await Task.findByIdAndUpdate(req.params.id, { title, creationDate, dueDate, color, status, description }, { new: true });
+    const updated = await Task.findByIdAndUpdate(
+        req.params.id,
+        { title, creationDate, dueDate, color, status, description },
+        { new: true }
+    ).populate('assignedVolunteers', 'firstName lastName');
+  
     if (!updated) return res.status(404).json({ message: 'Task not found.' });
 
     const user = await User.findById(req.userId);
