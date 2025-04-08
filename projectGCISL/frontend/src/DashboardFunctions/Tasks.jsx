@@ -39,101 +39,524 @@ const Tasks = () => {
     }, 10000);
   };
 
-  useEffect(() => {
-    // Fetch the current user data
-    const fetchUserData = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        console.error("No token found");
-        return;
-      }
+  // useEffect(() => {
+  //   // Fetch the current user data
+  //   const fetchUserData = async () => {
+  //     const token = localStorage.getItem("token");
+  //     if (!token) {
+  //       console.error("No token found");
+  //       return;
+  //     }
 
+  //     try {
+  //       const apiUrl = process.env.REACT_APP_API_URL;
+  //      // const response = await fetch(`${apiUrl}/api/user`, {
+  //       const response = await fetch(`${apiUrl}/api/index/user`, {
+  //         method: "GET",
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           "Content-Type": "application/json",
+  //         },
+  //       });
+
+  //       if (response.ok) {
+  //         const data = await response.json();
+  //         setUser({
+  //           firstName: data.firstName,
+  //           lastName: data.lastName,
+  //           email: data.email,
+  //         });
+  //         // Update `editTask` with `createdBy` when user data is fetched
+  //         setEditTask((prevTask) => ({
+  //           ...prevTask,
+  //           createdBy: `${data.firstName} ${data.lastName}`,
+  //         }));
+  //       } else {
+  //         console.error("Error fetching user data:", response.statusText);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching user data:", error);
+  //     }
+  //   };
+
+  //   const fetchTasks = async () => {
+  //     const token = localStorage.getItem("token");
+  //     if (!token) {
+  //       console.error("No token found");
+  //       setIsLoading(false);
+  //       return;
+  //     }
+
+  //     try {
+  //       const apiUrl = process.env.REACT_APP_API_URL;
+  //      // const response = await fetch(`${apiUrl}/api/tasks`, {
+  //       const response = await fetch(`${apiUrl}/api/index/tasks`, {
+  //         method: "GET",
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           "Content-Type": "application/json",
+  //         },
+  //       });
+
+  //       if (!response.ok) {
+  //         throw new Error("Failed to fetch tasks");
+  //       }
+
+  //       const data = await response.json();
+  //       setTasks(data);
+  //     } catch (error) {
+  //       console.error("Error fetching tasks:", error);
+  //     } finally {
+  //       setIsLoading(false); // Stop loading after fetch completes
+  //     }
+  //   };
+  //   fetchUserData();
+  //   fetchTasks();
+  // }, []);
+
+  // const handleAddTestTask = async () => {
+  //   const newTask = {
+  //     title: "TASK",
+  //     creationDate: new Date(), // Set current date for creation
+  //     dueDate: null, // Leave due date empty
+  //     status: "None",
+  //     description: "",
+  //     createdBy: `${user.firstName} ${user.lastName}`, // Use logged-in user details
+  //   };
+
+  //   const token = localStorage.getItem("token");
+  //   if (!token) {
+  //     console.error("No token found");
+  //     return;
+  //   }
+
+  //   try {
+  //     const apiUrl = process.env.REACT_APP_API_URL;
+  //    // const response = await fetch(`${apiUrl}/api/tasks`, {
+  //     const response = await fetch(`${apiUrl}/api/index/tasks`, {
+  //       method: "POST",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(newTask),
+  //     });
+
+  //     const addedTask = await response.json();
+  //     if (!response.ok) {
+  //       showNotificationExistingTask(addedTask.message || "Failed to add task");
+  //       return;
+  //     }
+  //     setTasks([...tasks, addedTask]);
+  //     showNotificationExistingTask('Task successfully created! Please edit the title of the created task'); // Show notification
+  //   } 
+  //   catch (error) {
+  //     console.error("Error adding task:", error);
+  //   }
+  // };
+
+  // const handleEditTask = (task) => {
+  //   setEditingTaskId(task._id);
+  //   setEditTask(task);
+  // };
+
+  // const handleSaveEdit = async () => {
+  //   const token = localStorage.getItem("token");
+  //   if (!token) {
+  //     console.error("No token found");
+  //     return;
+  //   }
+
+  //   try {
+  //     const apiUrl = process.env.REACT_APP_API_URL;
+  //    // const response = await fetch(`${apiUrl}/api/tasks/${editingTaskId}`, {
+  //     const response = await fetch(`${apiUrl}/api/index/tasks/${editingTaskId}`, {
+  //       method: "PUT",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(editTask),
+  //     });
+
+  //     const updatedTask = await response.json();
+  //     if (!response.ok) {
+  //       //throw new Error("Failed to update task");
+  //       showNotification(updatedTask.message || "Failed to update task");
+  //       return;
+  //     }
+
+  //     setTasks( tasks.map((task) => (task._id === editingTaskId ? updatedTask : task)));
+  //     setEditingTaskId(null);
+  //   } 
+  //   catch (error) {
+  //     console.error("Error updating task:", error);
+  //   }
+  // };
+
+  // const handleDeleteTask = async (id) => {
+  //   const token = localStorage.getItem("token");
+  //   if (!token) {
+  //     console.error("No token found");
+  //     return;
+  //   }
+
+  //   try {
+  //     const apiUrl = process.env.REACT_APP_API_URL;
+  //    // const response = await fetch(`${apiUrl}/api/tasks/${id}`, {
+  //     const response = await fetch(`${apiUrl}/api/index/tasks/${id}`, {
+  //       method: "DELETE",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+
+  //     if (response.ok) {
+  //       setTasks(tasks.filter((task) => task._id !== id));
+  //       showNotification('Task successfully deleted!'); 
+  //     } 
+  //     else {
+  //       console.error("Error deleting task:", response.statusText);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error deleting task:", error);
+  //   }
+  // };
+
+  // const handleClearAssignees = async (taskId) => {
+  //   setIsClearing(true); // Indicate that the clearing process has started
+
+  //   const token = localStorage.getItem("token");
+  //   if (!token) {
+  //     console.error("No token found");
+  //     setIsClearing(false); // Reset the state if there's an error
+  //     return;
+  //   }
+
+  //   try {
+  //     const apiUrl = process.env.REACT_APP_API_URL;
+  //     //const response = await fetch(`${apiUrl}/api/tasks/${taskId}/clear`, {
+  //     const response = await fetch(`${apiUrl}/api/index/tasks/${taskId}/clear`, {
+  //       method: "POST",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error("Failed to clear assignees");
+  //     }
+
+  //     const result = await response.json();
+  //     console.log(result.message);
+
+  //     // Refresh the tasks list to reflect changes
+  //     const apiUrlTask = process.env.REACT_APP_API_URL;
+  //    // const tasksResponse = await fetch(`${apiUrlTask}/api/tasks`, {
+  //     const tasksResponse = await fetch(`${apiUrlTask}/api/index/tasks`, {
+  //       method: "GET",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+
+  //     if (tasksResponse.ok) {
+  //       const tasksData = await tasksResponse.json();
+  //       setTasks(tasksData);
+  //     } else {
+  //       console.error("Error fetching tasks data:", tasksResponse.statusText);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error clearing assignees:", error);
+  //   } finally {
+  //     setIsClearing(false); // Reset the state after the process is complete
+  //   }
+  // };
+
+
+
+
+
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     const token = localStorage.getItem("token");
+  //     if (!token) return;
+
+  //     try {
+  //       const apiUrl = process.env.REACT_APP_API_URL;
+  //       const response = await fetch(`${apiUrl}/api/index`, {
+  //         method: "POST",
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({ action: "get-user" }),
+  //       });
+
+  //       if (response.ok) {
+  //         const data = await response.json();
+  //         setUser({ firstName: data.firstName, lastName: data.lastName, email: data.email });
+  //         setEditTask((prev) => ({ ...prev, createdBy: `${data.firstName} ${data.lastName}` }));
+  //       } else {
+  //         console.error("Error fetching user data:", response.statusText);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching user data:", error);
+  //     }
+  //   };
+
+  //   const fetchTasks = async () => {
+  //     const token = localStorage.getItem("token");
+  //     if (!token) return;
+
+  //     try {
+  //       const apiUrl = process.env.REACT_APP_API_URL;
+  //       const response = await fetch(`${apiUrl}/api/index`, {
+  //         method: "POST",
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({ action: "get-tasks" }),
+  //       });
+
+  //       if (response.ok) {
+  //         const data = await response.json();
+  //         setTasks(data);
+  //       } else {
+  //         console.error("Failed to fetch tasks");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching tasks:", error);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+
+  //   fetchUserData();
+  //   fetchTasks();
+  // }, []);
+
+  // const handleAddTestTask = async () => {
+  //   const token = localStorage.getItem("token");
+  //   if (!token) return;
+
+  //   const newTask = {
+  //     action: "create-task",
+  //     title: "TASK",
+  //     creationDate: new Date(),
+  //     dueDate: null,
+  //     status: "None",
+  //     description: "",
+  //     createdBy: `${user.firstName} ${user.lastName}`,
+  //   };
+
+  //   try {
+  //     const apiUrl = process.env.REACT_APP_API_URL;
+  //     const response = await fetch(`${apiUrl}/api/index`, {
+  //       method: "POST",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(newTask),
+  //     });
+
+  //     const addedTask = await response.json();
+  //     if (response.ok) {
+  //       setTasks([...tasks, addedTask]);
+  //       showNotificationExistingTask('Task successfully created! Please edit the title of the created task');
+  //     } else {
+  //       showNotificationExistingTask(addedTask.message || "Failed to add task");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error adding task:", error);
+  //   }
+  // };
+
+  // const handleEditTask = (task) => {
+  //   setEditingTaskId(task._id);
+  //   setEditTask(task);
+  // };
+
+  // const handleSaveEdit = async () => {
+  //   const token = localStorage.getItem("token");
+  //   if (!token) return;
+
+  //   try {
+  //     const apiUrl = process.env.REACT_APP_API_URL;
+  //     const response = await fetch(`${apiUrl}/api/index/tasks/${editingTaskId}`, {
+  //       method: "PUT",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(editTask),
+  //     });
+
+  //     const updatedTask = await response.json();
+  //     if (response.ok) {
+  //       setTasks(tasks.map((task) => (task._id === editingTaskId ? updatedTask : task)));
+  //       setEditingTaskId(null);
+  //     } else {
+  //       showNotification(updatedTask.message || "Failed to update task");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error updating task:", error);
+  //   }
+  // };
+
+  // const handleDeleteTask = async (id) => {
+  //   const token = localStorage.getItem("token");
+  //   if (!token) return;
+
+  //   try {
+  //     const apiUrl = process.env.REACT_APP_API_URL;
+  //     const response = await fetch(`${apiUrl}/api/index/tasks/${id}`, {
+  //       method: "DELETE",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+
+  //     if (response.ok) {
+  //       setTasks(tasks.filter((task) => task._id !== id));
+  //       showNotification("Task successfully deleted!");
+  //     } else {
+  //       console.error("Error deleting task:", response.statusText);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error deleting task:", error);
+  //   }
+  // };
+
+  // const handleClearAssignees = async (taskId) => {
+  //   setIsClearing(true);
+  //   const token = localStorage.getItem("token");
+  //   if (!token) {
+  //     setIsClearing(false);
+  //     return;
+  //   }
+
+  //   try {
+  //     const apiUrl = process.env.REACT_APP_API_URL;
+  //     const clearResponse = await fetch(`${apiUrl}/api/index/tasks/${taskId}/clear`, {
+  //       method: "POST",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+
+  //     if (!clearResponse.ok) {
+  //       throw new Error("Failed to clear assignees");
+  //     }
+
+  //     const refreshed = await fetch(`${apiUrl}/api/index`, {
+  //       method: "POST",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ action: "get-tasks" }),
+  //     });
+
+  //     if (refreshed.ok) {
+  //       const refreshedTasks = await refreshed.json();
+  //       setTasks(refreshedTasks);
+  //     } else {
+  //       console.error("Error fetching tasks data:", refreshed.statusText);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error clearing assignees:", error);
+  //   } finally {
+  //     setIsClearing(false);
+  //   }
+  // };
+
+
+
+
+
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    const apiUrl = process.env.REACT_APP_API_URL;
+
+    const fetchUserData = async () => {
       try {
-        const apiUrl = process.env.REACT_APP_API_URL;
-       // const response = await fetch(`${apiUrl}/api/user`, {
-        const response = await fetch(`${apiUrl}/api/index/user`, {
-          method: "GET",
+        const res = await fetch(`${apiUrl}/api/index`, {
+          method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
+          body: JSON.stringify({ action: "get-user" }),
         });
 
-        if (response.ok) {
-          const data = await response.json();
-          setUser({
-            firstName: data.firstName,
-            lastName: data.lastName,
-            email: data.email,
-          });
-          // Update `editTask` with `createdBy` when user data is fetched
-          setEditTask((prevTask) => ({
-            ...prevTask,
+        if (res.ok) {
+          const data = await res.json();
+          setUser(data);
+          setEditTask((prev) => ({
+            ...prev,
             createdBy: `${data.firstName} ${data.lastName}`,
           }));
         } else {
-          console.error("Error fetching user data:", response.statusText);
+          console.error("Error fetching user");
         }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
+      } catch (err) {
+        console.error("Error:", err);
       }
     };
 
     const fetchTasks = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        console.error("No token found");
-        setIsLoading(false);
-        return;
-      }
-
       try {
-        const apiUrl = process.env.REACT_APP_API_URL;
-       // const response = await fetch(`${apiUrl}/api/tasks`, {
-        const response = await fetch(`${apiUrl}/api/index/tasks`, {
-          method: "GET",
+        const res = await fetch(`${apiUrl}/api/index`, {
+          method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
+          body: JSON.stringify({ action: "get-tasks" }),
         });
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch tasks");
+        if (res.ok) {
+          const data = await res.json();
+          setTasks(data);
+        } else {
+          console.error("Failed to fetch tasks");
         }
-
-        const data = await response.json();
-        setTasks(data);
-      } catch (error) {
-        console.error("Error fetching tasks:", error);
+      } catch (err) {
+        console.error("Error:", err);
       } finally {
-        setIsLoading(false); // Stop loading after fetch completes
+        setIsLoading(false);
       }
     };
+
     fetchUserData();
     fetchTasks();
   }, []);
 
   const handleAddTestTask = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    const apiUrl = process.env.REACT_APP_API_URL;
     const newTask = {
+      action: "create-task",
       title: "TASK",
-      creationDate: new Date(), // Set current date for creation
-      dueDate: null, // Leave due date empty
+      creationDate: new Date(),
+      dueDate: null,
       status: "None",
       description: "",
-      createdBy: `${user.firstName} ${user.lastName}`, // Use logged-in user details
     };
 
-    const token = localStorage.getItem("token");
-    if (!token) {
-      console.error("No token found");
-      return;
-    }
-
     try {
-      const apiUrl = process.env.REACT_APP_API_URL;
-     // const response = await fetch(`${apiUrl}/api/tasks`, {
-      const response = await fetch(`${apiUrl}/api/index/tasks`, {
+      const res = await fetch(`${apiUrl}/api/index`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -142,16 +565,15 @@ const Tasks = () => {
         body: JSON.stringify(newTask),
       });
 
-      const addedTask = await response.json();
-      if (!response.ok) {
-        showNotificationExistingTask(addedTask.message || "Failed to add task");
-        return;
+      const result = await res.json();
+      if (res.ok) {
+        setTasks((prev) => [...prev, result]);
+        showNotificationExistingTask("Task successfully created! Please edit the title.");
+      } else {
+        showNotificationExistingTask(result.message || "Failed to add task");
       }
-      setTasks([...tasks, addedTask]);
-      showNotificationExistingTask('Task successfully created! Please edit the title of the created task'); // Show notification
-    } 
-    catch (error) {
-      console.error("Error adding task:", error);
+    } catch (err) {
+      console.error("Error adding task:", err);
     }
   };
 
@@ -162,123 +584,117 @@ const Tasks = () => {
 
   const handleSaveEdit = async () => {
     const token = localStorage.getItem("token");
-    if (!token) {
-      console.error("No token found");
-      return;
-    }
+    if (!token) return;
 
+    const apiUrl = process.env.REACT_APP_API_URL;
     try {
-      const apiUrl = process.env.REACT_APP_API_URL;
-     // const response = await fetch(`${apiUrl}/api/tasks/${editingTaskId}`, {
-      const response = await fetch(`${apiUrl}/api/index/tasks/${editingTaskId}`, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(editTask),
-      });
-
-      const updatedTask = await response.json();
-      if (!response.ok) {
-        //throw new Error("Failed to update task");
-        showNotification(updatedTask.message || "Failed to update task");
-        return;
-      }
-
-      setTasks( tasks.map((task) => (task._id === editingTaskId ? updatedTask : task)));
-      setEditingTaskId(null);
-    } 
-    catch (error) {
-      console.error("Error updating task:", error);
-    }
-  };
-
-  const handleDeleteTask = async (id) => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      console.error("No token found");
-      return;
-    }
-
-    try {
-      const apiUrl = process.env.REACT_APP_API_URL;
-     // const response = await fetch(`${apiUrl}/api/tasks/${id}`, {
-      const response = await fetch(`${apiUrl}/api/index/tasks/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (response.ok) {
-        setTasks(tasks.filter((task) => task._id !== id));
-        showNotification('Task successfully deleted!'); 
-      } 
-      else {
-        console.error("Error deleting task:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Error deleting task:", error);
-    }
-  };
-
-  const handleClearAssignees = async (taskId) => {
-    setIsClearing(true); // Indicate that the clearing process has started
-
-    const token = localStorage.getItem("token");
-    if (!token) {
-      console.error("No token found");
-      setIsClearing(false); // Reset the state if there's an error
-      return;
-    }
-
-    try {
-      const apiUrl = process.env.REACT_APP_API_URL;
-      //const response = await fetch(`${apiUrl}/api/tasks/${taskId}/clear`, {
-      const response = await fetch(`${apiUrl}/api/index/tasks/${taskId}/clear`, {
+      const res = await fetch(`${apiUrl}/api/index`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({ action: "update-task", id: editingTaskId, ...editTask }),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to clear assignees");
+      const updated = await res.json();
+      if (res.ok) {
+        setTasks((prev) => prev.map((t) => (t._id === editingTaskId ? updated : t)));
+        setEditingTaskId(null);
+      } else {
+        showNotification(updated.message || "Failed to update task");
       }
+    } catch (err) {
+      console.error("Error updating task:", err);
+    }
+  };
 
-      const result = await response.json();
-      console.log(result.message);
+  const handleDeleteTask = async (id) => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
 
-      // Refresh the tasks list to reflect changes
-      const apiUrlTask = process.env.REACT_APP_API_URL;
-     // const tasksResponse = await fetch(`${apiUrlTask}/api/tasks`, {
-      const tasksResponse = await fetch(`${apiUrlTask}/api/index/tasks`, {
-        method: "GET",
+    const apiUrl = process.env.REACT_APP_API_URL;
+    try {
+      const res = await fetch(`${apiUrl}/api/index`, {
+        method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({ action: "delete-task", id }),
       });
 
-      if (tasksResponse.ok) {
-        const tasksData = await tasksResponse.json();
-        setTasks(tasksData);
+      if (res.status === 204) {
+        setTasks((prev) => prev.filter((task) => task._id !== id));
+        showNotification("Task successfully deleted!");
       } else {
-        console.error("Error fetching tasks data:", tasksResponse.statusText);
+        console.error("Error deleting task:", await res.text());
       }
-    } catch (error) {
-      console.error("Error clearing assignees:", error);
-    } finally {
-      setIsClearing(false); // Reset the state after the process is complete
+    } catch (err) {
+      console.error("Delete task error:", err);
     }
   };
+
+  const handleClearAssignees = async (taskId) => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    setIsClearing(true);
+    const apiUrl = process.env.REACT_APP_API_URL;
+
+    try {
+      const clear = await fetch(`${apiUrl}/api/index`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ action: "clear-task-assignees", taskId }),
+      });
+
+      if (!clear.ok) throw new Error("Clear failed");
+
+      const refreshed = await fetch(`${apiUrl}/api/index`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ action: "get-tasks" }),
+      });
+
+      if (refreshed.ok) {
+        const data = await refreshed.json();
+        setTasks(data);
+      } else {
+        console.error("Failed to refresh task list");
+      }
+    } catch (err) {
+      console.error("Error clearing assignees:", err);
+    } finally {
+      setIsClearing(false);
+    }
+  };
+
+
 
   const handleCancelEdit = () => {
     setEditingTaskId(null);
     setEditTask({ title: '', duration: '', document: '', status: '' });
   };
+
+  // New
+  // const handleCancelEdit = () => {
+  //   setEditingTaskId(null);
+  //   setEditTask({
+  //     title: "",
+  //     creationDate: new Date(),
+  //     dueDate: null,
+  //     status: "None",
+  //     description: "",
+  //     createdBy: `${user.firstName} ${user.lastName}`,
+  //   });
+  // };
 
   const getFilteredTasks = () => {
     return filter === 'All' ? tasks : tasks.filter(task => task.status === filter);

@@ -11,6 +11,133 @@ const VolunteerTasks = () => {
     return savedCount ? parseInt(savedCount, 10) : 0; 
   });
 
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     const token = localStorage.getItem('token');
+  //     if (!token) {
+  //       console.error('No token found');
+  //       return;
+  //     }
+
+  //     try {
+  //       const apiUrl = process.env.REACT_APP_API_URL;
+  //      // const response = await fetch(`${apiUrl}/api/user`, {
+  //       const response = await fetch(`${apiUrl}/api/index/user`, {
+  //         method: 'GET',
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           'Content-Type': 'application/json',
+  //         },
+  //       });
+
+  //       if (response.ok) {
+  //         const data = await response.json();
+  //         setUser({
+  //           firstName: data.firstName,
+  //           lastName: data.lastName,
+  //           email: data.email,
+  //         });
+  //       } else {
+  //         console.error('Error fetching user data:', response.statusText);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching user data:', error);
+  //     }
+  //   };
+
+  //   fetchUserData();
+  // }, []);
+
+  // useEffect(() => {
+  //   const fetchTasks = async () => {
+  //     const token = localStorage.getItem('token');
+  //     if (!token) {
+  //       console.error('No token found');
+  //       return;
+  //     }
+  
+  //     try {
+  //       const apiUrl = process.env.REACT_APP_API_URL;
+  //      // const response = await fetch(`${apiUrl}/api/volunteer-tasks`, {
+  //       const response = await fetch(`${apiUrl}/api/index/volunteer-tasks`, {
+  //         method: 'GET',
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           'Content-Type': 'application/json',
+  //         },
+  //       });
+  
+  //       if (response.ok) {
+  //         const data = await response.json();
+  //         setTasks(data);
+
+  //         const count = data.length;
+  //         setTaskCount(count);
+  //         localStorage.setItem('taskCount', count);
+
+  //       } else if (response.status === 404) {
+  //         console.log('No tasks assigned to this volunteer.');
+  //         setTasks([]);
+  //       } else {
+  //         console.error('Error fetching tasks:', response.statusText);
+  //         setTasks([]);
+  //         setTaskCount(0);
+  //         localStorage.setItem('taskCount', 0);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching tasks:', error);
+  //     }
+  //   };
+  
+  //   fetchTasks();
+  // }, []);
+
+  // const updateTaskStatus = async (taskId, newStatus) => {
+  //   if (newStatus === 'Completed') {
+  //     const task = tasks.find(t => t._id === taskId);
+  //     if (task.assignedVolunteers.length > 1) {
+  //       const confirmMessage = `This task is assigned to multiple volunteers. Make sure you are ready to complete the task. You are turning it in for all group members. Do you want to proceed?`;
+  //       if (!window.confirm(confirmMessage)) {
+  //         return;
+  //       }
+  //     }
+  //   }
+
+  //   const token = localStorage.getItem('token');
+  //   if (!token) {
+  //     console.error('No token found');
+  //     return;
+  //   }
+
+  //   try {
+  //     const apiUrl = process.env.REACT_APP_API_URL;
+  //    // const response = await fetch(`${apiUrl}/api/tasks/${taskId}`, {
+  //     const response = await fetch(`${apiUrl}/api/index/tasks/${taskId}`, {
+  //       method: 'PUT',
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ status: newStatus }),
+  //     });
+
+  //     if (response.ok) {
+  //       const updatedTask = await response.json();
+  //       setTasks((prevTasks) =>
+  //         prevTasks.map((task) =>
+  //           task._id === taskId ? { ...task, status: updatedTask.status } : task
+  //         )
+  //       );
+  //     } else {
+  //       console.error('Error updating task status:', response.statusText);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error updating task status:', error);
+  //   }
+  // };
+
+
+
   useEffect(() => {
     const fetchUserData = async () => {
       const token = localStorage.getItem('token');
@@ -21,13 +148,13 @@ const VolunteerTasks = () => {
 
       try {
         const apiUrl = process.env.REACT_APP_API_URL;
-       // const response = await fetch(`${apiUrl}/api/user`, {
-        const response = await fetch(`${apiUrl}/api/index/user`, {
-          method: 'GET',
+        const response = await fetch(`${apiUrl}/api/index`, {
+          method: 'POST',
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
+          body: JSON.stringify({ action: 'get-user' }),
         });
 
         if (response.ok) {
@@ -55,26 +182,24 @@ const VolunteerTasks = () => {
         console.error('No token found');
         return;
       }
-  
+
       try {
         const apiUrl = process.env.REACT_APP_API_URL;
-       // const response = await fetch(`${apiUrl}/api/volunteer-tasks`, {
-        const response = await fetch(`${apiUrl}/api/index/volunteer-tasks`, {
-          method: 'GET',
+        const response = await fetch(`${apiUrl}/api/index`, {
+          method: 'POST',
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
+          body: JSON.stringify({ action: 'get-volunteer-tasks' }),
         });
-  
+
         if (response.ok) {
           const data = await response.json();
           setTasks(data);
-
           const count = data.length;
           setTaskCount(count);
           localStorage.setItem('taskCount', count);
-
         } else if (response.status === 404) {
           console.log('No tasks assigned to this volunteer.');
           setTasks([]);
@@ -88,14 +213,14 @@ const VolunteerTasks = () => {
         console.error('Error fetching tasks:', error);
       }
     };
-  
+
     fetchTasks();
   }, []);
 
   const updateTaskStatus = async (taskId, newStatus) => {
     if (newStatus === 'Completed') {
       const task = tasks.find(t => t._id === taskId);
-      if (task.assignedVolunteers.length > 1) {
+      if (task && task.assignedVolunteers.length > 1) {
         const confirmMessage = `This task is assigned to multiple volunteers. Make sure you are ready to complete the task. You are turning it in for all group members. Do you want to proceed?`;
         if (!window.confirm(confirmMessage)) {
           return;
@@ -111,20 +236,23 @@ const VolunteerTasks = () => {
 
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
-     // const response = await fetch(`${apiUrl}/api/tasks/${taskId}`, {
-      const response = await fetch(`${apiUrl}/api/index/tasks/${taskId}`, {
-        method: 'PUT',
+      const response = await fetch(`${apiUrl}/api/index`, {
+        method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ status: newStatus }),
+        body: JSON.stringify({
+          action: 'update-task',
+          id: taskId,
+          status: newStatus,
+        }),
       });
 
       if (response.ok) {
         const updatedTask = await response.json();
-        setTasks((prevTasks) =>
-          prevTasks.map((task) =>
+        setTasks(prev =>
+          prev.map(task =>
             task._id === taskId ? { ...task, status: updatedTask.status } : task
           )
         );
@@ -135,6 +263,8 @@ const VolunteerTasks = () => {
       console.error('Error updating task status:', error);
     }
   };
+
+
 
   return (
     <div>

@@ -103,21 +103,32 @@ const VolunteerList = () => {
   
       try {
         const apiUrl = process.env.REACT_APP_API_URL;
-  
+
         // Fetch user
-        const userResponse = await fetch(
-          process.env.NODE_ENV === 'production'
-            ? `${apiUrl}/api/index`
-            : `${apiUrl}/api/index/user`,
-          {
-            method: process.env.NODE_ENV === 'production' ? 'POST' : 'GET',
+        // const userResponse = await fetch(
+        //   process.env.NODE_ENV === 'production'
+        //     ? `${apiUrl}/api/index`
+        //     : `${apiUrl}/api/index/user`,
+        //   {
+        //     method: process.env.NODE_ENV === 'production' ? 'POST' : 'GET',
+        //     headers: {
+        //       Authorization: `Bearer ${token}`,
+        //       'Content-Type': 'application/json',
+        //     },
+        //     ...(process.env.NODE_ENV === 'production' && {
+        //       body: JSON.stringify({ action: 'get-user' }),
+        //     }),
+        //   }
+        // );
+
+        const userResponse = await fetch(`${apiUrl}/api/index`,
+        {
+            method:'POST',
             headers: {
               Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json',
             },
-            ...(process.env.NODE_ENV === 'production' && {
               body: JSON.stringify({ action: 'get-user' }),
-            }),
           }
         );
   
@@ -126,24 +137,37 @@ const VolunteerList = () => {
           setUser({ firstName: userData.firstName, lastName: userData.lastName });
   
           // Fetch volunteers
-          const volunteerResponse = await fetch(
-            process.env.NODE_ENV === 'production'
-              ? `${apiUrl}/api/index/users?role=volunteer`
-              : `${apiUrl}/api/index/users?role=volunteer`,
-            {
-              method: 'GET',
-              headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json',
-              },
-            }
-          );
-  
+          // const volunteerResponse = await fetch(
+          //   process.env.NODE_ENV === 'production'
+          //     ? `${apiUrl}/api/index/users?role=volunteer`
+          //     : `${apiUrl}/api/index/users?role=volunteer`,
+          //   {
+          //     method: 'GET',
+          //     headers: {
+          //       Authorization: `Bearer ${token}`,
+          //       'Content-Type': 'application/json',
+          //     },
+          //   }
+          // );
+
+          const volunteerResponse = await fetch(`${apiUrl}/api/index`, {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              action: 'get-users',
+              role: 'volunteer'
+            }),
+          });
+          
           if (volunteerResponse.ok) {
             const data = await volunteerResponse.json();
             setVolunteers(data);
           }
         }
+
       } catch (err) {
         console.error('Error fetching user or volunteers:', err);
       }
@@ -155,21 +179,33 @@ const VolunteerList = () => {
   
       try {
         const apiUrl = process.env.REACT_APP_API_URL;
-        const response = await fetch(
-          process.env.NODE_ENV === 'production'
-            ? `${apiUrl}/api/index`
-            : `${apiUrl}/api/index/volunteer-task-count`,
-          {
-            method: process.env.NODE_ENV === 'production' ? 'POST' : 'GET',
+
+        const response = await fetch(`${apiUrl}/api/index`,
+        {
+            method:'POST',
             headers: {
               Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json',
             },
-            ...(process.env.NODE_ENV === 'production' && {
               body: JSON.stringify({ action: 'volunteer-task-count' }),
-            }),
           }
         );
+
+        // const response = await fetch(
+        //   process.env.NODE_ENV === 'production'
+        //     ? `${apiUrl}/api/index`
+        //     : `${apiUrl}/api/index/volunteer-task-count`,
+        //   {
+        //     method: process.env.NODE_ENV === 'production' ? 'POST' : 'GET',
+        //     headers: {
+        //       Authorization: `Bearer ${token}`,
+        //       'Content-Type': 'application/json',
+        //     },
+        //     ...(process.env.NODE_ENV === 'production' && {
+        //       body: JSON.stringify({ action: 'volunteer-task-count' }),
+        //     }),
+        //   }
+        // );
   
         if (response.ok) {
           const data = await response.json();
