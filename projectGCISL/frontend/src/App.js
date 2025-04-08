@@ -67,9 +67,29 @@ const AppContent = () => {
         // }
 
 
-        console.log('API URL:', apiUrl);
-          // Production: POST with action to /api/index
-        response = await fetch(`${apiUrl}/api/index`, {
+        // console.log('API URL:', apiUrl);
+        //   // Production: POST with action to /api/index
+        // response = await fetch(`${apiUrl}/api/index`, {
+        //     method: 'POST',
+        //     headers: {
+        //       Authorization: `Bearer ${token}`,
+        //       'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify({ action: 'get-user' }),
+        // });
+
+        if (process.env.NODE_ENV !== "production") {
+          response = await fetch(`${apiUrl}/api/index/user`, {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          });
+        } 
+
+        else {
+          response = await fetch(`${apiUrl}/api/index`, {
             method: 'POST',
             headers: {
               Authorization: `Bearer ${token}`,
@@ -77,6 +97,7 @@ const AppContent = () => {
             },
             body: JSON.stringify({ action: 'get-user' }),
         });
+        }
 
         const data = await response.json();
         if (response.ok) {
@@ -128,16 +149,35 @@ const AppContent = () => {
         //   });
         // }
 
+        if (process.env.NODE_ENV !== "production") {
+          response = await fetch(`${apiUrl}/api/index/volunteer-task-count`, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
+        }
 
+        else {
+          response = await fetch(`${apiUrl}/api/index`, {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ action: 'volunteer-task-count' }),
+          });
+        }
 
-        response = await fetch(`${apiUrl}/api/index`, {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ action: 'volunteer-task-count' }),
-        });
+        // response = await fetch(`${apiUrl}/api/index`, {
+        //   method: 'POST',
+        //   headers: {
+        //     Authorization: `Bearer ${token}`,
+        //     'Content-Type': 'application/json',
+        //   },
+        //   body: JSON.stringify({ action: 'volunteer-task-count' }),
+        // });
 
 
 

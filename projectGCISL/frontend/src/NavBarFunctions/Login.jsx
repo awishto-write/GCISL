@@ -48,8 +48,15 @@ const Login = () => {
       //   });
       // }
 
+      if (process.env.NODE_ENV !== "production") {
+        response = await fetch(`${apiUrl}/api/index/login`, {  
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+      }
 
-      console.log('API URL:', apiUrl);
+      else {
         response = await fetch(`${apiUrl}/api/index`, {
           method: 'POST',
           headers: {
@@ -60,7 +67,22 @@ const Login = () => {
             email,
             password
           })
-      });
+        });
+      }
+
+
+      // console.log('API URL:', apiUrl);
+      //   response = await fetch(`${apiUrl}/api/index`, {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json'
+      //     },
+      //     body: JSON.stringify({
+      //       action: 'login',
+      //       email,
+      //       password
+      //     })
+      // });
 
 
 

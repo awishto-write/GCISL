@@ -45,39 +45,40 @@ const AdminDashboard = () => {
   
       try {
         const apiUrl = process.env.REACT_APP_API_URL;
+        let response;
 
-        // const response = await fetch(
-        //   process.env.NODE_ENV === 'production'
-        //     ? `${apiUrl}/api/index`
-        //     : `${apiUrl}/api/index/user`,
-        //   {
-        //     method: process.env.NODE_ENV === 'production' ? 'POST' : 'GET',
+        if (process.env.NODE_ENV !== "production") {
+          response = await fetch(`${apiUrl}/api/index/user`, {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          });
+        } else {
+          response = await fetch(`${apiUrl}/api/index`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+
+            body: JSON.stringify({ action: "get-user" }),
+          });
+        }
+
+        // const response = await fetch(`${apiUrl}/api/index`,
+        // {
+        //     method: 'POST',
         //     headers: {
         //       Authorization: `Bearer ${token}`,
         //       'Content-Type': 'application/json',
         //     },
-        //     ...(process.env.NODE_ENV === 'production' && {
-        //       body: JSON.stringify({ action: 'get-user' }),
-        //     }),
+            
+        //     body: JSON.stringify({ action: 'get-user' }),
         //   }
         // );
 
-
-
-        const response = await fetch(`${apiUrl}/api/index`,
-          {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-            
-            body: JSON.stringify({ action: 'get-user' }),
-          }
-        );
-
-
-  
         if (response.ok) {
           const data = await response.json();
           setUser({ firstName: data.firstName, lastName: data.lastName });

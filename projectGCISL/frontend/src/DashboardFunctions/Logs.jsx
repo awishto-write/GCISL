@@ -123,14 +123,35 @@ const Logs = () => {
 
       try {
         const apiUrl = process.env.REACT_APP_API_URL;
-        const response = await fetch(`${apiUrl}/api/index`, {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ action: 'get-user' }),
-        });
+        let response;
+        if (process.env.NODE_ENV !== "production") {
+          response = await fetch(`${apiUrl}/api/index/user`, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
+        }
+        
+        else {
+          response = await fetch(`${apiUrl}/api/index`, {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ action: 'get-user' }),
+          });
+        }
+        // const response = await fetch(`${apiUrl}/api/index`, {
+        //   method: 'POST',
+        //   headers: {
+        //     Authorization: `Bearer ${token}`,
+        //     'Content-Type': 'application/json',
+        //   },
+        //   body: JSON.stringify({ action: 'get-user' }),
+        // });
 
         if (response.ok) {
           const data = await response.json();
@@ -149,14 +170,36 @@ const Logs = () => {
 
       try {
         const apiUrl = process.env.REACT_APP_API_URL;
-        const response = await fetch(`${apiUrl}/api/index`, {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ action: 'get-logs' }),
-        });
+        let response;
+
+        if (process.env.NODE_ENV !== "production") {
+          response = await fetch(`${apiUrl}/api/index/logs`, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
+        }
+        else {
+          response = await fetch(`${apiUrl}/api/index`, {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ action: 'get-logs' }),
+          });
+        }
+
+        // const response = await fetch(`${apiUrl}/api/index`, {
+        //   method: 'POST',
+        //   headers: {
+        //     Authorization: `Bearer ${token}`,
+        //     'Content-Type': 'application/json',
+        //   },
+        //   body: JSON.stringify({ action: 'get-logs' }),
+        // });
 
         if (response.ok) {
           const data = await response.json();
@@ -183,14 +226,35 @@ const Logs = () => {
 
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
-      const response = await fetch(`${apiUrl}/api/index`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ action: 'delete-log', id: logId }),
-      });
+      let response;
+
+      if (process.env.NODE_ENV !== "production") {
+        response = await fetch(`${apiUrl}/api/index/logs/${logId}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+      }
+      else {
+        response = await fetch(`${apiUrl}/api/index`, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ action: 'delete-log', id: logId }),
+        });
+      }
+      // const response = await fetch(`${apiUrl}/api/index`, {
+      //   method: 'POST',
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({ action: 'delete-log', id: logId }),
+      // });
 
       if (response.ok) {
         setLogs(logs.filter((log) => log._id !== logId));
@@ -204,7 +268,7 @@ const Logs = () => {
     }
   };
 
-  
+
 
   // Filter logs based on the due date
   const getFilteredLogs = () => {

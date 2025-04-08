@@ -10,6 +10,7 @@ const Tasks = () => {
   const [tasks, setTasks] = useState([]);
   const [user, setUser] = useState({ firstName: "", lastName: "", email: "" });
   const [isLoading, setIsLoading] = useState(true); // Loading state added
+  // const [taskID, setEditingTaskId] = useState(null);
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [filter, setFilter] = useState('All'); // Ensure filter options remain the same
   const currentDate = new Date();
@@ -489,18 +490,44 @@ const Tasks = () => {
 
     const fetchUserData = async () => {
       try {
-        const res = await fetch(`${apiUrl}/api/index`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ action: "get-user" }),
-        });
+        let res;
+        if (process.env.NODE_ENV !== "production") {
+          res = await fetch(`${apiUrl}/api/index/user`, {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          });
+        }
+        else {
+          res = await fetch(`${apiUrl}/api/index`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ action: "get-user" }),
+          });
+        }
+
+        // const res = await fetch(`${apiUrl}/api/index`, {
+        //   method: "POST",
+        //   headers: {
+        //     Authorization: `Bearer ${token}`,
+        //     "Content-Type": "application/json",
+        //   },
+        //   body: JSON.stringify({ action: "get-user" }),
+        // });
 
         if (res.ok) {
           const data = await res.json();
-          setUser(data);
+          //setUser(data);
+          setUser({
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email,
+          });
           setEditTask((prev) => ({
             ...prev,
             createdBy: `${data.firstName} ${data.lastName}`,
@@ -515,14 +542,34 @@ const Tasks = () => {
 
     const fetchTasks = async () => {
       try {
-        const res = await fetch(`${apiUrl}/api/index`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ action: "get-tasks" }),
-        });
+        let res;
+        if (process.env.NODE_ENV !== "production") {
+          res = await fetch(`${apiUrl}/api/index/tasks`, {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          });
+        }
+        else {
+          res = await fetch(`${apiUrl}/api/index`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ action: "get-tasks" }),
+          });
+        }
+        // const res = await fetch(`${apiUrl}/api/index`, {
+        //   method: "POST",
+        //   headers: {
+        //     Authorization: `Bearer ${token}`,
+        //     "Content-Type": "application/json",
+        //   },
+        //   body: JSON.stringify({ action: "get-tasks" }),
+        // });
 
         if (res.ok) {
           const data = await res.json();
@@ -556,14 +603,35 @@ const Tasks = () => {
     };
 
     try {
-      const res = await fetch(`${apiUrl}/api/index`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newTask),
-      });
+      let res;
+      if (process.env.NODE_ENV !== "production") {
+        res = await fetch(`${apiUrl}/api/index/tasks`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newTask),
+        });
+      }
+      else {
+        res = await fetch(`${apiUrl}/api/index`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newTask),
+        });
+      }
+      // const res = await fetch(`${apiUrl}/api/index`, {
+      //   method: "POST",
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(newTask),
+      // });
 
       const result = await res.json();
       if (res.ok) {
@@ -588,14 +656,35 @@ const Tasks = () => {
 
     const apiUrl = process.env.REACT_APP_API_URL;
     try {
-      const res = await fetch(`${apiUrl}/api/index`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ action: "update-task", id: editingTaskId, ...editTask }),
-      });
+      let res;
+      if (process.env.NODE_ENV !== "production") {
+        res = await fetch(`${apiUrl}/api/index/tasks/${editingTaskId}`, {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(editTask),
+        });
+      }
+      else {
+        res = await fetch(`${apiUrl}/api/index`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ action: "update-task", id: editingTaskId, ...editTask }),
+        });
+      }
+      // const res = await fetch(`${apiUrl}/api/index`, {
+      //   method: "POST",
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ action: "update-task", id: editingTaskId, ...editTask }),
+      // });
 
       const updated = await res.json();
       if (res.ok) {
@@ -611,18 +700,40 @@ const Tasks = () => {
 
   const handleDeleteTask = async (id) => {
     const token = localStorage.getItem("token");
-    if (!token) return;
+    if (!token) {
+      console.error("No token found");
+      return;
+    }
 
     const apiUrl = process.env.REACT_APP_API_URL;
     try {
-      const res = await fetch(`${apiUrl}/api/index`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ action: "delete-task", id }),
-      });
+      let res;
+      if (process.env.NODE_ENV !== "production") {
+        res = await fetch(`${apiUrl}/api/index/tasks/${id}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      }
+      else {
+        res = await fetch(`${apiUrl}/api/index`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ action: "delete-task", id }),
+        });
+      }
+      // const res = await fetch(`${apiUrl}/api/index`, {
+      //   method: "POST",
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ action: "delete-task", id }),
+      // });
 
       if (res.status === 204) {
         setTasks((prev) => prev.filter((task) => task._id !== id));
@@ -636,32 +747,84 @@ const Tasks = () => {
   };
 
   const handleClearAssignees = async (taskId) => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-
     setIsClearing(true);
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      console.error("No token found");
+      setIsClearing(false); // Reset the state if there's an error
+      return;
+    }
+
     const apiUrl = process.env.REACT_APP_API_URL;
 
     try {
-      const clear = await fetch(`${apiUrl}/api/index`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ action: "clear-task-assignees", taskId }),
-      });
+      let clear;
+      if (process.env.NODE_ENV !== "production") {
+        clear = await fetch(`${apiUrl}/api/index/tasks/${taskId}/clear`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+      }
+      else {
+        clear = await fetch(`${apiUrl}/api/index`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ action: "clear-task-assignees", taskId }),
+        });
+      }
 
-      if (!clear.ok) throw new Error("Clear failed");
+      // const clear = await fetch(`${apiUrl}/api/index`, {
+      //   method: "POST",
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ action: "clear-task-assignees", taskId }),
+      // });
 
-      const refreshed = await fetch(`${apiUrl}/api/index`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ action: "get-tasks" }),
-      });
+
+      if (!clear.ok) {
+        throw new Error("Failed to clear assignees");
+      }
+      const result = await clear.json();
+      console.log(result.message);
+      let refreshed;
+
+      if (process.env.NODE_ENV !== "production") {
+        refreshed = await fetch(`${apiUrl}/api/index/tasks`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+      }
+      else {
+        refreshed = await fetch(`${apiUrl}/api/index`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ action: "get-tasks" }),
+        });
+      }
+
+      // const refreshed = await fetch(`${apiUrl}/api/index`, {
+      //   method: "POST",
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ action: "get-tasks" }),
+      // });
 
       if (refreshed.ok) {
         const data = await refreshed.json();
@@ -675,8 +838,6 @@ const Tasks = () => {
       setIsClearing(false);
     }
   };
-
-
 
   const handleCancelEdit = () => {
     setEditingTaskId(null);

@@ -148,14 +148,35 @@ const VolunteerTasks = () => {
 
       try {
         const apiUrl = process.env.REACT_APP_API_URL;
-        const response = await fetch(`${apiUrl}/api/index`, {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ action: 'get-user' }),
-        });
+        let response;
+
+        if (process.env.NODE_ENV !== "production") {
+          response = await fetch(`${apiUrl}/api/index/user`, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
+        }
+        else {
+          response = await fetch(`${apiUrl}/api/index`, {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ action: 'get-user' }),
+          });
+        }
+        // const response = await fetch(`${apiUrl}/api/index`, {
+        //   method: 'POST',
+        //   headers: {
+        //     Authorization: `Bearer ${token}`,
+        //     'Content-Type': 'application/json',
+        //   },
+        //   body: JSON.stringify({ action: 'get-user' }),
+        // });
 
         if (response.ok) {
           const data = await response.json();
@@ -185,14 +206,36 @@ const VolunteerTasks = () => {
 
       try {
         const apiUrl = process.env.REACT_APP_API_URL;
-        const response = await fetch(`${apiUrl}/api/index`, {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ action: 'get-volunteer-tasks' }),
-        });
+        let response;
+
+        if (process.env.NODE_ENV !== "production") {
+          response = await fetch(`${apiUrl}/api/index/volunteer-tasks`, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
+        }
+        else{
+          response = await fetch(`${apiUrl}/api/index`, {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ action: 'get-volunteer-tasks' }),
+          });
+        }
+
+        // const response = await fetch(`${apiUrl}/api/index`, {
+        //   method: 'POST',
+        //   headers: {
+        //     Authorization: `Bearer ${token}`,
+        //     'Content-Type': 'application/json',
+        //   },
+        //   body: JSON.stringify({ action: 'get-volunteer-tasks' }),
+        // });
 
         if (response.ok) {
           const data = await response.json();
@@ -236,18 +279,45 @@ const VolunteerTasks = () => {
 
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
-      const response = await fetch(`${apiUrl}/api/index`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          action: 'update-task',
-          id: taskId,
-          status: newStatus,
-        }),
-      });
+      let response;
+
+      if (process.env.NODE_ENV !== "production") {
+        response = await fetch(`${apiUrl}/api/index/tasks/${taskId}`, {
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ status: newStatus }),
+        });
+      }
+      else {
+        response = await fetch(`${apiUrl}/api/index`, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            action: 'update-task',
+            id: taskId,
+            status: newStatus,
+          }),
+        });
+      }
+
+      // const response = await fetch(`${apiUrl}/api/index`, {
+      //   method: 'POST',
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({
+      //     action: 'update-task',
+      //     id: taskId,
+      //     status: newStatus,
+      //   }),
+      // });
 
       if (response.ok) {
         const updatedTask = await response.json();
@@ -263,8 +333,6 @@ const VolunteerTasks = () => {
       console.error('Error updating task status:', error);
     }
   };
-
-
 
   return (
     <div>
