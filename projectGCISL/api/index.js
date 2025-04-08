@@ -1361,29 +1361,55 @@ app.post('/api/index', authenticateJWT, async (req, res) => {
       return res.status(201).json(newTask);
     }
 
+    // else if (action === 'assign-task') {
+    //   const { volunteerId, taskId } = req.body;
+    //   const task = await Task.findById(taskId);
+    //   if (!task) return res.status(404).json({ message: 'Task not found.' });
+
+    //   if (!task.assignedVolunteers.includes(volunteerId)) {
+    //     task.assignedVolunteers.push(volunteerId);
+    //     await task.save();
+    //   }
+
+    //   return res.json({ message: 'Volunteer assigned to task successfully.' });
+    // }
+
+    // else if (action === 'remove-task-volunteer') {
+    //   const { volunteerId, taskId } = req.body;
+    //   const task = await Task.findById(taskId);
+    //   if (!task) return res.status(404).json({ message: 'Task not found.' });
+
+    //   task.assignedVolunteers = task.assignedVolunteers.filter(id => id.toString() !== volunteerId);
+    //   await task.save();
+
+    //   return res.json({ message: 'Volunteer removed from task.' });
+    // }
+
     else if (action === 'assign-task') {
       const { volunteerId, taskId } = req.body;
       const task = await Task.findById(taskId);
       if (!task) return res.status(404).json({ message: 'Task not found.' });
-
-      if (!task.assignedVolunteers.includes(volunteerId)) {
+    
+      const alreadyAssigned = task.assignedVolunteers.some(id => id.toString() === volunteerId);
+      if (!alreadyAssigned) {
         task.assignedVolunteers.push(volunteerId);
         await task.save();
       }
-
+    
       return res.json({ message: 'Volunteer assigned to task successfully.' });
     }
-
+    
     else if (action === 'remove-task-volunteer') {
       const { volunteerId, taskId } = req.body;
       const task = await Task.findById(taskId);
       if (!task) return res.status(404).json({ message: 'Task not found.' });
-
+    
       task.assignedVolunteers = task.assignedVolunteers.filter(id => id.toString() !== volunteerId);
       await task.save();
-
+    
       return res.json({ message: 'Volunteer removed from task.' });
     }
+    
 
     else if (action === 'update-task') {
       const { id, title, creationDate, dueDate, color, status, description } = req.body;
