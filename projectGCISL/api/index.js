@@ -249,10 +249,11 @@ app.post('/api/index', authenticateJWT, async (req, res) => {
         if (!isAlreadyAssigned) {
          // task.assignedVolunteers.push(new mongoose.Types.ObjectId(volunteerId));
           task.assignedVolunteers.push(volunteerId);
-          await task.save();
+         // await task.save();
+          await task.save({ validateModifiedOnly: true }); // ✅ This is the fix
         }
     
-        console.log('Volunteer assigned:', volunteerId, '→ Task:', taskId);
+        console.log('Volunteer assigned:', volunteerId, 'Task:', taskId);
         return res.json({ message: 'Volunteer assigned to task successfully.' });
       } catch (error) {
         console.error('Error in assign-task:', error);
@@ -273,7 +274,8 @@ app.post('/api/index', authenticateJWT, async (req, res) => {
           (v._id || v).toString() !== volunteerId
         );
     
-        await task.save();
+       // await task.save();
+        await task.save({ validateModifiedOnly: true }); // ✅ This is the fix
     
         return res.json({ message: 'Volunteer removed from task.' });
       } catch (error) {
