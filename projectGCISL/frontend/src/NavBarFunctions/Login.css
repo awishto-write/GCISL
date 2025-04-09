@@ -187,8 +187,8 @@ input[type="password"] {
 }
 @media (max-width: 1300px) {
   .wrapper-login {
-    margin-top: 250px;
-    padding-bottom: 120px;
+    margin-top: 70px;
+    padding-bottom: 70px;
   }
 
   .form-login {
@@ -217,8 +217,8 @@ input[type="password"] {
 }
 @media (max-width: 1024px) {
   .wrapper-login {
-    margin-top: 250px;
-    padding-bottom: 120px;
+    margin-top: 80px;
+    padding-bottom: 70px;
   }
 
   .form-login {
@@ -247,7 +247,7 @@ input[type="password"] {
 }
 @media (max-width: 768px) {
   .wrapper-login {
-    margin-top: 250px;
+    margin-top: 150px;
     padding-bottom: 120px;
   }
 
@@ -279,9 +279,9 @@ input[type="password"] {
 /* Small Screens (Phones, ≤550px) */
 @media (max-width: 550px) {
   .wrapper-login {
-    margin-top: 270px;
+    margin-top: 150px;
     padding: 10px;
-    padding-bottom: 140px;
+    padding-bottom: 70px;
   }
 
   .form-login {
@@ -314,23 +314,4 @@ input[type="password"] {
 }
 
 /* Extra Small Screens (Phones ≤360px) */
-@media (max-width: 360px) {
-  .form-login::before {
-    font-size: 18px;
-    height: 50px;
-    line-height: 50px;
-  }
 
-  .field-login input {
-    font-size: 13px;
-  }
-
-  .auth-btn-login {
-    font-size: 13px;
-    padding: 8px;
-  }
-
-  .p-login {
-    font-size: 11px;
-  }
-}
