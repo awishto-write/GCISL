@@ -9,7 +9,8 @@
   left: 0;
   width: 100%; /* Ensure the footer spans the full width */
   z-index: 100; /* Ensure the footer is on top of other elements */
-  height: 75px;
+  height: 85px;
+  margin-top: 100px;
 }
 .logo {
   filter: brightness(0) invert(1);
