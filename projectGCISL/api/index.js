@@ -341,7 +341,7 @@ app.post('/api/index', authenticateJWT, async (req, res) => {
       if (!task) return res.status(404).json({ message: 'Task not found.' });
 
       task.assignedVolunteers = [];
-      await task.save();
+      await task.save({ validateModifiedOnly: true });
 
       return res.json({ message: 'All assignees cleared.' });
     }

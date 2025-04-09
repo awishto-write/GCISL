@@ -266,15 +266,15 @@ const Tasks = () => {
   const handleClearAssignees = async (taskId) => {
     setIsClearing(true);
     const token = localStorage.getItem("token");
-
+  
     if (!token) {
       console.error("No token found");
-      setIsClearing(false); // Reset the state if there's an error
+      setIsClearing(false);
       return;
     }
-
+  
     const apiUrl = process.env.REACT_APP_API_URL;
-
+  
     try {
       let clear;
       if (process.env.NODE_ENV !== "production") {
@@ -296,66 +296,29 @@ const Tasks = () => {
           body: JSON.stringify({ action: "clear-task-assignees", taskId }),
         });
       }
-
+  
       if (!clear.ok) {
         throw new Error("Failed to clear assignees");
       }
       const result = await clear.json();
-      console.log(result.message);
-      let refreshed;
-
-      if (process.env.NODE_ENV !== "production") {
-        refreshed = await fetch(`${apiUrl}/api/index/tasks`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-      }
-      else {
-        refreshed = await fetch(`${apiUrl}/api/index`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ action: "get-tasks" }),
-        });
-      }
-
-      if (refreshed.ok) {
-        const data = await refreshed.json();
-        setTasks(data);
-      } else {
-        console.error("Failed to refresh task list");
-      }
+      console.log("Clear response:", result);
+      
+      // Update the specific task in state directly
+      setTasks(prevTasks => 
+        prevTasks.map(task => 
+          task._id === taskId 
+            ? { ...task, assignedVolunteers: [] } 
+            : task
+        )
+      );
+      
+      showNotification("Assignees cleared successfully!");
     } catch (err) {
       console.error("Error clearing assignees:", err);
+      showNotification("Failed to clear assignees");
     } finally {
       setIsClearing(false);
     }
-  };
-
-  // Maybe that?
-  // const handleCancelEdit = () => {
-  //   setEditingTaskId(null);
-  //   setEditTask({ title: '', duration: '', document: '', status: '' });
-  // };
-
-  // New
-  const handleCancelEdit = () => {
-    setEditingTaskId(null);
-    setEditTask({
-      // title: "",
-      // dueDate: null,
-      // status: "None",
-      // description: "",
-      title: '',
-      dueDate: '',
-      status: '',
-      description: '',
-    });
   };
 
   const getFilteredTasks = () => {
