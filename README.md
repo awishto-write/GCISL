@@ -142,6 +142,7 @@ Currently, there are no known problems.
    - [Sprint 3](https://github.com/awishto-write/GCISL/blob/main/Sprints/Sprint3)
    - [Sprint 4](https://github.com/awishto-write/GCISL/blob/main/Sprints/Sprint4)
    - [Sprint 5](https://github.com/awishto-write/GCISL/blob/main/Sprints/Sprint5)
+   - [Sprint 6](https://github.com/awishto-write/GCISL/blob/main/Sprints/Sprint6)
 * [Documentations](https://github.com/awishto-write/GCISL/blob/main/ProjectDocumentations)
 * [Meetings Minutes](https://github.com/awishto-write/GCISL/blob/main/MeetingsMinutes)
 * [Skill Trainings](https://github.com/awishto-write/GCISL/blob/main/SkillTraining)
