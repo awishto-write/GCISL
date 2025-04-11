@@ -62,8 +62,8 @@ List which add-ons are included in the project, and the purpose each add-on serv
   - Create a .env file in both the api and frontend directories.
   - Set the following environment variables:
      * Backend (projectGCISL/api/.env)
-        MONGODB_URI=your_mongodb_uri
-        JWT_SECRET=your_jwt_secret
+        MONGODB_URI=...
+        JWT_SECRET=...
      * Frontend (projectGCISL/frontend/.env):
        REACT_APP_API_URL=http://localhost:5001
 
@@ -71,12 +71,11 @@ List which add-ons are included in the project, and the purpose each add-on serv
   - Backend: Start the backend server (http://localhost:5001):
   ```sh
   cd projectGCISL/api
-  npm node.js
-  npm run dev
+  node local.js
   ```
   - Frontend: Start the frontend development server(http://localhost:3000):
   ```sh
-  cd projectGCISL/api
+  cd projectGCISL/frontend
   npm start
   ```
 
