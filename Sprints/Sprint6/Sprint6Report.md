@@ -1,6 +1,6 @@
 # Sprint 6 Report (03/11/2025 - 04/8/2025)
 ## YouTube link of Sprint 6 Video 
-
+[sprint 6 video](https://youtu.be/CJ4pxdqazeQ)
 
 ## What's New (User Facing)
 * Testing Endpoints – All endpoints were tested to ensure functionality.
