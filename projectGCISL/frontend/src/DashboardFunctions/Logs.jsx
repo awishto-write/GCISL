@@ -7,7 +7,8 @@ const Logs = () => {
   const [user, setUser] = useState({ firstName: '', lastName: '' });
   const [logs, setLogs] = useState([]); // Logs data
   const [filter, setFilter] = useState('all'); // Current filter
-  const [selectedLogId, setSelectedLogId] = useState(null);
+ // const [selectedLogId, setSelectedLogId] = useState(null);
+  const [selectedLogId, setSelectedLogId] = useState([]);
   const [notification, setNotification] = useState(''); // Stores the notification message
   const showNotification = (message) => {
       setNotification(message); // Set the message
@@ -99,50 +100,53 @@ const Logs = () => {
     fetchLogs();
   }, []);
 
+  // Allowing to delete multiple logs at once
   const handleRowClick = (logId) => {
-    setSelectedLogId(logId === selectedLogId ? null : logId);
+    setSelectedLogId((prevSelected) =>
+      prevSelected.includes(logId)
+        ? prevSelected.filter((id) => id !== logId)
+        : [...prevSelected, logId]
+    );
   };
 
-  const handleDeleteLog = async (logId) => {
+  const handleDeleteLog = async () => {
     const token = localStorage.getItem('token');
-    if (!token) return;
-
+    if (!token || selectedLogId.length === 0) return;
+  
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
-      let response;
-
-      if (process.env.NODE_ENV !== "production") {
-        response = await fetch(`${apiUrl}/api/index/logs/${logId}`, {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-      }
-      else {
-        response = await fetch(`${apiUrl}/api/index`, {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ action: 'delete-log', id: logId }),
-        });
-      }
-    
-      if (response.ok) {
-        setLogs(logs.filter((log) => log._id !== logId));
-        setSelectedLogId(null);
-        showNotification('Log successfully deleted!');
-      } else {
-        console.error('Error deleting log:', await response.text());
-      }
+      const deletePromises = selectedLogId.map((logId) => {
+        if (process.env.NODE_ENV !== "production") {
+          return fetch(`${apiUrl}/api/index/logs/${logId}`, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          });
+        } else {
+          return fetch(`${apiUrl}/api/index`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ action: "delete-log", id: logId }),
+          });
+        }
+      });
+  
+      const results = await Promise.all(deletePromises);
+      const successfulDeletes = results.filter(res => res.ok).length;
+  
+      setLogs((prevLogs) => prevLogs.filter((log) => !selectedLogId.includes(log._id)));
+      setSelectedLogId([]);
+      showNotification(`${successfulDeletes} log(s) deleted`);
     } catch (err) {
-      console.error('Error deleting log:', err);
+      console.error("Bulk delete error:", err);
     }
   };
-
+  
   // Filter logs based on the due date
   const getFilteredLogs = () => {
     const currentDate = new Date();
@@ -201,12 +205,12 @@ return (
             </button>
           </div>
 
-          {selectedLogId && (
+          {selectedLogId.length > 0 && (
             <button
               style={styles.deleteButton}
-              onClick={() => handleDeleteLog(selectedLogId)}
+              onClick={handleDeleteLog}
             >
-              Delete Log
+              Delete {selectedLogId.length} Log(s)
             </button>
           )}
         </div>
@@ -221,9 +225,9 @@ return (
               <tr>
                 <th style={styles.cellStyle}>Action</th>
                 <th style={styles.cellStyle}>Task Title</th>
-                <th style={styles.cellStyle}>Assignees</th>
+                <th style={styles.cellStyle}>Task Assignees</th>
                 <th style={styles.cellStyle}>Creation Date</th>
-                <th style={styles.cellStyle}>Due Date</th>
+                <th style={styles.cellStyle}>Task Due Date</th>
               </tr>
             </thead>
             <tbody>
@@ -232,8 +236,7 @@ return (
                   key={log._id}
                   style={{
                     ...styles.rowStyle,
-                    backgroundColor:
-                      log._id === selectedLogId ? "#f0f8ff" : "transparent",
+                    backgroundColor: selectedLogId.includes(log._id) ? "#f0f8ff" : "transparent",
                     cursor: "pointer",
                   }}
                   onClick={() => handleRowClick(log._id)}
@@ -261,8 +264,8 @@ return (
 
     {notification && <div style={styles.notificationStyle}>{notification}</div>}
   </div>
-);
-};
+ );
+}; 
 
 const styles = {
   deleteButtonContainer: {

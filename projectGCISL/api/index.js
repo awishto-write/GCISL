@@ -219,7 +219,7 @@ app.post('/api/index', authenticateJWT, async (req, res) => {
         action: `Task Created by Admin: ${user.firstName} ${user.lastName}`,
         taskTitle: title,
         assignees: assigneeNames,
-        creationDate,
+        creationDate: new Date(),
         dueDate
       });
       await log.save();
@@ -247,15 +247,22 @@ app.post('/api/index', authenticateJWT, async (req, res) => {
         );
     
         if (!isAlreadyAssigned) {
-         // task.assignedVolunteers.push(new mongoose.Types.ObjectId(volunteerId));
           task.assignedVolunteers.push(volunteerId);
-         // await task.save();
-          await task.save({ validateModifiedOnly: true }); // ✅ This is the fix
+          await task.save({ validateModifiedOnly: true }); 
+        }
+
+        // Update logs' assignees
+        const populatedTask = await Task.findById(taskId).populate('assignedVolunteers', 'firstName lastName');
+        const logsToUpdate = await Log.find({ taskTitle: populatedTask.title });
+        for (const log of logsToUpdate) {
+          log.assignees = populatedTask.assignedVolunteers.map(v => `${v.firstName} ${v.lastName}`);
+          await log.save({ validateModifiedOnly: true });
         }
     
         console.log('Volunteer assigned:', volunteerId, 'Task:', taskId);
         return res.json({ message: 'Volunteer assigned to task successfully.' });
-      } catch (error) {
+      } 
+      catch (error) {
         console.error('Error in assign-task:', error);
         return res.status(500).json({ error: 'Server error', details: error.message });
       }
@@ -275,10 +282,19 @@ app.post('/api/index', authenticateJWT, async (req, res) => {
         );
     
        // await task.save();
-        await task.save({ validateModifiedOnly: true }); // ✅ This is the fix
-    
+        await task.save({ validateModifiedOnly: true }); // This is the fix
+         
+        // Update logs' assignees
+        const populatedTask = await Task.findById(taskId).populate('assignedVolunteers', 'firstName lastName');
+        const logsToUpdate = await Log.find({ taskTitle: populatedTask.title });
+        for (const log of logsToUpdate) {
+          log.assignees = populatedTask.assignedVolunteers.map(v => `${v.firstName} ${v.lastName}`);
+          await log.save({ validateModifiedOnly: true });
+        }
+
         return res.json({ message: 'Volunteer removed from task.' });
-      } catch (error) {
+      } 
+      catch (error) {
         console.error('Error removing volunteer from task:', error);
         return res.status(500).json({ error: 'Server error', details: error.message });
       }
@@ -289,14 +305,13 @@ app.post('/api/index', authenticateJWT, async (req, res) => {
       const existing = await Task.findOne({ title, _id: { $ne: id } });
       if (existing) return res.status(400).json({ message: 'Task with this title already exists.' });
 
-      // const updated = await Task.findByIdAndUpdate(id, {
-      //   title, creationDate, dueDate, color, status, description
-      // }, { new: true });
+      const prevTask = await Task.findById(req.params.id).populate('assignedVolunteers', 'firstName lastName');
+
       const updated = await Task.findByIdAndUpdate( id, { 
         title, creationDate, dueDate, color, status, description },
         { new: true }
       ).populate('assignedVolunteers', 'firstName lastName');
-      if (!updated) return res.status(404).json({ message: 'Task not found.' });
+      if (!updated) return res.status(404).json({ message: 'Task not found after update.' });
 
       const user = await User.findById(req.userId);
       if (user.statusType === 'volunteer' && status === 'Completed') {
@@ -308,10 +323,21 @@ app.post('/api/index', authenticateJWT, async (req, res) => {
           action: `Completed Task by Volunteer: ${user.firstName} ${user.lastName}`,
           taskTitle: updated.title,
           assignees,
-          creationDate: updated.creationDate,
+          creationDate: new Date(),
           dueDate: updated.dueDate
         });
-        await log.save();
+        //await log.save();
+        await log.save({ validateModifiedOnly: true });
+      }
+
+       // Just Added
+      // Update related logs (same task title, same assignees)
+      const logsToUpdate = await Log.find({ taskTitle: prevTask.title });
+      for (const log of logsToUpdate) {
+        log.taskTitle = updated.title;
+        log.dueDate = updated.dueDate;
+        log.assignees = updated.assignedVolunteers.map(v => `${v.firstName} ${v.lastName}`);
+        await log.save({ validateModifiedOnly: true });
       }
 
       return res.json(updated);
@@ -327,7 +353,7 @@ app.post('/api/index', authenticateJWT, async (req, res) => {
         action: `Task Deleted by Admin: ${user.firstName} ${user.lastName}`,
         taskTitle: task.title,
         assignees: [],
-        creationDate: task.creationDate,
+        creationDate: new Date(),
         dueDate: task.dueDate
       });
       await log.save();
