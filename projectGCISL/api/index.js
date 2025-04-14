@@ -299,51 +299,6 @@ app.post('/api/index', authenticateJWT, async (req, res) => {
         return res.status(500).json({ error: 'Server error', details: error.message });
       }
     }
-    
-    // else if (action === 'update-task') {
-    //   const { id, title, creationDate, dueDate, color, status, description } = req.body;
-    //  //const existing = await Task.findOne({ title, _id: { $ne: id } });
-    //   const existing = await Task.findOne({ title, _id: { $ne: req.params.id } });
-    //   if (existing) return res.status(400).json({ message: 'Task with this title already exists.' });
-
-    //   const prevTask = await Task.findById(req.params.id).populate('assignedVolunteers', 'firstName lastName');
-
-    //   const updated = await Task.findByIdAndUpdate( id, { 
-    //     title, creationDate, dueDate, color, status, description },
-    //     { new: true }
-    //   ).populate('assignedVolunteers', 'firstName lastName');
-    //   if (!updated) return res.status(404).json({ message: 'Task not found after update.' });
-
-    //   const user = await User.findById(req.userId);
-    //   if (user.statusType === 'volunteer' && status === 'Completed') {
-    //     const assignees = updated.assignedVolunteers?.length
-    //       ? (await User.find({ _id: { $in: updated.assignedVolunteers } })).map(u => `${u.firstName} ${u.lastName}`)
-    //       : [];
-
-    //     const log = new Log({
-    //       action: `Completed Task by Volunteer: ${user.firstName} ${user.lastName}`,
-    //       taskTitle: updated.title,
-    //       assignees,
-    //       creationDate: new Date(),
-    //       dueDate: updated.dueDate
-    //     });
-    //     //await log.save();
-    //     await log.save({ validateModifiedOnly: true });
-    //   }
-
-    //    // Just Added
-    //   // Update related logs (same task title, same assignees)
-    //   const logsToUpdate = await Log.find({ taskTitle: prevTask.title });
-    //   for (const log of logsToUpdate) {
-    //     log.taskTitle = updated.title;
-    //     log.dueDate = updated.dueDate;
-    //     log.assignees = updated.assignedVolunteers.map(v => `${v.firstName} ${v.lastName}`);
-    //     await log.save({ validateModifiedOnly: true });
-    //   }
-
-    //   return res.json(updated);
-    // }
-
 
     else if (action === 'update-task') {
       const { id, title, creationDate, dueDate, color, status, description } = req.body;
